@@ -1,0 +1,10 @@
+{
+  "name": "Lame de microscope",
+  "background": "assets/stages/microscope/background.png",
+  "palette": {
+    "far": "#060f16",
+    "mid": "#113044",
+    "floor": "#dceef6",
+    "accent": "#7fd1ff"
+  }
+}

@@ -1,0 +1,89 @@
+import { CANVAS_WIDTH, MAX_HEALTH, ENERGY_MAX, ROUNDS_TO_WIN } from './Config.js';
+
+const BAR_WIDTH = 140;
+const BAR_HEIGHT = 12;
+const ENERGY_HEIGHT = 5;
+const ENERGY_GAP = 2;
+const MARGIN = 10;
+const PIP_SIZE = 5;
+const PIP_GAP = 2;
+
+export function drawHUD(ctx, fighter1, fighter2, timeLeft, roundWins) {
+  const p1X = MARGIN;
+  const p2X = CANVAS_WIDTH - MARGIN - BAR_WIDTH;
+  const energyY = MARGIN + BAR_HEIGHT + ENERGY_GAP;
+  const nameY = energyY + ENERGY_HEIGHT + 10;
+
+  drawRoundPips(ctx, roundWins[1], p1X, MARGIN - PIP_SIZE - 2, false);
+  drawRoundPips(ctx, roundWins[2], p2X + BAR_WIDTH, MARGIN - PIP_SIZE - 2, true);
+
+  drawHealthBar(ctx, p1X, MARGIN, fighter1.health, false);
+  drawHealthBar(ctx, p2X, MARGIN, fighter2.health, true);
+
+  drawEnergyBar(ctx, p1X, energyY, fighter1.energy, false);
+  drawEnergyBar(ctx, p2X, energyY, fighter2.energy, true);
+
+  drawName(ctx, fighter1.character.displayName, p1X, nameY, 'left');
+  drawName(ctx, fighter2.character.displayName, p2X + BAR_WIDTH, nameY, 'right');
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '14px "Press Start 2P", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(String(Math.max(0, Math.ceil(timeLeft))), CANVAS_WIDTH / 2, MARGIN + BAR_HEIGHT);
+}
+
+function drawHealthBar(ctx, x, y, health, reversed) {
+  ctx.fillStyle = '#222';
+  ctx.fillRect(x, y, BAR_WIDTH, BAR_HEIGHT);
+
+  const ratio = Math.max(0, health / MAX_HEALTH);
+  const w = BAR_WIDTH * ratio;
+  ctx.fillStyle = ratio > 0.5 ? '#4caf50' : ratio > 0.2 ? '#ffb300' : '#e63946';
+  if (reversed) {
+    ctx.fillRect(x + BAR_WIDTH - w, y, w, BAR_HEIGHT);
+  } else {
+    ctx.fillRect(x, y, w, BAR_HEIGHT);
+  }
+
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x + 0.5, y + 0.5, BAR_WIDTH, BAR_HEIGHT);
+}
+
+function drawEnergyBar(ctx, x, y, energy, reversed) {
+  ctx.fillStyle = '#222';
+  ctx.fillRect(x, y, BAR_WIDTH, ENERGY_HEIGHT);
+
+  const ratio = Math.min(1, energy / ENERGY_MAX);
+  const w = BAR_WIDTH * ratio;
+  ctx.fillStyle = ratio >= 1 ? '#ffd23f' : '#4a90e2';
+  if (reversed) {
+    ctx.fillRect(x + BAR_WIDTH - w, y, w, ENERGY_HEIGHT);
+  } else {
+    ctx.fillRect(x, y, w, ENERGY_HEIGHT);
+  }
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(x + 0.5, y + 0.5, BAR_WIDTH, ENERGY_HEIGHT);
+}
+
+function drawRoundPips(ctx, wins, edgeX, y, alignRight) {
+  for (let i = 0; i < ROUNDS_TO_WIN; i++) {
+    const px = alignRight
+      ? edgeX - (i + 1) * PIP_SIZE - i * PIP_GAP
+      : edgeX + i * (PIP_SIZE + PIP_GAP);
+    ctx.fillStyle = i < wins ? '#ffd23f' : 'rgba(255,255,255,0.15)';
+    ctx.fillRect(px, y, PIP_SIZE, PIP_SIZE);
+    ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(px + 0.5, y + 0.5, PIP_SIZE, PIP_SIZE);
+  }
+}
+
+function drawName(ctx, name, x, y, align) {
+  ctx.fillStyle = '#ffd23f';
+  ctx.font = '7px "Press Start 2P", monospace';
+  ctx.textAlign = align;
+  ctx.fillText(name.toUpperCase(), x, y);
+}

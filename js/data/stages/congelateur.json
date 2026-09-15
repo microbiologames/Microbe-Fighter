@@ -1,0 +1,10 @@
+{
+  "name": "Congélateur −80 °C",
+  "background": "assets/stages/congelateur/background.png",
+  "palette": {
+    "far": "#0d1b2a",
+    "mid": "#1c3c5e",
+    "floor": "#cfe8f5",
+    "accent": "#a8e6ff"
+  }
+}

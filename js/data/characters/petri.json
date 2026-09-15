@@ -1,0 +1,58 @@
+{
+  "id": "petri",
+  "displayName": "Doc Pétri",
+  "color": "#b8e6d0",
+  "scale": 0.6,
+  "groundY": 250,
+  "moveSpeed": 1.05,
+  "jumpVelocity": 6.6,
+  "portrait": "assets/sprites/petri/portrait/portrait.png",
+  "hurtbox": { "width": 28, "heightStand": 108, "heightCrouch": 72 },
+  "sfx": {
+    "punch": "assets/audio/sfx/ame/punch.wav",
+    "kick": "assets/audio/sfx/ame/kick.wav",
+    "hurt": "assets/audio/sfx/ame/hurt.wav",
+    "ko": "assets/audio/sfx/ame/ko.wav",
+    "victory": "assets/audio/sfx/ame/victory.wav",
+    "jump": "assets/audio/sfx/ame/jump.wav",
+    "esquive": "assets/audio/sfx/ame/esquive.wav",
+    "nargue": "assets/audio/sfx/ame/nargue.wav",
+    "superattack": "assets/audio/sfx/ame/superattack.wav"
+  },
+  "animations": {
+    "idle":        { "folder": "assets/sprites/petri/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true },
+    "walk":        { "folder": "assets/sprites/petri/walk",        "frameCount": 4, "frameDuration": 140,    "loop": true },
+    "jump":        { "folder": "assets/sprites/petri/jump",        "frameCount": 4, "frameDuration": 140,    "loop": true },
+    "crouch":      { "folder": "assets/sprites/petri/crouch",      "frameCount": 4, "frameDuration": 180,    "loop": false },
+    "punch":       { "folder": "assets/sprites/petri/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false },
+    "kick":        { "folder": "assets/sprites/petri/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false },
+    "hurt":        { "folder": "assets/sprites/petri/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false },
+    "ko":          { "folder": "assets/sprites/petri/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false },
+    "taunt":       { "folder": "assets/sprites/petri/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false },
+    "victory":     { "folder": "assets/sprites/petri/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true },
+    "superattack": { "folder": "assets/sprites/petri/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false }
+  },
+  "moves": {
+    "punch": {
+      "animation": "punch",
+      "damage": 14,
+      "knockback": 5,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 33, "offsetY": 42, "width": 30, "height": 12 }
+    },
+    "kick": {
+      "animation": "kick",
+      "damage": 18,
+      "knockback": 6,
+      "activeFrames": [3, 4],
+      "hitbox": { "offsetX": 41, "offsetY": 14, "width": 32, "height": 10 }
+    },
+    "superattack": {
+      "animation": "superattack",
+      "damage": 26,
+      "knockback": 8,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 45, "offsetY": 40, "width": 40, "height": 16 }
+    }
+  }
+}

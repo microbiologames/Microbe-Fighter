@@ -1,0 +1,10 @@
+{
+  "name": "Boîte de Pétri",
+  "background": "assets/stages/boite-de-petri/background.png",
+  "palette": {
+    "far": "#5d3717",
+    "mid": "#a2662b",
+    "floor": "#d9a441",
+    "accent": "#f4e2a6"
+  }
+}

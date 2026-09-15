@@ -1,0 +1,58 @@
+{
+  "id": "gram",
+  "displayName": "Doc Gram",
+  "color": "#e8eef2",
+  "scale": 0.62,
+  "groundY": 252,
+  "moveSpeed": 0.95,
+  "jumpVelocity": 6.2,
+  "portrait": "assets/sprites/gram/portrait/portrait.png",
+  "hurtbox": { "width": 28, "heightStand": 112, "heightCrouch": 74 },
+  "sfx": {
+    "punch": "assets/audio/sfx/nico/punch.wav",
+    "kick": "assets/audio/sfx/nico/kick.wav",
+    "hurt": "assets/audio/sfx/nico/hurt.wav",
+    "ko": "assets/audio/sfx/nico/ko.wav",
+    "victory": "assets/audio/sfx/nico/victory.wav",
+    "jump": "assets/audio/sfx/nico/jump.wav",
+    "esquive": "assets/audio/sfx/nico/esquive.wav",
+    "nargue": "assets/audio/sfx/nico/nargue.wav",
+    "superattack": "assets/audio/sfx/nico/superattack.wav"
+  },
+  "animations": {
+    "idle":        { "folder": "assets/sprites/gram/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true },
+    "walk":        { "folder": "assets/sprites/gram/walk",        "frameCount": 4, "frameDuration": 140,    "loop": true },
+    "jump":        { "folder": "assets/sprites/gram/jump",        "frameCount": 4, "frameDuration": 140,    "loop": true },
+    "crouch":      { "folder": "assets/sprites/gram/crouch",      "frameCount": 4, "frameDuration": 180,    "loop": false },
+    "punch":       { "folder": "assets/sprites/gram/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false },
+    "kick":        { "folder": "assets/sprites/gram/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false },
+    "hurt":        { "folder": "assets/sprites/gram/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false },
+    "ko":          { "folder": "assets/sprites/gram/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false },
+    "taunt":       { "folder": "assets/sprites/gram/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false },
+    "victory":     { "folder": "assets/sprites/gram/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true },
+    "superattack": { "folder": "assets/sprites/gram/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false }
+  },
+  "moves": {
+    "punch": {
+      "animation": "punch",
+      "damage": 14,
+      "knockback": 5,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 36, "offsetY": 42, "width": 32, "height": 12 }
+    },
+    "kick": {
+      "animation": "kick",
+      "damage": 18,
+      "knockback": 6,
+      "activeFrames": [3, 4],
+      "hitbox": { "offsetX": 44, "offsetY": 14, "width": 34, "height": 10 }
+    },
+    "superattack": {
+      "animation": "superattack",
+      "damage": 26,
+      "knockback": 8,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 48, "offsetY": 40, "width": 42, "height": 16 }
+    }
+  }
+}

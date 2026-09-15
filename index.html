@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Microbe Fighter - Pixel Fighter</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas" width="384" height="216"></canvas>
+
+    <div id="overlay-title" class="overlay">
+      <div class="title-scene">
+        <div class="title-glow"></div>
+        <div class="title-grid"></div>
+        <div class="title-roster" id="title-roster"></div>
+      </div>
+      <h1>MICROBE FIGHTER</h1>
+      <p class="title-subtitle">Microbiologistes <span>vs</span> bactéries</p>
+      <p class="blink">Appuyez sur ENTRÉE ou START</p>
+      <div class="controls-hint">
+        <div>
+          <strong>Joueur 1</strong>
+          <p>Z Q S D pour bouger, F = Poing, G = Pied,<br />H = Esquive, T = Narguer</p>
+        </div>
+        <div>
+          <strong>Joueur 2</strong>
+          <p>Flèches pour bouger, K = Poing, L = Pied,<br />; = Esquive, O = Narguer</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-pause" class="overlay hidden">
+      <h1>PAUSE</h1>
+      <p class="blink">Échap pour reprendre</p>
+      <p class="blink">Entrée pour quitter le combat</p>
+    </div>
+
+    <div id="overlay-select" class="overlay hidden select-overlay">
+      <h1>CHOISIS TON PERSO</h1>
+      <div class="select-row">
+        <div class="select-player" id="select-p1">
+          <div class="select-label">Joueur 1</div>
+          <div class="select-portrait-frame">
+            <img id="select-p1-portrait" src="" alt="" />
+          </div>
+          <div class="select-name" id="select-p1-name">—</div>
+          <div class="select-hint" id="select-p1-hint">◀ D ▶ puis F pour valider</div>
+        </div>
+        <div class="select-player" id="select-p2">
+          <div class="select-label">Joueur 2</div>
+          <div class="select-portrait-frame">
+            <img id="select-p2-portrait" src="" alt="" />
+          </div>
+          <div class="select-name" id="select-p2-name">—</div>
+          <div class="select-hint" id="select-p2-hint">◀ Flèches ▶ puis K pour valider</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-stage-select" class="overlay hidden stage-select-overlay">
+      <h1>CHOISIS LE DÉCOR</h1>
+      <div class="stage-preview-frame">
+        <img id="stage-select-preview" src="" alt="" />
+      </div>
+      <div class="stage-select-name" id="stage-select-name">—</div>
+      <p class="blink">◀ ▶ pour changer, Poing ou Entrée pour valider</p>
+    </div>
+
+    <div id="overlay-result" class="overlay hidden">
+      <h1 id="result-text">K.O.</h1>
+      <p class="blink" id="result-hint">Appuyez sur ENTRÉE pour rejouer</p>
+    </div>
+  </div>
+
+  <script>
+    // Ce script (volontairement pas un module) tourne même en ouvrant le fichier
+    // directement en file://, contrairement à js/main.js ci-dessous — ce qui permet
+    // d'afficher ce message d'avertissement si besoin.
+    if (location.protocol === 'file:') {
+      const warning = document.createElement('p');
+      warning.className = 'file-warning';
+      warning.textContent =
+        "⚠️ Fichier ouvert directement : les commandes ne marcheront pas. " +
+        "Lance un serveur local (ex. \"node server.js\" puis http://localhost:8080) — voir README.md.";
+      document.getElementById('overlay-title').appendChild(warning);
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

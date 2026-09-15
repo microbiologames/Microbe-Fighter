@@ -1,0 +1,10 @@
+{
+  "name": "Salle de culture",
+  "background": "assets/stages/salle-de-culture/background.png",
+  "palette": {
+    "far": "#153029",
+    "mid": "#255649",
+    "floor": "#b5c8c1",
+    "accent": "#7ee3b8"
+  }
+}

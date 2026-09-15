@@ -1,0 +1,10 @@
+{
+  "name": "Paillasse",
+  "background": "assets/stages/paillasse/background.png",
+  "palette": {
+    "far": "#22313f",
+    "mid": "#35506a",
+    "floor": "#8d9daa",
+    "accent": "#d3e6f1"
+  }
+}
