@@ -41,6 +41,13 @@ export const STATUS_TINTS = {
   shielded: { color: '#7ee3b8', alpha: 0.35 },
 };
 
+// Fenêtre pendant laquelle une attaque simple qui vient de partir peut encore
+// être convertie en super attaque si l'autre bouton est pressé. Sans ça, il
+// faudrait presser Poing et Pied dans la même frame de 16 ms : le premier des
+// deux déclenche son coup et verrouille le combattant, et la super devient
+// pratiquement inatteignable à la main.
+export const SUPER_INPUT_WINDOW_MS = 160;
+
 export const ENERGY_MAX = 100;
 export const ENERGY_REGEN_PER_SEC = 3; // jauge pleine en ~33s de combat passif
 export const ENERGY_TAUNT_BONUS = 30; // narguer remplit +30% d'un coup

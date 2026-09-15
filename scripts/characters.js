@@ -22,6 +22,16 @@
 //    n'avoir aucune frame ratée sur onze.
 //    Pour une attaque spectaculaire, dire aussi que l'effet part VERS L'AVANT,
 //    loin du personnage, et que le corps reste visible.
+//
+// 3. POUR UNE ATTAQUE A DISTANCE, DECRIRE UN OBJET, PAS UNE AURA, ET DIRE
+//    « VERS LA DROITE ». « forward and away » ne suffit pas : le generateur
+//    centre l'effet sur le personnage et produit un halo. Les sprites regardent
+//    vers l'est, donc l'avant est la DROITE DE L'IMAGE, et il faut l'ecrire
+//    ainsi — « shooting horizontally to the right, reaching the right edge of
+//    the frame ». Comparer ce qui a marche du premier coup (« hurling a single
+//    glowing golden spore like a baseball pitch », « spewing a jet of toxin from
+//    its mouth » : un projectile concret) et ce qui a echoue (« huge flame jet
+//    blasting forward, glowing energy aura » : un halo bleu autour du perso).
 
 // Deux actions se jouent pareil pour tout le monde.
 const COMMON = {
@@ -43,10 +53,10 @@ const CHARACTERS = {
       jump: 'hovering in mid-air after jumping, lab coat flaring open, arms out for balance',
       crouch: 'crouching low into a defensive stance, one knee down, subtle breathing bob',
       punch: 'thrusting a micropipette forward like a rapier in a powerful lunging attack, full arm extension, dramatic street fighter style, ejecting a jet of blue reagent, strong body lean, intense focused expression',
-      kick: 'a bearded microbiologist in a white lab coat and blue gloves spraying a pressurised jet of blue biocide from a spray bottle held in both hands, the blue mist blasting forward and away from him, his body and white coat fully visible, braced firing stance',
+      kick: 'a bearded microbiologist in a white lab coat and blue gloves holding a spray bottle at hip level in both hands, a narrow horizontal stream of blue liquid disinfectant shooting sideways to the RIGHT across the frame like a water gun and reaching the right edge, the liquid stream staying well clear of his body, no cloud or halo around him, braced firing stance seen from the side',
       taunt: 'confidently taunting the opponent, adjusting glasses with one finger and smirking, holding up a petri dish like a trophy, unimpressed by the challenger',
       victory: 'celebrating a win, raising a petri dish overhead with a huge proud smile, confident victorious pose, chest out',
-      superattack: 'a bearded microbiologist in a white lab coat and blue gloves gripping a roaring Bunsen burner blowtorch in both hands, the blue and orange flame jet blasting forward and away from him, his body and white coat fully visible and never hidden by the flame, dramatic braced power stance',
+      superattack: 'a bearded microbiologist in a white lab coat and blue gloves holding a lit Bunsen burner out at full arm extension to the RIGHT, one long orange and blue flame shooting sideways to the RIGHT from the nozzle like a blowtorch, the flame stretching horizontally to the right edge of the frame, no fire touching or surrounding his body, side view, braced stance',
       ...COMMON,
     },
   },
@@ -64,10 +74,10 @@ const CHARACTERS = {
       jump: 'hovering in mid-air after jumping, lab coat flaring open, arms out for balance',
       crouch: 'crouching low into a defensive stance, one knee down, subtle breathing bob',
       punch: 'a female microbiologist in a white lab coat, brown hair in a high bun and glasses, smashing a heavy metal test tube rack forward like a club, full arm extension, white coat flaring open, dramatic street fighter style lunging attack, glass tubes rattling',
-      kick: 'a female microbiologist in a white lab coat, brown hair in a high bun and glasses, spraying a pressurised jet of blue biocide from a spray bottle held in both hands, the blue mist blasting forward and away from her, her body and white coat fully visible, braced firing stance',
+      kick: 'a female microbiologist in a white lab coat with a brown bun and glasses, holding a spray bottle at hip level in both hands, a narrow horizontal stream of blue liquid disinfectant shooting sideways to the RIGHT across the frame like a water gun and reaching the right edge, the liquid stream staying well clear of her body, no cloud or halo around her, braced firing stance seen from the side',
       taunt: 'confidently taunting the opponent, twirling an inoculation loop and smirking, beckoning the challenger with one hand',
       victory: 'celebrating a win, both fists raised high with a huge proud smile, confident victorious pose',
-      superattack: 'a female microbiologist in a white lab coat, brown hair in a high bun and glasses, thrusting both blue-gloved hands forward as a jet of white autoclave steam blasts forward and away from her, her body and coat fully visible and never hidden by the steam, dramatic braced power stance',
+      superattack: 'a female microbiologist in a white lab coat with a brown bun and glasses holding a lit Bunsen burner out at full arm extension to the RIGHT, one long orange and blue flame shooting sideways to the RIGHT from the nozzle like a blowtorch, the flame stretching horizontally to the right edge of the frame, no fire touching or surrounding her body, side view, braced stance',
       ...COMMON,
     },
   },
@@ -111,7 +121,7 @@ const CHARACTERS = {
       kick: 'a purple rod-shaped Listeria with glowing red eyes and green flagella, crouching and wrapping itself in a thick translucent slime biofilm dome that forms around its body like a shield, arms drawn in defensively, its purple body and red eyes still visible through the slime, defensive stance',
       taunt: 'menacingly taunting the opponent, beckoning with one clawed hand and grinning wide with sharp teeth, red eyes burning',
       victory: 'celebrating a win, throwing its head back with a triumphant roar, arms spread wide, red eyes blazing, victorious pose',
-      superattack: 'a purple rod-shaped Listeria with glowing red eyes, a jagged toothy grin and green flagella, thrusting both clawed hands forward as a blast of pale blue freezing frost and ice shards shoots forward and away from it, its purple body and grinning face fully visible and never hidden by the frost, dramatic braced power pose',
+      superattack: 'a purple rod-shaped Listeria with glowing red eyes and green flagella, breathing out a cone of pale blue ice shards and frost that shoots sideways to the RIGHT across the frame and reaches the right edge, the frost staying well clear of its body, no ice covering or surrounding it, its purple body and grinning face fully visible, side view, braced stance',
       ...COMMON,
     },
   },

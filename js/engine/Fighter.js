@@ -1,7 +1,7 @@
 import {
   FLOOR_Y, ARENA_LEFT, ARENA_RIGHT, GRAVITY, JUMP_VELOCITY, MOVE_SPEED,
   MAX_HEALTH, HITSTUN_MS, KNOCKBACK, DODGE_DURATION_MS, DODGE_SPEED, TAUNT_DURATION_MS,
-  ENERGY_MAX, ENERGY_REGEN_PER_SEC, ENERGY_TAUNT_BONUS,
+  ENERGY_MAX, ENERGY_REGEN_PER_SEC, ENERGY_TAUNT_BONUS, SUPER_INPUT_WINDOW_MS,
   SLOW_FACTOR, BURN_DAMAGE_PER_SEC, STATUS_TINTS,
 } from './Config.js';
 import { spawnHitEffect } from './Effects.js';
@@ -63,6 +63,7 @@ export class Fighter {
     this.hitstunTimer = 0;
     this.attackName = null;
     this.attackHasHit = false;
+    this.attackElapsed = 0; // depuis le début du coup en cours, pour la fenêtre de super
     this.ko = false;
     this.winner = false;
 
@@ -180,6 +181,7 @@ export class Fighter {
     this.attackName = moveName;
     this.attackHasHit = false;
     this.setAnimation(move.animation);
+    this.attackElapsed = 0;
     if (moveName === 'superattack') this.energy = 0;
     // Effets qui se déclenchent au lancement du coup, pas à la touche :
     // le biofilm de Listeria et la téléportation par spore de B. cereus.
@@ -262,6 +264,20 @@ export class Fighter {
     }
 
     if (this.isAttacking) {
+      this.attackElapsed += dt;
+      // Poing puis Pied (ou l'inverse) à quelques dizaines de millisecondes
+      // d'intervalle déclenche la super attaque : le coup simple qui vient de
+      // partir est annulé et remplacé. C'est ce qui rend la super jouable à la
+      // main — sinon il faudrait presser les deux touches dans la même frame.
+      if (this.energy >= ENERGY_MAX && this.character.moves.superattack &&
+          (this.state === 'punch' || this.state === 'kick') &&
+          this.attackElapsed <= SUPER_INPUT_WINDOW_MS && !this.attackHasHit) {
+        const other = this.state === 'punch' ? 'kick' : 'punch';
+        if (input.justPressed(this.playerIndex, other)) {
+          this.startAttack('superattack', opponent);
+          return;
+        }
+      }
       this._resolveAttackHit(opponent);
       const finished = this._advanceAnimation(dt, false);
       this._applyGravity();
