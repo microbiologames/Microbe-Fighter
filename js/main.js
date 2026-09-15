@@ -20,9 +20,7 @@ const JINGLE_FIGHT_END = 'assets/audio/sfx/jingle/jingle-3.wav';
 // nom du fichier (sans .json) ici pour qu'un nouveau décor entre dans la
 // rotation dès que son manifeste existe dans js/data/stages/.
 const STAGE_FILES = [
-  'labo',
-  'paillasse', 'boite-de-petri', 'hotte', 'salle-de-culture',
-  'congelateur', 'autoclave', 'microscope', 'intestin',
+  'labo', 'labo-nuit',
 ];
 
 // Les trois longues pistes (title-screen, ambient-theme, combat-low-hp) ne sont

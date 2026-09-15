@@ -115,29 +115,38 @@ Ajouter un 5ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
 
 ## Les décors
 
-Neuf décors en rotation, listés dans `STAGE_FILES` de `js/main.js` :
-`labo` · `paillasse` · `boite-de-petri` · `hotte` · `salle-de-culture` ·
-`congelateur` · `autoclave` · `microscope` · `intestin`
+**Deux décors**, tous deux panoramiques et issus de la même vue du laboratoire
+ADRIA : `labo` (jour) et `labo-nuit`. Ils sont listés dans `STAGE_FILES` en haut
+de `js/main.js`.
 
-**Le `labo` est panoramique** : 1455 px de large pour un écran de 384, soit
-3,8 écrans. La caméra suit le milieu des deux combattants et bute sur les murs
-du fond — voir `js/engine/Camera.js`. Tout décor plus large que l'écran défile
-automatiquement, sans rien déclarer ; il s'importe avec
-`node scripts/import-wide-stage.js <slug> --floor-ratio 0.80 --grid`
-(détails dans [`references/decors/README.md`](references/decors/README.md)).
+Chacun fait **1076×216 px, soit 2,8 écrans et 692 px de défilement**. La caméra
+suit le milieu des deux combattants et bute sur les murs du fond — voir
+`js/engine/Camera.js`. Tout décor plus large que l'écran défile automatiquement,
+sans rien déclarer.
 
 ```json
 {
-  "name": "Paillasse",
-  "background": "assets/stages/paillasse/background.png",
-  "palette": { "far": "#22313f", "mid": "#35506a", "floor": "#8d9daa", "accent": "#d3e6f1" }
+  "name": "Laboratoire",
+  "background": "assets/stages/labo/background.png",
+  "floorRatio": 0.88,
+  "stageHeight": 300,
+  "palette": { "far": "#2a2c44", "mid": "#3a3d5c", "floor": "#8f97ad", "accent": "#7ee3b8" }
 }
 ```
 
+`floorRatio` et `stageHeight` sont **le cadrage** : où se trouve la ligne de sol
+dans l'image source, et à quelle taille mettre la pièce. Ce sont les deux
+valeurs qui décident si les combattants marchent sur le carrelage ou sur les
+paillasses. Elles sont écrites par `import-wide-stage.js` ; le mode d'emploi
+complet est dans [`references/decors/README.md`](references/decors/README.md).
+
 `palette` est un **fond de repli** : tant que `background.png` n'existe pas, le
-moteur dessine le décor en aplats à partir de ces quatre couleurs, donc chaque
-lieu reste reconnaissable et aucun décor n'est « cassé ». Dès que le PNG est
-déposé, il prend le dessus et la palette n'est plus lue.
+moteur dessine le décor en aplats à partir de ces quatre couleurs, donc aucun
+décor n'est jamais vide.
+
+Pour ajouter un décor : déposer l'image dans `references/decors/`, lancer
+`node scripts/import-wide-stage.js <slug> --grid`, régler le cadrage, puis
+ajouter le slug à `STAGE_FILES`.
 
 ---
 

@@ -11,16 +11,25 @@
 //   2. ALIGNER SON SOL sur la ligne de sol du moteur (FLOOR_Y = 180). Sans ça,
 //      les combattants marchent dans le vide ou sur les meubles.
 //
-// L'alignement se règle avec `floorRatio` : la hauteur relative, dans l'image
-// SOURCE, de la ligne où les personnages doivent poser les pieds. 0,80 veut dire
-// « à 80 % de la hauteur de l'image en partant du haut ». Le script met alors
-// l'image à l'échelle pour que cette ligne tombe pile sur FLOOR_Y, et rogne ce
-// qui dépasse en bas.
+// L'alignement se règle avec deux valeurs :
+//
+//   floorRatio  la hauteur relative, dans l'image SOURCE, de la ligne où les
+//               personnages posent les pieds. 0,79 = à 79 % de la hauteur en
+//               partant du haut.
+//   height      la hauteur à laquelle mettre l'image entière, en pixels de jeu.
+//               C'est le ZOOM : plus elle est grande, plus on entre dans la
+//               pièce, plus les combattants paraissent petits par rapport au
+//               mobilier — et plus on rogne en haut (le plafond) et en bas.
+//
+// Le script calcule la fenêtre de 216 px à découper pour que la ligne de sol
+// tombe pile sur FLOOR_Y. Avec `height` au minimum (180/floorRatio), la fenêtre
+// part du haut de l'image : on garde tout le plafond mais les personnages sont
+// énormes. En l'augmentant, on cadre plus bas.
 //
 // Usage :
-//   node scripts/import-wide-stage.js labo                    # floorRatio du manifeste
-//   node scripts/import-wide-stage.js labo --floor-ratio 0.78 # essai d'une autre valeur
-//   node scripts/import-wide-stage.js labo --grid             # repères visuels pour régler
+//   node scripts/import-wide-stage.js labo                       # valeurs du manifeste
+//   node scripts/import-wide-stage.js labo --floor-ratio 0.79 --height 300
+//   node scripts/import-wide-stage.js labo --grid                # repères visuels
 //
 // Le `--grid` écrit une image de contrôle à côté, avec la ligne de sol et la
 // silhouette d'un combattant dessinées dessus : c'est le moyen le plus rapide de
@@ -51,13 +60,20 @@ function loadPlaywright() {
   }
 }
 
+// Les fichiers déposés à la main ont rarement le nom exact du slug :
+// « Labo (nuit).jpg » doit correspondre à `labo-nuit`. On compare donc les deux
+// noms réduits à leurs lettres et chiffres, sans casse ni ponctuation.
+function normalise(name) {
+  return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+}
+
 function findSource(slug) {
-  // Le nom du fichier peut être capitalisé (Labo.jpg) : on compare sans casse.
   if (!fs.existsSync(DECORS_DIR)) return null;
+  const wanted = normalise(slug);
   for (const file of fs.readdirSync(DECORS_DIR)) {
     const ext = path.extname(file).toLowerCase();
     if (!SOURCE_EXTENSIONS.includes(ext)) continue;
-    if (path.basename(file, path.extname(file)).toLowerCase() === slug.toLowerCase()) {
+    if (normalise(path.basename(file, path.extname(file))) === wanted) {
       return path.join(DECORS_DIR, file);
     }
   }
@@ -65,22 +81,29 @@ function findSource(slug) {
 }
 
 // Tourne dans la page Chromium.
-function convertInPage({ dataUrl, canvasWidth, canvasHeight, floorY, floorRatio, grid }) {
+function convertInPage({ dataUrl, canvasWidth, canvasHeight, floorY, floorRatio, height, grid }) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onerror = () => reject(new Error('image illisible'));
     img.onload = () => {
-      // Hauteur à laquelle mettre l'image pour que sa ligne de sol tombe sur floorY.
-      const scaledH = Math.round(floorY / floorRatio);
+      // Hauteur minimale : celle qui amène la ligne de sol sur floorY en partant
+      // du haut de l'image. En dessous, il n'y aurait pas 216 px à découper.
+      const minH = Math.round(floorY / floorRatio);
+      const scaledH = Math.max(minH, Math.round(height || minH));
       const scaledW = Math.round(img.width * (scaledH / img.height));
+
+      // Décalage vertical de la fenêtre : la ligne de sol de l'image, une fois
+      // mise à l'échelle, doit tomber sur floorY dans le canvas.
+      const offsetY = Math.round(scaledH * floorRatio - floorY);
+      const belowFloor = scaledH - offsetY - canvasHeight;
 
       const c = document.createElement('canvas');
       c.width = scaledW;
-      c.height = canvasHeight; // on ne garde que la bande visible, depuis le haut
+      c.height = canvasHeight;
       const g = c.getContext('2d');
       g.imageSmoothingEnabled = true;
       g.imageSmoothingQuality = 'high';
-      g.drawImage(img, 0, 0, img.width, img.height, 0, 0, scaledW, scaledH);
+      g.drawImage(img, 0, 0, img.width, img.height, 0, -offsetY, scaledW, scaledH);
 
       let gridUrl = null;
       if (grid) {
@@ -107,7 +130,9 @@ function convertInPage({ dataUrl, canvasWidth, canvasHeight, floorY, floorRatio,
         gridUrl,
         source: { width: img.width, height: img.height },
         scaled: { width: scaledW, height: scaledH },
-        cropped: scaledH - canvasHeight,
+        croppedTop: offsetY,
+        croppedBottom: Math.max(0, belowFloor),
+        shortOfFloor: belowFloor < 0 ? -belowFloor : 0,
       });
     };
     img.src = dataUrl;
@@ -142,6 +167,8 @@ async function main() {
   const floorRatio = ratioIndex !== -1
     ? Number(args[ratioIndex + 1])
     : manifest.floorRatio ?? DEFAULT_FLOOR_RATIO;
+  const heightIndex = args.indexOf('--height');
+  const height = heightIndex !== -1 ? Number(args[heightIndex + 1]) : manifest.stageHeight ?? 0;
 
   if (!(floorRatio > 0.2 && floorRatio <= 1)) {
     console.error(`floorRatio invalide : ${floorRatio} (attendu entre 0.2 et 1)`);
@@ -155,8 +182,15 @@ async function main() {
 
   const result = await page.evaluate(convertInPage, {
     dataUrl, canvasWidth: CANVAS_WIDTH, canvasHeight: CANVAS_HEIGHT,
-    floorY: FLOOR_Y, floorRatio, grid,
+    floorY: FLOOR_Y, floorRatio, height, grid,
   });
+
+  if (result.shortOfFloor) {
+    console.warn(
+      `  ATTENTION : il manque ${result.shortOfFloor} px d'image sous la ligne de sol. ` +
+      `Baisse --height ou --floor-ratio.`
+    );
+  }
 
   const outPath = path.join(ROOT, 'assets', 'stages', slug, 'background.png');
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -167,13 +201,15 @@ async function main() {
   manifest.name = manifest.name ?? slug;
   manifest.background = `assets/stages/${slug}/background.png`;
   manifest.floorRatio = Number(floorRatio.toFixed(4));
+  manifest.stageHeight = result.scaled.height;
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
 
   const screens = (result.scaled.width / CANVAS_WIDTH).toFixed(2);
   console.log(
     `${path.basename(source)} ${result.source.width}x${result.source.height}\n` +
-    `  floorRatio ${floorRatio}  ->  mise à l'échelle ${result.scaled.width}x${result.scaled.height}, ` +
-    `${result.cropped} px rognés en bas\n` +
+    `  floorRatio ${floorRatio}, hauteur ${result.scaled.height}  ->  ` +
+    `${result.scaled.width}x${result.scaled.height}, ` +
+    `${result.croppedTop} px rognés en haut et ${result.croppedBottom} en bas\n` +
     `  décor ${result.scaled.width}x${CANVAS_HEIGHT} (${screens} écrans, ` +
     `${result.scaled.width - CANVAS_WIDTH} px de défilement)\n` +
     `  -> ${path.relative(ROOT, outPath)}`

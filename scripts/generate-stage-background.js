@@ -29,40 +29,19 @@ const STYLE = [
   'palette, no blur, no photo-realistic texture noise, no text, no logos.',
 ].join(' ');
 
+// Décors générables par l'API. Le jeu tourne aujourd'hui sur deux panoramiques
+// importés à la main (voir scripts/import-wide-stage.js) ; cette liste sert à
+// créer un décor de plus, à partir d'une photo ou d'une simple description.
+// Les huit décors de laboratoire décrits ici auparavant (paillasse, boîte de
+// Pétri, hotte, salle de culture, congélateur, autoclave, microscope, intestin)
+// ont été retirés du jeu ; leurs descriptions restent dans l'historique git.
 const STAGES = {
   paillasse:
     'a microbiology laboratory bench seen from the side: long stainless steel worktop covered ' +
     'with Bunsen burners, inoculation loops, racks of test tubes, stacks of petri dishes, ' +
     'reagent bottles and a microscope, wall shelves of glassware behind, biohazard sign on the wall',
-  'boite-de-petri':
-    'the inside of a giant petri dish seen from within, as if shrunk to bacterial size: ' +
-    'vast amber agar plain stretching to the horizon, towering colourful bacterial colonies ' +
-    'growing like domed hills, glossy translucent dish wall curving up in the far background',
-  hotte:
-    'the inside of a laminar flow biosafety cabinet seen from the side: white sterile chamber, ' +
-    'perforated stainless steel work surface, glowing blue UV lamp along the ceiling, ' +
-    'raised glass sash at the top, pipettes and culture flasks lined along the back wall',
-  'salle-de-culture':
-    'a cell culture room seen from the side: rows of CO2 incubators with glass doors full of ' +
-    'culture flasks, an inverted microscope on a bench, pale green and white walls, ' +
-    'soft clinical lighting, a glowing incubator display panel',
-  congelateur:
-    'the inside of a −80 °C ultra-low freezer seen from the side: frost covered metal racks and ' +
-    'cryo boxes, thick ice crystals on every surface, pale blue frozen fog drifting along the floor, ' +
-    'deep cold blue lighting',
-  autoclave:
-    'an autoclave room seen from the side: huge cylindrical stainless steel autoclave with a heavy ' +
-    'round door open, thick white pressurized steam billowing out, pressure gauges and red valves, ' +
-    'wet concrete floor, warm orange warning lights',
-  microscope:
-    'the surface of a microscope glass slide seen from within, as if shrunk to microbial size: ' +
-    'vast flat glass plain under a huge cover slip, giant round bright field of light from the ' +
-    'condenser below, out-of-focus stained cells drifting in the deep blue background',
-  intestin:
-    'the inside of a small intestine seen from within, as if shrunk to bacterial size: ' +
-    'pink and red villi walls rising like a forest of soft towers on both sides, ' +
-    'glistening mucus floor, warm organic lighting, cartoon microbiome style, not gory',
 };
+
 
 function saveResult(slug, job) {
   const base64 = job.last_response?.image?.base64;
