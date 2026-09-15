@@ -2,12 +2,12 @@
   "id": "petri",
   "displayName": "Doc Pétri",
   "color": "#b8e6d0",
-  "scale": 0.6,
-  "groundY": 250,
+  "scale": 1,
+  "groundY": 120,
   "moveSpeed": 1.05,
   "jumpVelocity": 6.6,
   "portrait": "assets/sprites/petri/portrait/portrait.png",
-  "hurtbox": { "width": 28, "heightStand": 108, "heightCrouch": 72 },
+  "hurtbox": { "width": 28, "heightStand": 106, "heightCrouch": 70 },
   "sfx": {
     "punch": "assets/audio/sfx/ame/punch.wav",
     "kick": "assets/audio/sfx/ame/kick.wav",
@@ -20,17 +20,17 @@
     "superattack": "assets/audio/sfx/ame/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/petri/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true },
-    "walk":        { "folder": "assets/sprites/petri/walk",        "frameCount": 4, "frameDuration": 140,    "loop": true },
-    "jump":        { "folder": "assets/sprites/petri/jump",        "frameCount": 4, "frameDuration": 140,    "loop": true },
-    "crouch":      { "folder": "assets/sprites/petri/crouch",      "frameCount": 4, "frameDuration": 180,    "loop": false },
-    "punch":       { "folder": "assets/sprites/petri/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false },
-    "kick":        { "folder": "assets/sprites/petri/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false },
-    "hurt":        { "folder": "assets/sprites/petri/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false },
-    "ko":          { "folder": "assets/sprites/petri/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false },
-    "taunt":       { "folder": "assets/sprites/petri/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false },
-    "victory":     { "folder": "assets/sprites/petri/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true },
-    "superattack": { "folder": "assets/sprites/petri/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false }
+    "idle":        { "folder": "assets/sprites/petri/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true, "groundY": 120 },
+    "walk":        { "folder": "assets/sprites/petri/walk",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 136 },
+    "jump":        { "folder": "assets/sprites/petri/jump",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 136 },
+    "crouch":      { "folder": "assets/sprites/petri/crouch",      "frameCount": 5, "frameDuration": 180,    "loop": false, "groundY": 136 },
+    "punch":       { "folder": "assets/sprites/petri/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 136 },
+    "kick":        { "folder": "assets/sprites/petri/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 136 },
+    "hurt":        { "folder": "assets/sprites/petri/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 136 },
+    "ko":          { "folder": "assets/sprites/petri/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false, "groundY": 137 },
+    "taunt":       { "folder": "assets/sprites/petri/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false, "groundY": 136 },
+    "victory":     { "folder": "assets/sprites/petri/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true, "groundY": 136 },
+    "superattack": { "folder": "assets/sprites/petri/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 136 }
   },
   "moves": {
     "punch": {

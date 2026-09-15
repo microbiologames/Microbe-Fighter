@@ -2,8 +2,8 @@
   "id": "gram",
   "displayName": "Doc Gram",
   "color": "#e8eef2",
-  "scale": 0.62,
-  "groundY": 252,
+  "scale": 1.109,
+  "groundY": 118,
   "moveSpeed": 0.95,
   "jumpVelocity": 6.2,
   "portrait": "assets/sprites/gram/portrait/portrait.png",
@@ -20,17 +20,17 @@
     "superattack": "assets/audio/sfx/nico/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/gram/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true },
-    "walk":        { "folder": "assets/sprites/gram/walk",        "frameCount": 4, "frameDuration": 140,    "loop": true },
-    "jump":        { "folder": "assets/sprites/gram/jump",        "frameCount": 4, "frameDuration": 140,    "loop": true },
-    "crouch":      { "folder": "assets/sprites/gram/crouch",      "frameCount": 4, "frameDuration": 180,    "loop": false },
-    "punch":       { "folder": "assets/sprites/gram/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false },
-    "kick":        { "folder": "assets/sprites/gram/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false },
-    "hurt":        { "folder": "assets/sprites/gram/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false },
-    "ko":          { "folder": "assets/sprites/gram/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false },
-    "taunt":       { "folder": "assets/sprites/gram/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false },
-    "victory":     { "folder": "assets/sprites/gram/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true },
-    "superattack": { "folder": "assets/sprites/gram/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false }
+    "idle":        { "folder": "assets/sprites/gram/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true, "groundY": 118 },
+    "walk":        { "folder": "assets/sprites/gram/walk",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 132 },
+    "jump":        { "folder": "assets/sprites/gram/jump",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 132 },
+    "crouch":      { "folder": "assets/sprites/gram/crouch",      "frameCount": 5, "frameDuration": 180,    "loop": false, "groundY": 133 },
+    "punch":       { "folder": "assets/sprites/gram/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 132 },
+    "kick":        { "folder": "assets/sprites/gram/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 132 },
+    "hurt":        { "folder": "assets/sprites/gram/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 132 },
+    "ko":          { "folder": "assets/sprites/gram/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false, "groundY": 133 },
+    "taunt":       { "folder": "assets/sprites/gram/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false, "groundY": 132 },
+    "victory":     { "folder": "assets/sprites/gram/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true, "groundY": 132 },
+    "superattack": { "folder": "assets/sprites/gram/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 132 }
   },
   "moves": {
     "punch": {

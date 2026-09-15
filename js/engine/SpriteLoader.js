@@ -34,6 +34,11 @@ export async function loadCharacter(manifestPath) {
       loop: anim.loop ?? true,
       hitbox: anim.hitbox ?? null,
       hurtboxOverride: anim.hurtboxOverride ?? null,
+      // Ligne de sol propre à cette animation, quand elle diffère de celle du
+      // personnage. Pixellab ne garantit pas la même ligne de sol entre la pose
+      // de repos (issue des rotations) et les animations : sans cette valeur, le
+      // perso saute verticalement dès qu'il quitte l'idle.
+      groundY: anim.groundY ?? null,
     };
   }
 

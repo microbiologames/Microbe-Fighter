@@ -3,7 +3,7 @@
 // existe déjà et n'est pas réécrit).
 //
 // Deux modes, choisis automatiquement :
-//   - si references/<slug>.(jpg|jpeg|png|webp) existe -> /image-to-pixelart-pro
+//   - si references/decors/<slug>.(jpg|jpeg|png|webp) existe -> /image-to-pixelart-pro
 //     (conversion fidèle d'une photo)
 //   - sinon -> /generate-image-pixflux (génération depuis la description seule)
 //
@@ -14,9 +14,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { ROOT, api, pollJob } = require('./pixellab');
+const { ROOT, api, pollJob, findReferenceImage } = require('./pixellab');
 
-const REFERENCES_DIR = path.join(ROOT, 'references');
 const STAGE_WIDTH = 512;
 const STAGE_HEIGHT = 288; // 16:9, multiple propre du canvas 384x216
 
@@ -65,14 +64,6 @@ const STAGES = {
     'glistening mucus floor, warm organic lighting, cartoon microbiome style, not gory',
 };
 
-function findReference(slug) {
-  for (const ext of ['.png', '.jpg', '.jpeg', '.webp']) {
-    const p = path.join(REFERENCES_DIR, slug + ext);
-    if (fs.existsSync(p)) return p;
-  }
-  return null;
-}
-
 function saveResult(slug, job) {
   const base64 = job.last_response?.image?.base64;
   if (!base64) throw new Error(`Réponse sans image pour ${slug} : ${JSON.stringify(job.last_response)}`);
@@ -87,7 +78,7 @@ async function processStage(slug) {
   if (!description) throw new Error(`Décor inconnu: ${slug}`);
   const fullDescription = `${description}. ${STYLE}`;
 
-  const reference = findReference(slug);
+  const reference = findReferenceImage('decors', slug);
   let jobId;
 
   if (reference) {
@@ -101,7 +92,7 @@ async function processStage(slug) {
     });
     jobId = submit.background_job_id;
   } else {
-    console.log(`[${slug}] génération depuis la description (pas de référence dans references/)...`);
+    console.log(`[${slug}] génération depuis la description (pas de référence dans references/decors/)...`);
     const submit = await api('POST', '/generate-image-pixflux', {
       description: fullDescription,
       image_size: { width: STAGE_WIDTH, height: STAGE_HEIGHT },

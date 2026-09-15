@@ -1,0 +1,58 @@
+{
+  "id": "listeria",
+  "displayName": "L. monocytogenes",
+  "color": "#a05ab0",
+  "scale": 0.912,
+  "groundY": 123,
+  "moveSpeed": 1.35,
+  "jumpVelocity": 7.0,
+  "portrait": "assets/sprites/listeria/portrait/portrait.png",
+  "hurtbox": { "width": 32, "heightStand": 104, "heightCrouch": 70 },
+  "sfx": {
+    "punch": "assets/audio/sfx/margot/punch.wav",
+    "kick": "assets/audio/sfx/margot/kick.wav",
+    "hurt": "assets/audio/sfx/margot/hurt.wav",
+    "ko": "assets/audio/sfx/margot/ko.wav",
+    "victory": "assets/audio/sfx/margot/victory.wav",
+    "jump": "assets/audio/sfx/margot/jump.wav",
+    "esquive": "assets/audio/sfx/margot/esquive.wav",
+    "nargue": "assets/audio/sfx/margot/nargue.wav",
+    "superattack": "assets/audio/sfx/margot/superattack.wav"
+  },
+  "animations": {
+    "idle":        { "folder": "assets/sprites/listeria/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true, "groundY": 123 },
+    "walk":        { "folder": "assets/sprites/listeria/walk",        "frameCount": 5, "frameDuration": 100,    "loop": true, "groundY": 144 },
+    "jump":        { "folder": "assets/sprites/listeria/jump",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 143 },
+    "crouch":      { "folder": "assets/sprites/listeria/crouch",      "frameCount": 5, "frameDuration": 180,    "loop": false, "groundY": 143 },
+    "punch":       { "folder": "assets/sprites/listeria/punch",       "frameCount": 5, "frameDuration": 70,     "loop": false, "groundY": 143 },
+    "kick":        { "folder": "assets/sprites/listeria/kick",        "frameCount": 5, "frameDuration": 80,     "loop": false, "groundY": 143 },
+    "hurt":        { "folder": "assets/sprites/listeria/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 143 },
+    "ko":          { "folder": "assets/sprites/listeria/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false, "groundY": 144 },
+    "taunt":       { "folder": "assets/sprites/listeria/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false, "groundY": 143 },
+    "victory":     { "folder": "assets/sprites/listeria/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true, "groundY": 143 },
+    "superattack": { "folder": "assets/sprites/listeria/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 143 }
+  },
+  "moves": {
+    "punch": {
+      "animation": "punch",
+      "damage": 14,
+      "knockback": 5,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 26, "offsetY": 26, "width": 24, "height": 10 }
+    },
+    "kick": {
+      "animation": "kick",
+      "damage": 18,
+      "knockback": 6,
+      "activeFrames": [3, 4],
+      "hitbox": { "offsetX": 32, "offsetY": 10, "width": 28, "height": 9 }
+    },
+    "superattack": {
+      "animation": "superattack",
+      "damage": 26,
+      "knockback": 8,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 36, "offsetY": 24, "width": 34, "height": 14 }
+    }
+  }
+}

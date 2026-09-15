@@ -121,17 +121,17 @@ function renderTitleRoster() {
 
 async function boot() {
   try {
-    const [[gramChar, petriChar, staphyChar, coliChar, ...loadedStages]] = await Promise.all([
+    const [[gramChar, petriChar, cereusChar, listeriaChar, ...loadedStages]] = await Promise.all([
       Promise.all([
         loadCharacter('js/data/characters/gram.json'),
         loadCharacter('js/data/characters/petri.json'),
-        loadCharacter('js/data/characters/staphy.json'),
-        loadCharacter('js/data/characters/coli.json'),
+        loadCharacter('js/data/characters/cereus.json'),
+        loadCharacter('js/data/characters/listeria.json'),
         ...STAGE_FILES.map((f) => loadStage(`js/data/stages/${f}.json`)),
       ]),
       document.fonts.load('16px "Press Start 2P"'),
     ]);
-    roster = [gramChar, petriChar, staphyChar, coliChar];
+    roster = [gramChar, petriChar, cereusChar, listeriaChar];
     stages = loadedStages;
     pickRandomStage();
     renderTitleRoster();

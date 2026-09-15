@@ -1,9 +1,9 @@
 // Crée un personnage sur Pixellab à partir de l'image de référence déposée dans
-// references/<perso>.(png|jpg|jpeg|webp), puis télécharge ses poses statiques :
+// references/personnages/<perso>.(jpg|png|jpeg|webp), puis télécharge ses poses statiques :
 //   rotations/east  -> assets/sprites/<perso>/idle/000.png
 //   rotations/south -> assets/sprites/<perso>/portrait/portrait.png
 //
-// Le fichier references/<perso>.character-id est écrit à côté : il mémorise le
+// Le fichier references/personnages/<perso>.pixellab.json est écrit à côté : il mémorise le
 // character_id Pixellab, que generate-sprites.js relit tout seul. Plus besoin de
 // recopier un identifiant à la main.
 //
@@ -11,54 +11,82 @@
 //   node scripts/create-character.js gram
 //   node scripts/create-character.js gram --description "texte qui remplace celui de characters.js"
 //   node scripts/create-character.js gram --no-reference   (génération depuis la seule description)
+//   node scripts/create-character.js gram --poses-only     (re-télécharge idle + portrait)
 //
-// Persos : gram, petri, staphy, coli
+// Persos : gram, petri, cereus, listeria
 
 const fs = require('fs');
 const path = require('path');
-const { ROOT, api, pollJob, downloadImage } = require('./pixellab');
+const { ROOT, api, pollJob, writeBase64Image, downloadImage, findReferenceImage } = require('./pixellab');
 const { CHARACTERS } = require('./characters');
 
-const REFERENCES_DIR = path.join(ROOT, 'references');
-const EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
+const CHARACTERS_DIR = path.join(ROOT, 'references', 'personnages');
 
-function findReference(charKey) {
-  for (const ext of EXTENSIONS) {
-    const p = path.join(REFERENCES_DIR, charKey + ext);
-    if (fs.existsSync(p)) return p;
-  }
+// Mémorise ce qu'il faut pour reprendre le travail sans rien recréer :
+// l'id du personnage (pour generate-sprites.js) et l'id du job de création
+// (pour --poses-only, qui relit les images base64 de ce job).
+function idPath(charKey) {
+  return path.join(CHARACTERS_DIR, `${charKey}.pixellab.json`);
+}
+
+function readIds(charKey) {
+  const p = idPath(charKey);
+  if (fs.existsSync(p)) return JSON.parse(fs.readFileSync(p, 'utf8'));
+  // Ancien format : un fichier texte ne contenant que le character_id.
+  const legacy = path.join(ROOT, 'references', `${charKey}.character-id`);
+  if (fs.existsSync(legacy)) return { characterId: fs.readFileSync(legacy, 'utf8').trim() };
   return null;
 }
 
-function characterIdPath(charKey) {
-  return path.join(REFERENCES_DIR, `${charKey}.character-id`);
+function writeIds(charKey, ids) {
+  fs.mkdirSync(CHARACTERS_DIR, { recursive: true });
+  fs.writeFileSync(idPath(charKey), JSON.stringify(ids, null, 2) + '\n');
 }
 
-async function savePoses(charKey, charId) {
-  const detail = await api('GET', `/characters/${charId}`);
-  const rotations = detail.rotations || detail.directions || [];
+// Les poses statiques arrivent en base64 dans la réponse du job de création :
+// `images` (ou `quantized_images`, la version pixel art à palette réduite) est
+// un tableau aligné sur `uploaded_directions`.
+// On n'en garde que deux :
+//   east  -> la pose de repos, le moteur retourne le sprite pour l'autre sens
+//   south -> le personnage face caméra, idéal pour le portrait de sélection
+//
+// Repli : si le job ne porte pas d'images, on retombe sur `rotation_urls`,
+// les URL du CDN de Pixellab (qui peut être bloqué par une politique réseau).
+async function savePoses(charKey, charId, job) {
+  const response = job?.last_response;
+  const directions = response?.uploaded_directions || [];
+  const images = response?.quantized_images || response?.images || [];
 
-  const pick = (direction) => {
-    const entry = rotations.find((r) => (r.direction || r.name) === direction);
-    return entry && (entry.url || entry.image_url || entry.image);
-  };
+  const wanted = [
+    ['east', path.join(ROOT, 'assets', 'sprites', charKey, 'idle', '000.png'), 'pose de repos'],
+    ['south', path.join(ROOT, 'assets', 'sprites', charKey, 'portrait', 'portrait.png'), 'portrait'],
+  ];
 
-  const east = pick('east');
-  if (east) {
-    const dest = path.join(ROOT, 'assets', 'sprites', charKey, 'idle', '000.png');
-    await downloadImage(east, dest);
-    console.log(`[${charKey}] pose de repos -> ${path.relative(ROOT, dest)}`);
-  } else {
-    console.warn(`[${charKey}] rotation "east" introuvable — dépose idle/000.png à la main`);
-  }
+  let cdnRotations = null;
+  for (const [direction, dest, label] of wanted) {
+    const index = directions.indexOf(direction);
+    if (index !== -1 && images[index]?.base64) {
+      writeBase64Image(images[index].base64, dest);
+      console.log(`[${charKey}] ${label} -> ${path.relative(ROOT, dest)}`);
+      continue;
+    }
 
-  const south = pick('south');
-  if (south) {
-    const dest = path.join(ROOT, 'assets', 'sprites', charKey, 'portrait', 'portrait.png');
-    await downloadImage(south, dest);
-    console.log(`[${charKey}] portrait -> ${path.relative(ROOT, dest)}`);
-  } else {
-    console.warn(`[${charKey}] rotation "south" introuvable — dépose portrait.png à la main`);
+    if (!cdnRotations) {
+      const detail = await api('GET', `/characters/${charId}`);
+      cdnRotations = detail.rotation_urls || {};
+    }
+    const url = cdnRotations[direction];
+    if (!url) {
+      console.warn(`[${charKey}] rotation "${direction}" introuvable — dépose ${label} à la main`);
+      continue;
+    }
+    try {
+      await downloadImage(url, dest);
+      console.log(`[${charKey}] ${label} (via CDN) -> ${path.relative(ROOT, dest)}`);
+    } catch (err) {
+      console.warn(`[${charKey}] ${label} : ${err.message}`);
+      console.warn(`[${charKey}] le CDN de Pixellab est peut-être bloqué — dépose le fichier à la main`);
+    }
   }
 }
 
@@ -77,6 +105,21 @@ async function main() {
   const description = descIndex !== -1 ? args[descIndex + 1] : spec.description;
   const useReference = !args.includes('--no-reference');
 
+  // Re-télécharge idle et portrait d'un personnage déjà créé, sans en refaire
+  // un nouveau — utile après un échec en fin de course, ou pour récupérer les
+  // poses d'un perso créé à la main dans l'éditeur Pixellab.
+  if (args.includes('--poses-only')) {
+    const ids = readIds(charKey);
+    if (!ids?.characterId) {
+      console.error(`Pas d'id connu pour "${charKey}" : lance la création sans --poses-only.`);
+      process.exit(1);
+    }
+    console.log(`[${charKey}] récupération des poses de ${ids.characterId}`);
+    const job = ids.creationJobId ? await api('GET', `/background-jobs/${ids.creationJobId}`) : null;
+    await savePoses(charKey, ids.characterId, job);
+    return;
+  }
+
   const body = {
     description,
     image_size: { width: 128, height: 128 },
@@ -85,11 +128,11 @@ async function main() {
   };
 
   if (useReference) {
-    const reference = findReference(charKey);
+    const reference = findReferenceImage('personnages', charKey);
     if (!reference) {
       console.error(
         `Aucune image de référence pour "${charKey}".\n` +
-        `Dépose-la dans references/${charKey}.png (ou .jpg), puis relance.\n` +
+        `Dépose-la dans references/personnages/${charKey}.jpg, puis relance.\n` +
         `Voir references/README.md. Pour t'en passer : --no-reference`
       );
       process.exit(1);
@@ -109,13 +152,14 @@ async function main() {
   const resp = await api('POST', '/create-character-pro', body);
   const charId = resp.character_id;
   console.log(`[${charKey}] character_id ${charId}, job ${resp.background_job_id}, attente...`);
-  await pollJob(resp.background_job_id, `${charKey}-creation`);
 
-  fs.mkdirSync(REFERENCES_DIR, { recursive: true });
-  fs.writeFileSync(characterIdPath(charKey), charId + '\n');
-  console.log(`[${charKey}] id mémorisé dans ${path.relative(ROOT, characterIdPath(charKey))}`);
+  // L'id est écrit AVANT l'attente : si le sondage casse, le travail déjà payé
+  // reste récupérable avec --poses-only.
+  writeIds(charKey, { characterId: charId, creationJobId: resp.background_job_id });
+  console.log(`[${charKey}] id mémorisé dans ${path.relative(ROOT, idPath(charKey))}`);
 
-  await savePoses(charKey, charId);
+  const job = await pollJob(resp.background_job_id, `${charKey}-creation`);
+  await savePoses(charKey, charId, job);
 
   console.log('\nPersonnage créé.');
   console.log(`Étape suivante : node scripts/generate-sprites.js ${charKey}`);

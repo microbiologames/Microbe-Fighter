@@ -5,7 +5,7 @@
 // `idle` et `portrait` ne sont PAS générés ici : ce sont les poses statiques,
 // déjà récupérées par create-character.js depuis les rotations du personnage.
 //
-// Le character_id est lu tout seul dans references/<perso>.character-id (écrit
+// Le character_id est lu tout seul dans references/personnages/<perso>.pixellab.json (écrit
 // par create-character.js). On peut aussi le passer à la main, ou passer le nom
 // du personnage tel qu'il apparaît dans Pixellab.
 //
@@ -14,21 +14,39 @@
 //   node scripts/generate-sprites.js gram punch kick        (sous-ensemble)
 //   node scripts/generate-sprites.js gram --id <character_id|"Nom Pixellab">
 //
-// Persos : gram, petri, staphy, coli
+// Persos : gram, petri, cereus, listeria
 
 const fs = require('fs');
 const path = require('path');
-const { ROOT, api, pollJob, downloadFrames, resolveCharacterId } = require('./pixellab');
+const { ROOT, api, pollJob, writeBase64Frames, downloadFrames, resolveCharacterId } = require('./pixellab');
 const { CHARACTERS, KEEP_FIRST_FRAME, ANIMATION_ORDER } = require('./characters');
 
 // Limite de jobs concurrents du compte Pixellab (8 max) : on soumet par lots de 7.
 const BATCH_SIZE = 7;
 const FRAME_COUNT = 4; // + la frame de départ conservée = 5, ce qu'attendent les manifestes
-const EXPECTED_FRAMES = 5;
 
 function storedCharacterId(charKey) {
-  const p = path.join(ROOT, 'references', `${charKey}.character-id`);
-  return fs.existsSync(p) ? fs.readFileSync(p, 'utf8').trim() : null;
+  const jsonPath = path.join(ROOT, 'references', 'personnages', `${charKey}.pixellab.json`);
+  if (fs.existsSync(jsonPath)) return JSON.parse(fs.readFileSync(jsonPath, 'utf8')).characterId || null;
+  // Ancien format : un fichier texte ne contenant que le character_id.
+  const legacy = path.join(ROOT, 'references', `${charKey}.character-id`);
+  return fs.existsSync(legacy) ? fs.readFileSync(legacy, 'utf8').trim() : null;
+}
+
+// Aligne "frameCount" du manifeste sur ce que Pixellab a réellement livré.
+// C'est la source n°1 d'animations qui sautent : un manifeste qui annonce
+// 5 frames alors que le dossier en contient 4 fait charger du vide.
+function syncFrameCount(charKey, animName, actualCount) {
+  const manifestPath = path.join(ROOT, 'js', 'data', 'characters', `${charKey}.json`);
+  if (!fs.existsSync(manifestPath)) return null;
+  const raw = fs.readFileSync(manifestPath, 'utf8');
+  const pattern = new RegExp(`("${animName}":\\s*\\{[^}]*?"frameCount":\\s*)(\\d+)`);
+  const match = raw.match(pattern);
+  if (!match) return null;
+  const previous = Number(match[2]);
+  if (previous === actualCount) return null;
+  fs.writeFileSync(manifestPath, raw.replace(pattern, `$1${actualCount}`));
+  return previous;
 }
 
 async function submitBatch(charId, charKey, batch) {
@@ -48,7 +66,7 @@ async function submitBatch(charId, charKey, batch) {
     console.log(`[${job.anim}] job ${job.jobId}`);
   }
   for (const job of batch) {
-    await pollJob(job.jobId, job.anim);
+    job.result = await pollJob(job.jobId, job.anim);
     console.log(`[${job.anim}] terminé`);
   }
 }
@@ -99,33 +117,41 @@ async function main() {
     await submitBatch(charId, charKey, jobs.slice(i, i + BATCH_SIZE));
   }
 
-  console.log('\nTéléchargement des frames...');
-  const detail = await api('GET', `/characters/${charId}`);
+  console.log('\nÉcriture des frames...');
   const missing = [];
-  const wrongCount = [];
+  const adjusted = [];
 
   for (const job of jobs) {
-    const entry = detail.animations.find((a) => a.display_name === job.animationName);
-    if (!entry) {
-      console.error(`[${job.anim}] MANQUANT côté Pixellab`);
-      missing.push(job.anim);
-      continue;
-    }
-    const eastDir = entry.directions.find((d) => d.direction === 'east');
+    // Les frames sont livrées en base64 dans la réponse du job : pas besoin du
+    // CDN de Pixellab, qui est un domaine distinct et parfois inaccessible.
+    const images = job.result?.last_response?.images || [];
     const destFolder = path.join(ROOT, 'assets', 'sprites', charKey, job.anim);
-    await downloadFrames(eastDir.frames, destFolder);
-    console.log(`[${job.anim}] ${eastDir.frames.length} frames -> ${path.relative(ROOT, destFolder)}`);
-    if (eastDir.frames.length !== EXPECTED_FRAMES) {
-      wrongCount.push(`${job.anim} (${eastDir.frames.length})`);
+    let count;
+
+    if (images.length) {
+      count = writeBase64Frames(images, destFolder);
+    } else {
+      // Repli : les URL du CDN, si le job ne porte pas les images.
+      const urls = job.result?.last_response?.storage_urls?.frames;
+      if (!urls?.length) {
+        console.error(`[${job.anim}] aucune image dans la réponse du job`);
+        missing.push(job.anim);
+        continue;
+      }
+      await downloadFrames(urls, destFolder);
+      count = urls.length;
     }
+
+    console.log(`[${job.anim}] ${count} frames -> ${path.relative(ROOT, destFolder)}`);
+    const previous = syncFrameCount(charKey, job.anim, count);
+    if (previous !== null) adjusted.push(`${job.anim} : ${previous} -> ${count}`);
   }
 
-  if (wrongCount.length) {
-    console.warn(
-      `\nATTENTION : ${wrongCount.join(', ')} — nombre de frames différent de ${EXPECTED_FRAMES}.\n` +
-      `Corrige "frameCount" dans js/data/characters/${charKey}.json, ou lance node scripts/check-assets.js.`
-    );
+  if (adjusted.length) {
+    console.log(`\nframeCount ajusté dans js/data/characters/${charKey}.json :`);
+    for (const a of adjusted) console.log(`  · ${a}`);
   }
+
   if (missing.length) {
     console.error(`\nTerminé avec des animations manquantes : ${missing.join(', ')}`);
     process.exit(1);

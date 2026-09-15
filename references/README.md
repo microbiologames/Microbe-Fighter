@@ -1,86 +1,126 @@
 # 📥 Dossier de dépôt — les images à transformer en personnages
 
-**C'est ici que tu déposes tes images.** Rien d'autre à faire : le nom du fichier
-suffit à tout brancher.
+**C'est ici que tu déposes tes images.** Le nom du fichier suffit à tout
+brancher.
 
 ```
 references/
-  gram.png        ← Doc Gram      (microbiologiste, voix de Nico)
-  petri.png       ← Doc Pétri     (microbiologiste, voix d'Amé)
-  staphy.png      ← Staphy        (staphylocoque, voix de Raph)
-  coli.png        ← Coli          (bacille, voix de Margot)
+  personnages/    ← les combattants
+    gram.jpg          Doc Gram          (microbiologiste, voix de Nico)
+    petri.jpg         Doc Pétri         (microbiologiste, voix d'Amé)
+    cereus.jpg        B. cereus         (Bacillus cereus, voix de Raph)
+    listeria.jpg      L. monocytogenes  (Listeria monocytogenes, voix de Margot)
+  decors/         ← les fonds de scène — voir decors/README.md
+    paillasse.jpg, hotte.jpg, ...
+  prepared/       ← versions recadrées pour l'API (générées, ne pas éditer)
 ```
 
-Puis, pour chaque perso déposé :
+Deux natures d'image, deux sous-dossiers, deux README. Celui-ci couvre les
+**personnages** ; les décors ont [le leur](decors/README.md).
+
+Puis, pour chaque perso :
 
 ```bash
+node scripts/prepare-reference.js gram    # recadre et redimensionne (1 fois par image)
 node scripts/create-character.js gram     # crée le perso + récupère idle et portrait
 node scripts/generate-sprites.js gram     # les 10 animations de combat
-node scripts/check-assets.js              # contrôle que rien ne manque
+node scripts/measure-sprites.js --write   # cale groundY et scale sur les vrais sprites
+node scripts/check-assets.js              # contrôle final
 ```
 
 ## Le nom du fichier compte, l'extension non
 
 Le fichier doit s'appeler **exactement** comme l'`id` du personnage :
-`gram`, `petri`, `staphy` ou `coli`. Les extensions acceptées sont `.png`,
-`.jpg`, `.jpeg` et `.webp`, dans cet ordre de priorité.
+`gram`, `petri`, `cereus` ou `listeria`, et vivre dans
+`references/personnages/`. Extensions acceptées : `.png`, `.jpg`, `.jpeg`,
+`.webp`.
 
 Un nom qui ne correspond à aucun perso ne sera jamais lu. Pour ajouter un
-cinquième personnage, déclare-le d'abord dans `scripts/characters.js` et
-`js/data/characters/`.
+cinquième personnage, déclare-le d'abord dans `scripts/characters.js`, puis
+crée son manifeste dans `js/data/characters/` et ajoute-le au `boot()` de
+`js/main.js`.
 
 ## Ce qui fait une bonne image de référence
 
 - **Personnage entier**, de la tête aux pieds, debout, **vu de face**.
-  Pas besoin qu'il regarde à droite : Pixellab génère les rotations, et le
+  Pas besoin qu'il regarde à droite : Pixellab génère les 8 rotations, et le
   moteur retourne le sprite tout seul pour l'autre sens.
-- **Fond uni**, blanc ou transparent de préférence.
-- **Un seul personnage** sur l'image, centré, sans décor ni accessoire au sol.
-- Pixel art ou dessin : les deux marchent. Une photo marche aussi, le rendu
-  sera juste plus interprété.
+- **Fond uni**, blanc ou transparent.
+- **Un seul personnage**, centré, sans décor ni accessoire au sol.
+- Pixel art, dessin ou photo : les trois marchent.
 
 ### Le piège : les petits détails disparaissent
 
-Le personnage est généré en 128×128, puis affiché à environ 110 px de haut sur
-un écran de 216 px. **Tout texte, logo ou motif fin devient trois pixels de
-bouillie.** Un badge, un écusson ou une inscription sur la blouse seront rendus
-comme une tache de couleur — c'est normal, et c'est même ce qui rend le mieux.
+Le personnage est généré en **128×128**, puis affiché à une centaine de pixels
+de haut. **Tout texte, logo ou motif fin devient trois pixels de bouillie.** Un
+badge ou une inscription sur la blouse sera rendu comme une tache de couleur —
+c'est normal, et c'est même ce qui rend le mieux.
 
 Décris donc les éléments par leur **forme et leur couleur** dans
-`scripts/characters.js`, jamais par leur contenu. « un badge rectangulaire
-teal sur la poche poitrine » donne un bon résultat ; « un badge marqué ADRIA »
-n'en donnera pas un meilleur.
+`scripts/characters.js`, jamais par leur contenu. « un badge rectangulaire teal
+sur la poche poitrine » donne un bon résultat ; « un badge marqué ADRIA » n'en
+donnera pas un meilleur.
+
+À l'inverse, un trait de silhouette **survit très bien** et vaut la peine d'être
+décrit : le spore dans l'abdomen de *B. cereus*, les flagelles, le rictus de
+*Listeria*. C'est ce qui rend un perso reconnaissable à 100 px de haut.
+
+### Et la leçon des 44 premières animations
+
+Une description d'action qui ne nomme **que** le mouvement ou l'effet laisse le
+générateur repeindre le personnage. « enormous white steam jet » a produit une
+Doc Pétri entièrement en vapeur, cheveux compris ; *B. cereus*, dont chaque
+action rappelle son corps vert et son spore, n'a eu **aucune frame ratée sur
+onze**.
+
+Donc : dans `scripts/characters.js`, **chaque action doit redire les deux ou
+trois traits d'identité du perso**, et préciser pour les attaques que l'effet
+part *vers l'avant, loin du corps*, qui reste visible.
+
+## `prepare-reference.js` : l'étape obligatoire
+
+L'API Pixellab **refuse toute image de plus de 1024×1024** (erreur 422), et une
+photo où le personnage n'occupe qu'un sixième du cadre donne un résultat
+médiocre. Le script règle les deux :
+
+1. il détecte les bords du personnage (tout ce qui n'est pas le fond blanc) et
+   recadre dessus, en carré, avec une petite marge ;
+2. il redimensionne à 1024×1024 maximum.
+
+Le résultat va dans `references/prepared/personnages/<perso>.png`, que
+`create-character.js` préfère automatiquement. **Tes originaux ne sont jamais
+modifiés.**
+
+C'est le seul script du dépôt qui a une dépendance (Playwright, pour décoder
+l'image — Node n'a pas de décodeur intégré). Si tu ne l'as pas, fais la même
+chose à la main dans n'importe quel éditeur : recadre sur le personnage, exporte
+un PNG carré de 1024×1024 max, dépose-le dans `references/prepared/`.
 
 ## Fichiers générés ici automatiquement
 
-Après `create-character.js`, tu verras apparaître :
+Après `create-character.js` :
 
 ```
-references/gram.character-id
+references/personnages/gram.pixellab.json   { "characterId": "...", "creationJobId": "..." }
 ```
 
-C'est l'identifiant Pixellab du personnage. `generate-sprites.js` le relit tout
-seul — ne le supprime pas, sinon il faudra repasser l'id à la main avec `--id`.
-Recréer un personnage écrase ce fichier, et l'ancien personnage reste sur ton
-compte Pixellab.
+`generate-sprites.js` relit `characterId` tout seul — ne le supprime pas, sinon
+il faudra repasser l'id à la main avec `--id`. `creationJobId` sert à
+`--poses-only`, qui re-télécharge `idle/000.png` et `portrait.png` **sans
+refaire** (ni repayer) le personnage :
 
-## Les décors aussi, si tu veux
-
-Le même dossier sert aux décors, avec le slug du décor comme nom de fichier :
-
-```
-references/paillasse.jpg
-references/hotte.jpg
+```bash
+node scripts/create-character.js gram --poses-only
 ```
 
-`node scripts/generate-stage-background.js paillasse` utilisera la photo si elle
-est là, et générera à partir de la seule description sinon. Les slugs
-disponibles sont listés dans `js/data/stages/`.
+Recréer un personnage écrase ce fichier ; l'ancien reste sur ton compte Pixellab.
+
+## Les décors
+
+Ils ont leur propre sous-dossier et leur propre mode d'emploi :
+**[`references/decors/README.md`](decors/README.md)**.
 
 ## Corriger le rendu sans redéposer d'image
-
-Si le personnage ne ressemble pas à ce que tu voulais, tu as deux leviers avant
-de retoucher l'image :
 
 ```bash
 # essayer une autre description sans toucher characters.js
@@ -88,6 +128,9 @@ node scripts/create-character.js gram --description "a male microbiologist, ..."
 
 # se passer complètement de l'image de référence
 node scripts/create-character.js gram --no-reference
+
+# refaire une seule animation qui ne va pas
+node scripts/generate-sprites.js gram superattack
 ```
 
 Chaque essai consomme des générations sur ton abonnement Pixellab.

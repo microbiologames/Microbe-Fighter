@@ -342,7 +342,9 @@ export class Fighter {
 
     if (frame) {
       ctx.imageSmoothingEnabled = false;
-      const groundY = this.character.groundY ?? frame.height;
+      // groundY de l'animation en priorité, puis celui du personnage : les
+      // animations et la pose de repos n'ont pas forcément la même ligne de sol.
+      const groundY = anim.groundY ?? this.character.groundY ?? frame.height;
       ctx.drawImage(frame, -frame.width / 2, -groundY);
     } else {
       // Placeholder tant qu'il n'y a pas de sprite pour cette animation

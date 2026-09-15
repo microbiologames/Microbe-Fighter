@@ -1,0 +1,58 @@
+{
+  "id": "cereus",
+  "displayName": "B. cereus",
+  "color": "#6b9b4a",
+  "scale": 0.983,
+  "groundY": 124,
+  "moveSpeed": 0.85,
+  "jumpVelocity": 5.6,
+  "portrait": "assets/sprites/cereus/portrait/portrait.png",
+  "hurtbox": { "width": 40, "heightStand": 116, "heightCrouch": 78 },
+  "sfx": {
+    "punch": "assets/audio/sfx/raph/punch.wav",
+    "kick": "assets/audio/sfx/raph/kick.wav",
+    "hurt": "assets/audio/sfx/raph/hurt.wav",
+    "ko": "assets/audio/sfx/raph/ko.wav",
+    "victory": "assets/audio/sfx/raph/victory.wav",
+    "jump": "assets/audio/sfx/raph/jump.wav",
+    "esquive": "assets/audio/sfx/raph/esquive.wav",
+    "nargue": "assets/audio/sfx/raph/nargue.wav",
+    "superattack": "assets/audio/sfx/raph/superattack.wav"
+  },
+  "animations": {
+    "idle":        { "folder": "assets/sprites/cereus/idle",        "frameCount": 1, "frameDuration": 180,    "loop": true, "groundY": 124 },
+    "walk":        { "folder": "assets/sprites/cereus/walk",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 146 },
+    "jump":        { "folder": "assets/sprites/cereus/jump",        "frameCount": 5, "frameDuration": 140,    "loop": true, "groundY": 146 },
+    "crouch":      { "folder": "assets/sprites/cereus/crouch",      "frameCount": 5, "frameDuration": 180,    "loop": false, "groundY": 146 },
+    "punch":       { "folder": "assets/sprites/cereus/punch",       "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 146 },
+    "kick":        { "folder": "assets/sprites/cereus/kick",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 146 },
+    "hurt":        { "folder": "assets/sprites/cereus/hurt",        "frameCount": 5, "frameDuration": 100,    "loop": false, "groundY": 146 },
+    "ko":          { "folder": "assets/sprites/cereus/ko",          "frameCount": 5, "frameDuration": 160,    "loop": false, "groundY": 147 },
+    "taunt":       { "folder": "assets/sprites/cereus/taunt",       "frameCount": 5, "frameDuration": 110,    "loop": false, "groundY": 146 },
+    "victory":     { "folder": "assets/sprites/cereus/victory",     "frameCount": 5, "frameDuration": 130,    "loop": true, "groundY": 146 },
+    "superattack": { "folder": "assets/sprites/cereus/superattack", "frameCount": 5, "frameDuration": 90,     "loop": false, "groundY": 146 }
+  },
+  "moves": {
+    "punch": {
+      "animation": "punch",
+      "damage": 14,
+      "knockback": 5,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 28, "offsetY": 34, "width": 28, "height": 14 }
+    },
+    "kick": {
+      "animation": "kick",
+      "damage": 18,
+      "knockback": 6,
+      "activeFrames": [3, 4],
+      "hitbox": { "offsetX": 34, "offsetY": 12, "width": 30, "height": 12 }
+    },
+    "superattack": {
+      "animation": "superattack",
+      "damage": 26,
+      "knockback": 8,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 38, "offsetY": 32, "width": 40, "height": 20 }
+    }
+  }
+}

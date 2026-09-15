@@ -89,11 +89,59 @@ async function downloadFrames(urls, destFolder) {
   }
 }
 
+// Les réponses de job de Pixellab embarquent les images en base64, en plus de
+// les publier sur son CDN (backblaze.pixellab.ai). On préfère TOUJOURS le
+// base64 : c'est une requête de moins, et surtout le CDN est un domaine
+// distinct, qui peut être bloqué là où api.pixellab.ai est autorisé.
+function writeBase64Image(base64, destFile) {
+  fs.mkdirSync(path.dirname(destFile), { recursive: true });
+  fs.writeFileSync(destFile, Buffer.from(base64, 'base64'));
+}
+
+// Écrit une série d'images de job sous la convention du moteur :
+// <destFolder>/000.png, 001.png, ... et efface les frames devenues en trop
+// si la nouvelle animation en compte moins que la précédente.
+function writeBase64Frames(images, destFolder) {
+  fs.mkdirSync(destFolder, { recursive: true });
+  for (const existing of fs.readdirSync(destFolder).filter((f) => /^\d{3}\.png$/.test(f))) {
+    fs.unlinkSync(path.join(destFolder, existing));
+  }
+  images.forEach((img, i) => {
+    writeBase64Image(img.base64, path.join(destFolder, `${String(i).padStart(3, '0')}.png`));
+  });
+  return images.length;
+}
+
 async function downloadImage(url, destFile) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Téléchargement de ${url} -> ${res.status}`);
   fs.mkdirSync(path.dirname(destFile), { recursive: true });
   fs.writeFileSync(destFile, Buffer.from(await res.arrayBuffer()));
+}
+
+// Les images de référence sont rangées par nature :
+//   references/personnages/<id>.jpg   les persos
+//   references/decors/<slug>.jpg      les décors
+// et leurs versions recadrées pour l'API, produites par prepare-reference.js :
+//   references/prepared/personnages/<id>.png
+//   references/prepared/decors/<slug>.png
+// On préfère toujours la version préparée : l'API refuse les images de plus de
+// 1024x1024, et un cadrage serré donne un bien meilleur résultat.
+const REFERENCE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
+
+function findReferenceImage(kind, name) {
+  const dirs = [
+    path.join(ROOT, 'references', 'prepared', kind),
+    path.join(ROOT, 'references', kind),
+    path.join(ROOT, 'references'), // ancienne disposition, à plat
+  ];
+  for (const dir of dirs) {
+    for (const ext of REFERENCE_EXTENSIONS) {
+      const p = path.join(dir, name + ext);
+      if (fs.existsSync(p)) return p;
+    }
+  }
+  return null;
 }
 
 // Les scripts acceptent soit un character_id Pixellab, soit le NOM du personnage
@@ -116,4 +164,8 @@ async function resolveCharacterId(idOrName) {
   return match.id || match.character_id;
 }
 
-module.exports = { ROOT, API, api, sleep, pollJob, downloadFrames, downloadImage, resolveCharacterId };
+module.exports = {
+  ROOT, API, api, sleep, pollJob, findReferenceImage, REFERENCE_EXTENSIONS,
+  writeBase64Image, writeBase64Frames,
+  downloadFrames, downloadImage, resolveCharacterId,
+};

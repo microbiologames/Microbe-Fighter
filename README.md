@@ -1,22 +1,35 @@
 # Microbe Fighter — Pixel Fighter
 
+### ▶️ **[JOUER EN LIGNE](https://microbiologames.github.io/Microbe-Fighter/)**
+
 Jeu de combat pixel art façon Street Fighter : **des microbiologistes contre des
 bactéries**. HTML/Canvas/JS pur — aucune dépendance, aucun build. Tourne dans un
 navigateur, en local ou sur une borne d'arcade Raspberry Pi.
+
+> ⚠️ **Le lien ci-dessus ne marche qu'une fois GitHub Pages activé sur ce
+> dépôt** — c'est un réglage à faire une seule fois, à la main :
+> **Settings → Pages → Source : `Deploy from a branch` → Branch : `main` / `/ (root)` → Save.**
+> Compter une à deux minutes avant la première mise en ligne. Ensuite, chaque
+> `git push` sur `main` republie le jeu automatiquement.
 
 Le moteur est repris tel quel de [`sf-pixel-fight`](https://github.com/microbiologames/sf-pixel-fight)
 (jeu « famille »), avec ses voix enregistrées ; seuls le roster, les décors et
 l'habillage changent.
 
-> **Pour ajouter un personnage : dépose son image dans [`references/`](references/README.md)
-> et lance deux commandes.** Tout est expliqué là-bas.
+**Pour ajouter du contenu, tout part du dossier `references/` :**
+> - un personnage → [`references/personnages/`](references/README.md)
+> - un décor → [`references/decors/`](references/decors/README.md)
 
 ---
 
 ## Lancer le jeu
 
-Le jeu charge ses JSON et ses images via `fetch()`, ce qui ne marche pas en
-ouvrant `index.html` directement (`file://`). Il faut un petit serveur local :
+**En ligne :** https://microbiologames.github.io/Microbe-Fighter/ (voir l'encadré
+plus haut si la page renvoie une 404).
+
+**En local**, le jeu charge ses JSON et ses images via `fetch()`, ce qui ne
+marche pas en ouvrant `index.html` directement (`file://`). Il faut un petit
+serveur local :
 
 ```bash
 node server.js          # puis http://localhost:8080
@@ -55,10 +68,15 @@ pastilles au-dessus des barres de vie.
 
 | Perso | `id` | Voix | Profil |
 |---|---|---|---|
-| **Doc Gram** — microbiologiste | `gram` | **Nico** (`sfx/nico/`) | Grand, allonge maximale, un peu lent. Poing = micropipette, super = chalumeau Bunsen. |
-| **Doc Pétri** — microbiologiste | `petri` | **Amé** (`sfx/ame/`) — **à enregistrer** | Plus vive, moins d'allonge. Poing = portoir à tubes, super = vapeur d'autoclave. |
-| **Staphy** — staphylocoque doré | `staphy` | **Raph** (`sfx/raph/`) | Large, lent, saut bas, frappe court mais encaisse. Le cogneur. |
-| **Coli** — bacille flagellé | `coli` | **Margot** (`sfx/margot/`) | Petit, très rapide, saut haut, peu de hurtbox. Le « hit and run ». |
+| **Doc Gram** — microbiologiste | `gram` | **Nico** (`sfx/nico/`) | Grand, élancé, allonge maximale, un peu lent. Poing = micropipette, super = chalumeau Bunsen. |
+| **Doc Pétri** — microbiologiste | `petri` | **Amé** (`sfx/ame/`) — **à enregistrer** | Plus vive, un peu moins d'allonge. Poing = portoir à tubes, super = vapeur d'autoclave. |
+| **B. cereus** — *Bacillus cereus* | `cereus` | **Raph** (`sfx/raph/`) | Le plus grand et le plus large, lent, saut bas, encaisse. Le cogneur. Son **spore abdominal** s'embrase sur la super attaque. |
+| **L. monocytogenes** — *Listeria monocytogenes* | `listeria` | **Margot** (`sfx/margot/`) | Mince et rapide, saut haut, peu de hurtbox. Griffes et ruée. Le « hit and run ». |
+
+Deux pathogènes alimentaires face à deux microbiologistes : le registre colle au
+badge ADRIA des blouses. Les noms affichés suivent la convention scientifique
+abrégée (`B. cereus`, `L. monocytogenes`) — le nom complet ne tiendrait pas sous
+la barre de vie, qui fait 140 px pour une police de 7 px.
 
 L'équilibrage de base est le même pour tous (poing 14 / pied 18 / super 26) :
 les persos se différencient par `moveSpeed`, `jumpVelocity`, `hurtbox`, `scale`
@@ -92,17 +110,29 @@ déposé, il prend le dessus et la palette n'est plus lue.
 ## Générer les personnages
 
 Tout part du dossier **[`references/`](references/README.md)**, où tu déposes une
-image par personnage (`gram.png`, `petri.png`, `staphy.png`, `coli.png`).
+image par personnage (`gram.jpg`, `petri.jpg`, `cereus.jpg`, `listeria.jpg`).
 
 ```bash
+node scripts/prepare-reference.js         # recadre et redimensionne (1 fois par image)
 node scripts/create-character.js gram     # crée le perso sur Pixellab,
                                           # récupère idle/000.png et portrait.png
 node scripts/generate-sprites.js gram     # les 10 animations de combat
+node scripts/measure-sprites.js --write   # cale groundY et scale sur les vrais sprites
 node scripts/check-assets.js              # contrôle de cohérence, sans API
 ```
 
 `create-character.js` mémorise l'identifiant Pixellab dans
-`references/gram.character-id` ; `generate-sprites.js` le relit tout seul.
+`references/gram.pixellab.json` ; les scripts suivants le relisent tout seuls.
+
+| Script | Rôle |
+|---|---|
+| `scripts/check-assets.js` | **Sans API.** Manifestes, dossiers, numérotation, sons, décors, musiques. |
+| `scripts/measure-sprites.js` | **Sans API.** Décode les PNG et calcule `groundY` et `scale`. `--write` les applique. |
+| `scripts/prepare-reference.js` | Recadre et redimensionne une image de référence pour l'API. |
+| `scripts/create-character.js` | Crée un perso depuis `references/<perso>.*` + récupère ses poses statiques. |
+| `scripts/generate-sprites.js` | Les 10 animations de combat, et aligne `frameCount` sur ce qui est livré. |
+| `scripts/generate-stage-background.js` | Les fonds de décor. |
+| `scripts/characters.js` | Les descriptions physiques et d'actions. **Le seul fichier à éditer pour changer l'allure d'un perso.** |
 
 ### La clé Pixellab
 
@@ -116,18 +146,22 @@ Les scripts cherchent la clé dans cet ordre :
    ```
    Il est dans `.gitignore` et ne partira jamais sur GitHub.
 
-| Script | Rôle |
-|---|---|
-| `scripts/check-assets.js` | **Sans API.** Manifestes, dossiers, numérotation, sons, décors, musiques. |
-| `scripts/create-character.js` | Crée un perso depuis `references/<perso>.png` + récupère ses poses statiques. |
-| `scripts/generate-sprites.js` | Les 10 animations de combat. |
-| `scripts/generate-stage-background.js` | Les fonds de décor (photo de `references/` si présente, sinon description). |
-| `scripts/characters.js` | Les descriptions physiques et d'actions. **Le seul fichier à éditer pour changer l'allure d'un perso.** |
+### Deux contraintes de l'API, déjà gérées
+
+- **Images de référence : 1024×1024 maximum.** Au-delà, l'API répond 422.
+  `prepare-reference.js` s'en occupe.
+- **Le CDN est un domaine séparé.** Pixellab publie ses images sur
+  `backblaze.pixellab.ai`, distinct de `api.pixellab.ai`. Derrière un pare-feu
+  qui n'autorise que l'API, les téléchargements échouent en 403. Les scripts
+  lisent donc **le base64 embarqué dans la réponse du job** et ne touchent au
+  CDN qu'en dernier recours.
 
 ### Conventions de sprites, à respecter absolument
 
-- PNG **256×256**, RGBA, **fond transparent**, personnage **tourné vers la
-  droite** (le moteur gère le miroir, pas besoin de version « gauche »)
+- PNG **carré, RGBA, fond transparent**, personnage **tourné vers la droite**
+  (le moteur gère le miroir, pas besoin de version « gauche »). Pixellab produit
+  du **128×128** ici ; le moteur accepte n'importe quelle taille du moment que
+  `groundY` et `scale` suivent — c'est le rôle de `measure-sprites.js`.
 - Frames numérotées **sur 3 chiffres à partir de 000** :
   `assets/sprites/<perso>/<animation>/000.png`, `001.png`, …
 - Portrait : `assets/sprites/<perso>/portrait/portrait.png`
@@ -141,16 +175,25 @@ Les scripts cherchent la clé dans cet ordre :
 | `portrait` | 1 | `taunt` | 5 |
 | `victory` | 5 | `superattack` | 5 |
 
-Si Pixellab exporte un nombre de frames différent, corrige `frameCount` dans le
-JSON du perso — aucun code à toucher. `check-assets.js` le signale.
+`generate-sprites.js` **aligne `frameCount` tout seul** sur ce que Pixellab a
+réellement livré, et le signale. `check-assets.js` vérifie derrière.
 
-### `groundY`, le piège classique
+### `groundY` et `scale`, les deux valeurs qu'on ne peut pas deviner
 
-`groundY` est la **rangée de pixels, dans l'image source 256×256**, où les pieds
+`groundY` est la **rangée de pixels, dans l'image source**, où les pieds
 touchent le sol. Les exports Pixellab ont du vide transparent sous le
-personnage : sans cette valeur, le perso flotte ou s'enfonce. Pour la trouver,
-ouvre `idle/000.png` dans un éditeur d'image et lis l'ordonnée de la ligne sous
-les pieds. Une seule valeur par perso suffit.
+personnage : sans cette valeur, il flotte ou s'enfonce dans le sol.
+
+`scale` règle la taille à l'écran : hauteur affichée = hauteur du perso dans
+l'image × `scale`. On la veut égale à `hurtbox.heightStand`, sinon la boîte de
+collision ne colle pas à ce qu'on voit.
+
+**`node scripts/measure-sprites.js --write` calcule les deux** en décodant
+`idle/000.png` (décodeur PNG maison, aucune dépendance). À relancer après chaque
+génération. Sans `--write`, il affiche seulement ce qu'il changerait.
+
+Pour modifier le gabarit d'un perso, change `hurtbox.heightStand` dans son
+manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 
 ### Deux bugs du dépôt d'origine, à ne pas reproduire
 
@@ -210,13 +253,16 @@ microbe-fighter/
   css/style.css
   server.js                   serveur statique local, sans dépendance
   lancer-le-jeu.bat           lanceur Windows
-  references/                 ← TES IMAGES À TRANSFORMER EN PERSOS
+  references/
+    personnages/              ← TES IMAGES DE COMBATTANTS
+    decors/                   ← TES IMAGES DE DÉCORS
+    prepared/                 versions recadrées pour l'API (générées)
   js/
     main.js                   boucle de jeu et écrans
     engine/                   Config, Input, SpriteLoader, Fighter, Stage,
                               HUD, Effects, Audio, Music
     data/
-      characters/{gram,petri,staphy,coli}.json
+      characters/{gram,petri,cereus,listeria}.json
       stages/<slug>.json
   assets/
     sprites/<perso>/<animation>/     ← les exports Pixellab arrivent ici
