@@ -37,15 +37,56 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
+  fs.stat(filePath, (statErr, stat) => {
+    if (statErr || !stat.isFile()) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('404 Not Found: ' + urlPath);
       return;
     }
+
     const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-    res.end(data);
+    const type = MIME[ext] || 'application/octet-stream';
+
+    // Requêtes partielles (Range). Indispensable pour l'audio : sans elles, un
+    // navigateur ne peut pas sonder un mp3 sans en-tête de durée et rapporte
+    // `duration: Infinity`, ce qui perturbe la lecture en boucle. GitHub Pages
+    // les gère nativement ; ce petit serveur doit faire pareil pour que le test
+    // en local se comporte comme la version en ligne.
+    const range = req.headers.range;
+    const match = range && /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+    if (match) {
+      let start = match[1] === '' ? null : Number(match[1]);
+      let end = match[2] === '' ? null : Number(match[2]);
+      if (start === null) {
+        // « bytes=-500 » : les 500 derniers octets.
+        start = Math.max(0, stat.size - (end ?? 0));
+        end = stat.size - 1;
+      } else if (end === null || end >= stat.size) {
+        end = stat.size - 1;
+      }
+
+      if (start > end || start >= stat.size) {
+        res.writeHead(416, { 'Content-Range': `bytes */${stat.size}` });
+        res.end();
+        return;
+      }
+
+      res.writeHead(206, {
+        'Content-Type': type,
+        'Content-Length': end - start + 1,
+        'Content-Range': `bytes ${start}-${end}/${stat.size}`,
+        'Accept-Ranges': 'bytes',
+      });
+      fs.createReadStream(filePath, { start, end }).pipe(res);
+      return;
+    }
+
+    res.writeHead(200, {
+      'Content-Type': type,
+      'Content-Length': stat.size,
+      'Accept-Ranges': 'bytes',
+    });
+    fs.createReadStream(filePath).pipe(res);
   });
 });
 

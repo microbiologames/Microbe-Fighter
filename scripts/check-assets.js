@@ -95,11 +95,16 @@ if (!stageListMatch) {
   }
 }
 
-// --- Musiques --------------------------------------------------------------
+// --- Musique ---------------------------------------------------------------
+// Le jeu n'a qu'une piste, dont le chemin est déclaré en haut de js/main.js.
+// On le relit là plutôt que de le recopier ici, pour qu'un changement de
+// fichier ne laisse pas ce contrôle derrière.
 
-for (const track of ['title-screen', 'ambient-theme', 'combat-low-hp', 'victory']) {
-  const wav = path.join(ROOT, 'assets', 'audio', 'music', `${track}.wav`);
-  if (!fs.existsSync(wav)) todo.push(`Musique ${track}.wav absente (le jeu tourne en silence sur cette piste)`);
+const musicMatch = mainJs.match(/const MUSIC = '([^']+)'/);
+if (!musicMatch) {
+  errors.push('js/main.js : impossible de lire la constante MUSIC');
+} else if (!fs.existsSync(path.join(ROOT, musicMatch[1]))) {
+  todo.push(`Musique ${musicMatch[1]} absente (le jeu tourne en silence)`);
 }
 
 // --- Rapport ---------------------------------------------------------------

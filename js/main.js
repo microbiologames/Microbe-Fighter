@@ -6,7 +6,7 @@ import { Camera } from './engine/Camera.js';
 import { drawHUD } from './engine/HUD.js';
 import { updateHitEffects, drawHitEffects, clearHitEffects, getScreenShakeOffset } from './engine/Effects.js';
 import { playSfx } from './engine/Audio.js';
-import { playMusic, stopMusic } from './engine/Music.js';
+import { startMusic } from './engine/Music.js';
 import {
   CANVAS_WIDTH, CANVAS_HEIGHT, ROUND_TIME_SECONDS, ARENA_LEFT, ARENA_RIGHT, MAX_HEALTH,
   ROUNDS_TO_WIN, ROUND_RESULT_DISPLAY_MS,
@@ -23,16 +23,9 @@ const STAGE_FILES = [
   'labo', 'labo-nuit',
 ];
 
-// Les trois longues pistes (title-screen, ambient-theme, combat-low-hp) ne sont
-// pas versionnées : 27 Mo chacune en WAV. Le motif Strudel qui les produit est à
-// côté, dans assets/audio/music/*.js. Music.js est silencieux tant que le
-// fichier est absent, donc le jeu tourne sans elles — dépose les .wav (ou des
-// .ogg, en ajustant l'extension ici) pour les réactiver.
-const TITLE_MUSIC = 'assets/audio/music/title-screen.wav';
-const AMBIENT_MUSIC = 'assets/audio/music/ambient-theme.wav';
-const COMBAT_LOW_HP_MUSIC = 'assets/audio/music/combat-low-hp.wav';
-const VICTORY_MUSIC = 'assets/audio/music/victory.wav';
-const LOW_HP_THRESHOLD = MAX_HEALTH * 0.5;
+// Une seule musique, en boucle, du lancement du jeu jusqu'à la fin. Pour en
+// changer : déposer le fichier dans assets/audio/music/ et ajuster cette ligne.
+const MUSIC = 'assets/audio/music/Flamme_pure.mp3';
 
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
@@ -138,7 +131,7 @@ async function boot() {
     renderTitleRoster();
     gameState = GAME_STATE.TITLE;
     playSfx(JINGLE_STARTUP);
-    playMusic(TITLE_MUSIC, { volume: 0.5 });
+    startMusic(MUSIC, { volume: 0.45 });
   } catch (err) {
     console.error(err);
     loadError = err.message;
@@ -156,7 +149,6 @@ function enterSelect() {
   overlayStageSelect.classList.add('hidden');
   overlaySelect.classList.remove('hidden');
   renderSelectUI();
-  playMusic(TITLE_MUSIC, { volume: 0.5 });
 }
 
 function renderSelectUI() {
@@ -234,7 +226,6 @@ function startFight(char1, char2, chosenStage) {
   overlayResult.classList.add('hidden');
   clearHitEffects();
   playSfx(JINGLE_FIGHT_START);
-  playMusic(AMBIENT_MUSIC, { volume: 0.5 });
 }
 
 function endRound(winner) {
@@ -254,7 +245,6 @@ function endRound(winner) {
     resultHint.textContent = 'Appuyez sur ENTRÉE pour rejouer';
     gameState = GAME_STATE.RESULT;
     playSfx(JINGLE_FIGHT_END);
-    playMusic(VICTORY_MUSIC, { volume: 0.6, fadeMs: 200 });
   } else {
     resultText.textContent = winner
       ? `${winner.character.displayName.toUpperCase()} REMPORTE LA MANCHE (${score})`
@@ -262,7 +252,6 @@ function endRound(winner) {
     resultHint.textContent = 'Manche suivante...';
     gameState = GAME_STATE.ROUND_RESULT;
     roundResultTimer = ROUND_RESULT_DISPLAY_MS;
-    stopMusic({ fadeMs: 400 });
   }
 }
 
@@ -285,9 +274,6 @@ function resumeFight() {
 function quitFromPause() {
   overlayPause.classList.add('hidden');
   enterSelect();
-  // Contrairement à un retour normal au menu (musique de titre), en sortant
-  // du combat via la pause on garde l'ambiance du combat sur l'écran de choix.
-  playMusic(AMBIENT_MUSIC, { volume: 0.5, fadeMs: 300 });
 }
 
 function update(dt) {
@@ -339,11 +325,6 @@ function update(dt) {
     fighter2.update(dt, input, fighter1);
     camera.update(fighter1, fighter2, dt);
     updateHitEffects(dt);
-
-    if (!fighter1.ko && !fighter2.ko &&
-        (fighter1.health <= LOW_HP_THRESHOLD || fighter2.health <= LOW_HP_THRESHOLD)) {
-      playMusic(COMBAT_LOW_HP_MUSIC, { volume: 0.55 });
-    }
 
     timeLeft -= dt / 1000;
 

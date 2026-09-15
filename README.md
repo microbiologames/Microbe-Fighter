@@ -119,7 +119,7 @@ Ajouter un 5ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
 ADRIA : `labo` (jour) et `labo-nuit`. Ils sont listés dans `STAGE_FILES` en haut
 de `js/main.js`.
 
-Chacun fait **1076×216 px, soit 2,8 écrans et 692 px de défilement**. La caméra
+Chacun fait **897×216 px, soit 2,3 écrans et 513 px de défilement**. La caméra
 suit le milieu des deux combattants et bute sur les murs du fond — voir
 `js/engine/Camera.js`. Tout décor plus large que l'écran défile automatiquement,
 sans rien déclarer.
@@ -128,8 +128,8 @@ sans rien déclarer.
 {
   "name": "Laboratoire",
   "background": "assets/stages/labo/background.png",
-  "floorRatio": 0.88,
-  "stageHeight": 300,
+  "floorRatio": 0.84,
+  "stageHeight": 250,
   "palette": { "far": "#2a2c44", "mid": "#3a3d5c", "floor": "#8f97ad", "accent": "#7ee3b8" }
 }
 ```
@@ -274,11 +274,19 @@ Les 9 sons par personnage : `punch` · `kick` · `hurt` · `ko` · `victory` ·
 
 ## La musique
 
-**Dépose-la dans [`assets/audio/music/`](assets/audio/music/README.md)**, sous
-ces quatre noms exacts — aucun code à modifier :
+**Une seule piste, en boucle, du lancement du jeu jusqu'à la fin** — pas de
+phases ni de fondu. Aujourd'hui `Flamme_pure.mp3` (192 kbps, 2 min 32, 3,6 Mo),
+dans [`assets/audio/music/`](assets/audio/music/README.md).
 
-| Fichier | Jouée quand |
-|---|---|
+Pour en changer : déposer le fichier et ajuster **une ligne** en haut de
+`js/main.js`. Le mp3 et l'ogg sont lus nativement, aucune conversion nécessaire.
+
+`js/engine/Music.js` compose avec la **politique de lecture automatique** des
+navigateurs, qui interdit de jouer un son avant une interaction : il tente au
+chargement, et se réarme sur le premier appui de touche si c'est refusé. Si le
+fichier manque, le jeu tourne en silence sans broncher.
+
+---|---|
 | `title-screen.wav` | Écran titre et écrans de sélection |
 | `ambient-theme.wav` | Pendant le combat |
 | `combat-low-hp.wav` | Dès qu'un combattant passe sous 50 PV, en fondu |

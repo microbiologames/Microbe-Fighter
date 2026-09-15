@@ -1,77 +1,69 @@
-# 🎵 Dépose ici la musique du jeu
+# 🎵 La musique du jeu
 
-**Quatre pistes, quatre noms exacts.** Déposer le fichier suffit : il est joué au
-prochain rechargement de la page, **sans aucun code à modifier**.
+**Une seule piste, en boucle, du lancement jusqu'à la fin.** Pas de phases, pas
+de bascule selon le moment du combat : elle démarre avec le jeu et ne s'arrête
+plus.
 
-| Fichier attendu | Jouée quand | Doit boucler |
-|---|---|---|
-| `title-screen.wav` | Écran titre, sélection du perso et du décor | ✅ oui |
-| `ambient-theme.wav` | Pendant le combat | ✅ oui |
-| `combat-low-hp.wav` | Dès qu'un combattant passe **sous 50 PV** — bascule automatique, en fondu | ✅ oui |
-| `victory.wav` | Écran de fin de match | non (3,5 s suffisent) |
+Aujourd'hui : **`Flamme_pure.mp3`** — 192 kbps, 2 min 32, 3,6 Mo.
 
-Seul `victory.wav` est aujourd'hui dans le dépôt. Les trois autres manquent :
-le jeu tourne en silence sur ces moments-là, `js/engine/Music.js` étant tolérant
-à l'absence de fichier, exactement comme `Audio.js` pour les voix.
+## Changer de musique
 
-## Pourquoi les trois grosses pistes ne sont pas versionnées
-
-Elles existaient dans le jeu d'origine (`sf-pixel-fight`) mais pesaient **27 Mo
-chacune** — 2 min 35 en WAV stéréo 44,1 kHz non compressé, soit 82 Mo pour trois
-fichiers. Les mettre dans l'historique d'un dépôt git est **irréversible**, et
-chaque visiteur de la page les télécharge.
-
-Le **motif Strudel qui les a produites** est conservé à côté, dans les fichiers
-`.js` de ce dossier : `title-screen.js`, `ambient-theme.js`, `combat-low-hp.js`,
-`victory.js`. Ce sont des partitions en livecoding, à rejouer sur
-[strudel.cc](https://strudel.cc) pour régénérer ou retravailler les morceaux.
-
-## Le format : préfère l'ogg ou le mp3
-
-Le WAV n'est pas compressé. Pour une boucle de 2-3 minutes, compter **27 Mo en
-WAV contre 2 à 3 Mo en ogg** à qualité équivalente à l'oreille sur un jeu pixel
-art. C'est dix fois moins à télécharger.
-
-Si tu déposes autre chose que du `.wav`, il faut ajuster **quatre lignes**, en
-haut de `js/main.js` :
+Dépose ton fichier ici et ajuste **une seule ligne**, en haut de `js/main.js` :
 
 ```js
-const TITLE_MUSIC = 'assets/audio/music/title-screen.wav';
-const AMBIENT_MUSIC = 'assets/audio/music/ambient-theme.wav';
-const COMBAT_LOW_HP_MUSIC = 'assets/audio/music/combat-low-hp.wav';
-const VICTORY_MUSIC = 'assets/audio/music/victory.wav';
+const MUSIC = 'assets/audio/music/Flamme_pure.mp3';
 ```
 
-Le serveur local et les navigateurs servent déjà `.ogg` et `.mp3` sans rien
-configurer (voir la table `MIME` de `server.js`).
+`node scripts/check-assets.js` relit cette ligne et te dit si le fichier
+correspondant manque.
 
-## Comment la musique s'enchaîne
+## Le format
 
-`js/engine/Music.js` fait un **fondu enchaîné** entre deux pistes, et ne
-redémarre jamais une piste déjà en cours. Concrètement :
+**Le mp3 et l'ogg sont lus nativement par tous les navigateurs, aucune
+conversion n'est nécessaire.** Évite le WAV : non compressé, il pèse dix fois
+plus pour une qualité que personne n'entendra sur un jeu pixel art. Les pistes
+du jeu d'origine faisaient 27 Mo chacune contre 3,6 Mo ici.
 
-- titre → sélection : la même piste continue, sans coupure ;
-- début de combat : fondu vers `ambient-theme` ;
-- passage sous 50 PV : fondu vers `combat-low-hp`, et on n'en ressort pas avant
-  la fin de la manche ;
-- fin de match : fondu vers `victory`.
+Si ton mp3 n'a **pas d'en-tête Xing/Info**, comme celui-ci, le navigateur ne peut
+pas déduire sa durée sans requêtes partielles. `server.js` gère donc les
+requêtes `Range` (GitHub Pages les gère nativement), sans quoi `duration`
+renvoie `Infinity` et la lecture en boucle devient hasardeuse.
 
-Les volumes sont réglés à l'appel, dans `js/main.js` : 0,5 pour le titre et
-l'ambiance, 0,55 en basse vie, 0,6 pour la victoire.
+## La lecture automatique
 
-## Vérifier ce qui manque
+Depuis Chrome 66 et Safari 11, **un navigateur refuse de jouer un son avant que
+la personne ait interagi avec la page**. La musique ne peut donc pas démarrer au
+chargement seul.
 
-```bash
-node scripts/check-assets.js
+`js/engine/Music.js` essaie quand même, et si c'est refusé, se réarme sur le
+premier appui de touche ou clic. Comme l'écran titre demande d'appuyer sur
+Entrée, la musique démarre en pratique au premier geste du joueur.
+
+Si le fichier est absent ou illisible, le jeu tourne en silence sans broncher —
+même tolérance que pour les voix manquantes.
+
+## Régler le volume
+
+À l'appel, dans `js/main.js` :
+
+```js
+startMusic(MUSIC, { volume: 0.45 });
 ```
 
-Il liste les pistes absentes sous « À faire », sans jamais bloquer.
+`setMusicVolume()` permet de le changer en cours de partie si le besoin se
+présente.
 
 ## À ne pas confondre
 
-Les **voix** des personnages ne vont pas ici : elles sont dans
-`assets/audio/sfx/<personne>/`. Celles d'Amé restent à enregistrer — voir
-[`../sfx/ame/README.md`](../sfx/ame/README.md).
+Les **voix** des personnages sont dans `assets/audio/sfx/<personne>/`. Celles
+d'Amé restent à enregistrer — voir [`../sfx/ame/README.md`](../sfx/ame/README.md).
 
 Les **jingles** (démarrage, début et fin de combat) sont dans
 `assets/audio/sfx/jingle/` et sont déjà en place.
+
+## Ce qui a été retiré
+
+Le jeu d'origine avait quatre pistes (titre, ambiance, basse vie, victoire) avec
+fondu enchaîné entre elles. Ce système est supprimé, ainsi que les motifs
+Strudel qui les produisaient et `victory.wav`. Tout reste dans l'historique git
+si besoin.
