@@ -59,6 +59,47 @@ Les deux marchent, et le script choisit tout seul :
   description. Utile pour les décors qu'on ne peut pas photographier (l'intérieur
   d'une boîte de Pétri, un intestin).
 
+## Les décors panoramiques (défilement)
+
+Un décor **plus large que l'écran** fait défiler la scène : la caméra suit le
+milieu des deux combattants et bute sur les bords du décor. Quand les deux
+avancent à droite, la salle défile ; arrivé au mur du fond, ça se bloque.
+
+C'est le cas du `labo` : 2586×400 en source, soit 1455×216 une fois mis à la
+hauteur du jeu — **3,8 écrans de large, 1071 px de défilement**.
+
+Un décor panoramique s'importe avec un script à part, **sans appel d'API**
+(l'image est déjà en pixel art, il n'y a qu'à la caler) :
+
+```bash
+node scripts/import-wide-stage.js labo --floor-ratio 0.80 --grid
+```
+
+### `floorRatio`, le réglage qui compte
+
+C'est la hauteur relative, **dans l'image source**, de la ligne où les
+combattants doivent poser les pieds. `0.80` = à 80 % de la hauteur en partant du
+haut.
+
+Sans ce réglage, les combattants marchent **sur les meubles** au lieu du sol :
+c'est exactement ce qui s'est passé au premier import du labo. Le script met
+l'image à l'échelle pour que cette ligne tombe sur la ligne de sol du moteur,
+et rogne ce qui dépasse en bas.
+
+**`--grid` écrit `assets/stages/<slug>/reperes.png`**, une image de contrôle avec
+la ligne de sol tracée en rouge et des silhouettes de combattants à la bonne
+taille. C'est le moyen le plus rapide de trouver la bonne valeur : on regarde
+l'image, on ajuste, on relance. La valeur retenue est mémorisée dans le
+manifeste.
+
+### Ce qui fait un bon panoramique
+
+Le piège de ce format : **une bande de sol dégagée sur toute la largeur**. Une
+belle vue de salle avec des paillasses au premier plan donne des combattants qui
+se battent au milieu du mobilier. Sur le labo actuel, ça passe parce que le
+carrelage court sur toute la largeur, mais les persos frôlent les chaises par
+endroits.
+
 ## Ce qui fait un bon décor
 
 - **Vue de côté**, cadrage large, comme un fond de scène de jeu de combat.

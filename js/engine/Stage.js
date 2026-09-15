@@ -107,10 +107,18 @@ function drawPaletteBackdrop(ctx, stage) {
   ctx.globalAlpha = 1;
 }
 
-export function drawStage(ctx, stage) {
-  if (stage?.background) {
+export function drawStage(ctx, stage, cameraX = 0) {
+  const bg = stage?.background;
+  if (bg && bg.width > CANVAS_WIDTH) {
+    // Décor panoramique : on n'affiche que la fenêtre visible, à la position de
+    // la caméra. L'image est déjà à la hauteur du canvas, donc pas de mise à
+    // l'échelle — un pixel du décor = un pixel du jeu, ce qui garde le rendu net.
     ctx.imageSmoothingEnabled = false;
-    drawCover(ctx, stage.background, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    const sx = Math.max(0, Math.min(bg.width - CANVAS_WIDTH, Math.round(cameraX)));
+    ctx.drawImage(bg, sx, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  } else if (bg) {
+    ctx.imageSmoothingEnabled = false;
+    drawCover(ctx, bg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   } else {
     drawPaletteBackdrop(ctx, stage);
   }

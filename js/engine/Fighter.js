@@ -2,6 +2,7 @@ import {
   FLOOR_Y, ARENA_LEFT, ARENA_RIGHT, GRAVITY, JUMP_VELOCITY, MOVE_SPEED,
   MAX_HEALTH, HITSTUN_MS, KNOCKBACK, DODGE_DURATION_MS, DODGE_SPEED, TAUNT_DURATION_MS,
   ENERGY_MAX, ENERGY_REGEN_PER_SEC, ENERGY_TAUNT_BONUS,
+  SLOW_FACTOR, BURN_DAMAGE_PER_SEC, STATUS_TINTS,
 } from './Config.js';
 import { spawnHitEffect } from './Effects.js';
 import { playSfx } from './Audio.js';
@@ -11,6 +12,37 @@ const DEFAULT_BODY_WIDTH = 20;
 const DEFAULT_BODY_HEIGHT_STAND = 48;
 const DEFAULT_BODY_HEIGHT_CROUCH = 32;
 const MIN_SEPARATION = 24;
+// Au-dessus de cette hauteur, un combattant survole l'autre : la séparation des
+// corps est levée, ce qui permet de sauter par-dessus l'adversaire et de
+// changer de côté. `facing` étant recalculé à chaque frame, les deux continuent
+// de se faire face après le croisement.
+const CROSS_OVER_HEIGHT = 18;
+
+// Teinture d'un sprite, mise en cache : on redessine la frame dans un canvas
+// hors écran et on la recouvre en `source-atop`, ce qui ne colore que les
+// pixels opaques du personnage et préserve sa silhouette.
+const tintCache = new WeakMap();
+function tintedFrame(frame, color) {
+  let byColor = tintCache.get(frame);
+  if (!byColor) {
+    byColor = new Map();
+    tintCache.set(frame, byColor);
+  }
+  let canvas = byColor.get(color);
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.width = frame.width;
+    canvas.height = frame.height;
+    const g = canvas.getContext('2d');
+    g.imageSmoothingEnabled = false;
+    g.drawImage(frame, 0, 0);
+    g.globalCompositeOperation = 'source-atop';
+    g.fillStyle = color;
+    g.fillRect(0, 0, canvas.width, canvas.height);
+    byColor.set(color, canvas);
+  }
+  return canvas;
+}
 
 export class Fighter {
   constructor(character, playerIndex, startX, facing) {
@@ -37,6 +69,93 @@ export class Fighter {
     this.invincible = false;
     this.actionTimer = 0;
     this.energy = 0;
+    this.camera = null; // posée par main.js au début du combat
+
+    // Effets d'état, tous exprimés en millisecondes restantes. Ils sont posés
+    // par les `effect` déclarés dans les coups du JSON du personnage, jamais
+    // codés en dur ici — voir _applyEffect().
+    this.burnTimer = 0;      // brûlure : dégâts continus (bec Bunsen)
+    this.burnResidue = 0;    // fraction de dégât en attente entre deux frames
+    this.frozenTimer = 0;    // gelé : ralenti (attaque spéciale de Listeria)
+    this.shieldTimer = 0;    // invulnérable (biofilm de Listeria)
+    this.selfSlowTimer = 0;  // ralentissement qu'on s'inflige (biofilm)
+  }
+
+  get slowed() {
+    return this.frozenTimer > 0 || this.selfSlowTimer > 0;
+  }
+
+  get shielded() {
+    return this.shieldTimer > 0;
+  }
+
+  /** Teinte à appliquer au sprite, ou null. La brûlure prime sur le gel, qui
+   * prime sur le bouclier : c'est l'ordre de gravité pour le joueur. */
+  _statusTint() {
+    if (this.burnTimer > 0) return STATUS_TINTS.burning;
+    if (this.frozenTimer > 0) return STATUS_TINTS.frozen;
+    if (this.shieldTimer > 0) return STATUS_TINTS.shielded;
+    return null;
+  }
+
+  /** Décompte les effets et applique les dégâts de brûlure. */
+  _tickStatuses(dt) {
+    if (this.frozenTimer > 0) this.frozenTimer -= dt;
+    if (this.shieldTimer > 0) this.shieldTimer -= dt;
+    if (this.selfSlowTimer > 0) this.selfSlowTimer -= dt;
+
+    if (this.burnTimer > 0) {
+      this.burnTimer -= dt;
+      // Les dégâts sont fractionnaires par frame : on accumule le reste pour ne
+      // pas perdre les décimales à chaque tick.
+      this.burnResidue += (BURN_DAMAGE_PER_SEC * dt) / 1000;
+      const whole = Math.floor(this.burnResidue);
+      if (whole > 0) {
+        this.burnResidue -= whole;
+        this.health = Math.max(0, this.health - whole);
+        if (this.health <= 0 && !this.ko) {
+          this.ko = true;
+          this.state = 'ko';
+          this.setAnimation('ko');
+          playSfx(this.character.sfx?.ko);
+        }
+      }
+    }
+  }
+
+  /** Applique l'`effect` d'un coup. `self` reçoit les effets qui se posent sur
+   * l'attaquant (bouclier, téléportation), `target` ceux qui se posent sur
+   * l'adversaire (brûlure, gel). */
+  static applyEffect(effect, self, target) {
+    if (!effect) return;
+    switch (effect.type) {
+      case 'burn':
+        if (target && !target.shielded) {
+          target.burnTimer = Math.max(target.burnTimer, effect.durationMs ?? 3000);
+        }
+        break;
+      case 'freeze':
+        if (target && !target.shielded) {
+          target.frozenTimer = Math.max(target.frozenTimer, effect.durationMs ?? 3000);
+        }
+        break;
+      case 'shield':
+        self.shieldTimer = Math.max(self.shieldTimer, effect.durationMs ?? 1000);
+        self.selfSlowTimer = Math.max(self.selfSlowTimer, effect.selfSlowMs ?? effect.durationMs ?? 1000);
+        break;
+      case 'teleportBehind':
+        if (target) {
+          // On se replace de l'autre côté de l'adversaire, à distance de garde,
+          // sans sortir du champ visible.
+          const offset = (effect.distance ?? 34) * (self.x <= target.x ? 1 : -1);
+          const left = self.camera ? self.camera.leftBound : ARENA_LEFT;
+          const right = self.camera ? self.camera.rightBound : ARENA_RIGHT;
+          self.x = Math.max(left, Math.min(right, target.x + offset));
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   get grounded() {
@@ -54,7 +173,7 @@ export class Fighter {
     this.frameTimer = 0;
   }
 
-  startAttack(moveName) {
+  startAttack(moveName, opponent) {
     const move = this.character.moves[moveName];
     if (!move) return;
     this.state = moveName;
@@ -62,6 +181,11 @@ export class Fighter {
     this.attackHasHit = false;
     this.setAnimation(move.animation);
     if (moveName === 'superattack') this.energy = 0;
+    // Effets qui se déclenchent au lancement du coup, pas à la touche :
+    // le biofilm de Listeria et la téléportation par spore de B. cereus.
+    if (move.effect && move.effect.on === 'use') {
+      Fighter.applyEffect(move.effect, this, opponent);
+    }
     playSfx(this.character.sfx?.[moveName]);
   }
 
@@ -97,7 +221,7 @@ export class Fighter {
   }
 
   takeHit(move, attackerFacing) {
-    if (this.ko || this.invincible) return;
+    if (this.ko || this.invincible || this.shielded) return;
     this.health = Math.max(0, this.health - move.damage);
     this.hitstunTimer = HITSTUN_MS;
     this.state = 'hurt';
@@ -116,6 +240,7 @@ export class Fighter {
   update(dt, input, opponent) {
     if (!this.ko) {
       this.energy = Math.min(ENERGY_MAX, this.energy + (ENERGY_REGEN_PER_SEC * dt) / 1000);
+      this._tickStatuses(dt);
     }
 
     if (this.ko) {
@@ -179,16 +304,16 @@ export class Fighter {
       (input.justPressed(this.playerIndex, 'kick') && input.isDown(this.playerIndex, 'punch'))
     );
     if (this.grounded && superReady) {
-      this.startAttack('superattack');
+      this.startAttack('superattack', opponent);
       return;
     }
 
     if (input.justPressed(this.playerIndex, 'punch')) {
-      this.startAttack('punch');
+      this.startAttack('punch', opponent);
       return;
     }
     if (input.justPressed(this.playerIndex, 'kick')) {
-      this.startAttack('kick');
+      this.startAttack('kick', opponent);
       return;
     }
     if (this.grounded && input.justPressed(this.playerIndex, 'dodge')) {
@@ -258,7 +383,8 @@ export class Fighter {
   }
 
   _moveSpeed() {
-    return this.character.moveSpeed ?? MOVE_SPEED;
+    const base = this.character.moveSpeed ?? MOVE_SPEED;
+    return this.slowed ? base * SLOW_FACTOR : base;
   }
 
   _bodyWidth() {
@@ -266,7 +392,20 @@ export class Fighter {
   }
 
   _clampToArena(opponent) {
-    this.x = Math.max(ARENA_LEFT, Math.min(ARENA_RIGHT, this.x));
+    // Bornes fournies par la caméra sur un décor panoramique : le combattant ne
+    // peut pas sortir de l'écran, mais l'écran, lui, se déplace dans le décor.
+    // Sans caméra (décor de la largeur de l'écran), on retombe sur les bornes fixes.
+    const left = this.camera ? this.camera.leftBound : ARENA_LEFT;
+    const right = this.camera ? this.camera.rightBound : ARENA_RIGHT;
+    this.x = Math.max(left, Math.min(right, this.x));
+
+    // Dès que l'un des deux est en l'air assez haut, il survole l'autre : on
+    // lève la séparation des corps, ce qui permet de sauter par-dessus
+    // l'adversaire et d'atterrir de l'autre côté. Ils continuent de se faire
+    // face, `facing` étant recalculé à chaque frame.
+    const crossing = this.y > CROSS_OVER_HEIGHT || opponent.y > CROSS_OVER_HEIGHT;
+    if (crossing) return;
+
     const minSep = Math.max(MIN_SEPARATION, (this._bodyWidth() + opponent._bodyWidth()) / 2 + 4);
     const dist = Math.abs(this.x - opponent.x);
     if (dist < minSep) {
@@ -298,15 +437,23 @@ export class Fighter {
   _resolveAttackHit(opponent) {
     if (this.attackHasHit) return;
     const move = this.character.moves[this.attackName];
-    if (!move || !move.activeFrames) return;
+    // Un coup sans hitbox est purement défensif (le biofilm de Listeria) :
+    // il ne cherche jamais à toucher, son seul effet est posé au lancement.
+    if (!move || !move.activeFrames || !move.hitbox?.width) return;
     const [start, end] = move.activeFrames;
     if (this.frameIndex < start || this.frameIndex > end) return;
 
     const box = this.getHitbox(move);
     const hurt = opponent.getHurtbox();
     if (rectsOverlap(box, hurt)) {
+      // Un adversaire en esquive, protégé par un biofilm ou déjà K.O. n'encaisse
+      // ni le coup ni son effet : on relit son état avant de trancher.
+      const connected = !opponent.ko && !opponent.invincible && !opponent.shielded;
       opponent.takeHit(move, this.facing);
       this.attackHasHit = true;
+      if (connected && move.effect && move.effect.on !== 'use') {
+        Fighter.applyEffect(move.effect, this, opponent);
+      }
       const cx = (Math.max(box.x, hurt.x) + Math.min(box.x + box.w, hurt.x + hurt.w)) / 2;
       const cy = (Math.max(box.y, hurt.y) + Math.min(box.y + box.h, hurt.y + hurt.h)) / 2;
       spawnHitEffect(cx, cy, move.damage >= 15, this.character.hitEffectTheme);
@@ -346,6 +493,16 @@ export class Fighter {
       // animations et la pose de repos n'ont pas forcément la même ligne de sol.
       const groundY = anim.groundY ?? this.character.groundY ?? frame.height;
       ctx.drawImage(frame, -frame.width / 2, -groundY);
+
+      // Un combattant brûlé, gelé ou protégé par un biofilm est recouvert d'une
+      // teinte de sa couleur d'état — c'est la seule lecture que le joueur a de
+      // ces effets pendant l'action.
+      const tint = this._statusTint();
+      if (tint) {
+        ctx.globalAlpha = tint.alpha;
+        ctx.drawImage(tintedFrame(frame, tint.color), -frame.width / 2, -groundY);
+        ctx.globalAlpha = 1;
+      }
     } else {
       // Placeholder tant qu'il n'y a pas de sprite pour cette animation
       const hb = this.character.hurtbox;

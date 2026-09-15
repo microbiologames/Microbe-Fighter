@@ -113,23 +113,45 @@ function contentBounds(png) {
   return { minX, minY, maxX, maxY };
 }
 
-// Ligne des pieds de chaque animation. Pixellab garde normalement le même
-// canevas et la même ligne de sol d'une animation à l'autre, mais pas toujours :
-// si une animation a ses pieds 10 px plus haut, le perso saute verticalement au
-// moment où le coup part. Mieux vaut le voir ici qu'en jouant.
-function groundLinePerAnimation(manifest) {
+// Ligne de sol de chaque animation.
+//
+// Pixellab dessine chaque animation sur son propre canevas carré, plus grand que
+// celui des rotations pour loger les poses larges : chez Doc Gram l'idle fait
+// 128x128 et les animations 156x156, chez B. cereus 128 puis 172. Le personnage
+// est CENTRÉ dans ce canevas, à taille identique — mesuré sur les quatre persos
+// et leurs onze animations, sans exception.
+//
+// La ligne de sol d'une animation se déduit donc exactement de celle de l'idle :
+//     groundY = pieds_idle + (canevas_animation - canevas_idle) / 2
+//
+// C'est préférable à « prendre le pixel le plus bas de l'animation » : cette
+// mesure-là est juste tant que le perso garde les pieds au sol, mais elle
+// dérive dès qu'une pose étend un membre ou une arme SOUS la ligne des pieds,
+// et elle ne sait pas distinguer un perso qui décolle (coup de pied sauté) d'un
+// mauvais calage. La formule, elle, ne dépend pas de la pose.
+function groundLinePerAnimation(manifest, idlePng, idleGroundY) {
   const rows = [];
   for (const [name, anim] of Object.entries(manifest.animations)) {
     const folder = path.join(ROOT, anim.folder);
     if (!fs.existsSync(folder)) continue;
     const frames = fs.readdirSync(folder).filter((f) => /^\d{3}\.png$/.test(f)).sort();
     if (!frames.length) continue;
+
     const feet = [];
+    let canvas = null;
     for (const frame of frames) {
-      const bounds = contentBounds(decodePng(path.join(folder, frame)));
+      const png = decodePng(path.join(folder, frame));
+      canvas = png.height;
+      const bounds = contentBounds(png);
       if (bounds) feet.push(bounds.maxY);
     }
-    if (feet.length) rows.push({ name, min: Math.min(...feet), max: Math.max(...feet) });
+    if (!feet.length) continue;
+
+    const groundY = Math.round(idleGroundY + (canvas - idlePng.height) / 2);
+    // Un pixel SOUS la ligne calculée = une pose qui descend plus bas que les
+    // pieds (jambe tendue vers le bas, arme qui traîne). Ce n'est pas fautif en
+    // soi, mais c'est la seule chose qui pourrait faire douter du calage.
+    rows.push({ name, canvas, groundY, lowest: Math.max(...feet), highest: Math.min(...feet) });
   }
   return rows;
 }
@@ -169,7 +191,7 @@ function applyToManifest(result, perAnimation) {
   for (const row of perAnimation) {
     const entry = new RegExp(`("${row.name}":\\s*\\{[^}]*?"loop":\\s*(?:true|false))(,\\s*"groundY":\\s*\\d+)?`);
     if (!entry.test(raw)) continue;
-    raw = raw.replace(entry, `$1, "groundY": ${row.max}`);
+    raw = raw.replace(entry, `$1, "groundY": ${row.groundY}`);
   }
 
   JSON.parse(raw); // garde-fou : on ne réécrit jamais un JSON cassé
@@ -208,20 +230,28 @@ function main() {
     // Une ligne de sol qui bouge d'une animation à l'autre fait sauter le perso
     // verticalement quand le coup part : on le signale toujours, et --per-animation
     // détaille le coupable.
-    const rows = groundLinePerAnimation(r.manifest);
-    const allFeet = rows.flatMap((row) => [row.min, row.max]);
-    const spread = allFeet.length ? Math.max(...allFeet) - Math.min(...allFeet) : 0;
-    if (spread > 6) {
+    const rows = groundLinePerAnimation(r.manifest, r.png, r.groundY);
+    const canvases = [...new Set(rows.map((row) => row.canvas))];
+    if (canvases.length > 1) {
       console.log(
-        `${''.padEnd(9)} ligne de sol variable sur ${spread} px selon l'animation ` +
+        `${''.padEnd(9)} canevas de tailles différentes (${canvases.join(', ')}) ` +
         `— un "groundY" par animation sera écrit`
+      );
+    }
+    const below = rows.filter((row) => row.lowest > row.groundY + 2);
+    if (below.length) {
+      console.log(
+        `${''.padEnd(9)} pose descendant sous la ligne de sol : ` +
+        below.map((row) => `${row.name} (+${row.lowest - row.groundY} px)`).join(', ')
       );
     }
     if (verbose) {
       for (const row of rows) {
-        const flag = row.max - r.groundY > 6 || r.groundY - row.min > 6 ? '  ⚠' : '';
-        const range = row.min === row.max ? `${row.min}` : `${row.min}-${row.max}`;
-        console.log(`${''.padEnd(11)}${row.name.padEnd(12)} pieds y=${range}${flag}`);
+        const lift = row.groundY - row.highest;
+        console.log(
+          `${''.padEnd(11)}${row.name.padEnd(12)} canevas ${String(row.canvas).padStart(3)} ` +
+          `| groundY ${row.groundY}` + (lift > 2 ? `  (décolle de ${lift} px)` : '')
+        );
       }
     }
 

@@ -78,9 +78,36 @@ badge ADRIA des blouses. Les noms affichés suivent la convention scientifique
 abrégée (`B. cereus`, `L. monocytogenes`) — le nom complet ne tiendrait pas sous
 la barre de vie, qui fait 140 px pour une police de 7 px.
 
-L'équilibrage de base est le même pour tous (poing 14 / pied 18 / super 26) :
-les persos se différencient par `moveSpeed`, `jumpVelocity`, `hurtbox`, `scale`
-et les portées de hitbox — pas en cassant ces valeurs.
+### Les coups
+
+Chaque perso a **deux attaques et une spéciale**, déclarées dans son manifeste.
+Les effets d'état sont posés par le champ `effect` d'un coup — le moteur ne
+code en dur aucun personnage.
+
+| Perso | Poing (F / K) | Pied (G / L) | Spéciale (Poing + Pied, jauge pleine) |
+|---|---|---|---|
+| **Doc Gram** | Coup direct — 14 | Jet de biocide — 18, longue portée | **Bec Bunsen** — 18 puis **brûlure 3 s** (7 dégâts/s) |
+| **Doc Pétri** | Coup direct — 14 | Jet de biocide — 18, longue portée | **Bec Bunsen** — 18 puis **brûlure 3 s** |
+| **B. cereus** | Coup direct — 16 | **Spore** — 8, et **téléporte derrière l'adversaire** | **Jet de céréulide** — 34, le plus gros coup du jeu |
+| **L. monocytogenes** | Coup direct — 13 | **Biofilm** — 0 dégât, **invulnérable 1 s** mais ralentie 1,6 s | **Gel** — 16 et **adversaire ralenti 3 s**, teinté bleu |
+
+Les effets disponibles (`effect.type`) : `burn`, `freeze`, `shield`,
+`teleportBehind`. `effect.on: "use"` déclenche au lancement du coup plutôt qu'à
+la touche — c'est ce qui rend le biofilm et la spore utilisables même à vide.
+Un combattant sous biofilm n'encaisse ni le coup ni son effet.
+
+Un combattant ralenti ou gelé se déplace à **un tiers** de sa vitesse
+(`SLOW_FACTOR` dans `Config.js`), et sa teinte le signale à l'écran :
+orange s'il brûle, bleu s'il est gelé, vert s'il est sous biofilm.
+
+### Croisement
+
+Dès que l'un des deux est en l'air, la séparation des corps est levée : on peut
+**sauter par-dessus l'adversaire et atterrir de l'autre côté**. Les deux
+continuent de se faire face, `facing` étant recalculé à chaque frame.
+
+L'équilibrage de base reste homogène : les persos se différencient par
+`moveSpeed`, `jumpVelocity`, `hurtbox`, `scale` et les portées de hitbox.
 
 Ajouter un 5ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
 `scripts/characters.js`, et un appel `loadCharacter(...)` dans `boot()` de
@@ -88,9 +115,16 @@ Ajouter un 5ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
 
 ## Les décors
 
-Huit décors en rotation, listés dans `STAGE_FILES` de `js/main.js` :
-`paillasse` · `boite-de-petri` · `hotte` · `salle-de-culture` · `congelateur` ·
-`autoclave` · `microscope` · `intestin`
+Neuf décors en rotation, listés dans `STAGE_FILES` de `js/main.js` :
+`labo` · `paillasse` · `boite-de-petri` · `hotte` · `salle-de-culture` ·
+`congelateur` · `autoclave` · `microscope` · `intestin`
+
+**Le `labo` est panoramique** : 1455 px de large pour un écran de 384, soit
+3,8 écrans. La caméra suit le milieu des deux combattants et bute sur les murs
+du fond — voir `js/engine/Camera.js`. Tout décor plus large que l'écran défile
+automatiquement, sans rien déclarer ; il s'importe avec
+`node scripts/import-wide-stage.js <slug> --floor-ratio 0.80 --grid`
+(détails dans [`references/decors/README.md`](references/decors/README.md)).
 
 ```json
 {
@@ -131,7 +165,8 @@ node scripts/check-assets.js              # contrôle de cohérence, sans API
 | `scripts/prepare-reference.js` | Recadre et redimensionne une image de référence pour l'API. |
 | `scripts/create-character.js` | Crée un perso depuis `references/<perso>.*` + récupère ses poses statiques. |
 | `scripts/generate-sprites.js` | Les 10 animations de combat, et aligne `frameCount` sur ce qui est livré. |
-| `scripts/generate-stage-background.js` | Les fonds de décor. |
+| `scripts/generate-stage-background.js` | Les fonds de décor, via l'API. |
+| `scripts/import-wide-stage.js` | **Sans API.** Importe un décor panoramique déjà en pixel art et cale sa ligne de sol. |
 | `scripts/characters.js` | Les descriptions physiques et d'actions. **Le seul fichier à éditer pour changer l'allure d'un perso.** |
 
 ### La clé Pixellab

@@ -1,0 +1,12 @@
+{
+  "name": "Laboratoire",
+  "background": "assets/stages/labo/background.png",
+  "scrolling": true,
+  "palette": {
+    "far": "#2a2c44",
+    "mid": "#3a3d5c",
+    "floor": "#8f97ad",
+    "accent": "#7ee3b8"
+  },
+  "floorRatio": 0.8
+}

@@ -2,6 +2,7 @@ import { Input } from './engine/Input.js';
 import { loadCharacter } from './engine/SpriteLoader.js';
 import { Fighter } from './engine/Fighter.js';
 import { loadStage, drawStage, updateStage } from './engine/Stage.js';
+import { Camera } from './engine/Camera.js';
 import { drawHUD } from './engine/HUD.js';
 import { updateHitEffects, drawHitEffects, clearHitEffects, getScreenShakeOffset } from './engine/Effects.js';
 import { playSfx } from './engine/Audio.js';
@@ -19,6 +20,7 @@ const JINGLE_FIGHT_END = 'assets/audio/sfx/jingle/jingle-3.wav';
 // nom du fichier (sans .json) ici pour qu'un nouveau décor entre dans la
 // rotation dès que son manifeste existe dans js/data/stages/.
 const STAGE_FILES = [
+  'labo',
   'paillasse', 'boite-de-petri', 'hotte', 'salle-de-culture',
   'congelateur', 'autoclave', 'microscope', 'intestin',
 ];
@@ -71,6 +73,7 @@ let stateBeforePause = null;
 let loadError = null;
 
 let roster, stages, stage;
+const camera = new Camera();
 let fighter1, fighter2, timeLeft;
 let roundWins = { 1: 0, 2: 0 };
 let roundResultTimer = 0;
@@ -217,11 +220,18 @@ function updateStageSelect() {
 }
 
 function startFight(char1, char2, chosenStage) {
-  fighter1 = new Fighter(char1, 1, (ARENA_LEFT + CANVAS_WIDTH / 2) / 2 - 20, 1);
-  fighter2 = new Fighter(char2, 2, (ARENA_RIGHT + CANVAS_WIDTH / 2) / 2 + 20, -1);
+  stage = chosenStage;
+  // La caméra doit connaître le décor avant de placer les combattants : sur un
+  // décor panoramique, la manche démarre au milieu du terrain, pas au bord.
+  camera.setStage(stage);
+  const centre = camera.x + CANVAS_WIDTH / 2;
+  fighter1 = new Fighter(char1, 1, centre - 60, 1);
+  fighter2 = new Fighter(char2, 2, centre + 60, -1);
+  fighter1.camera = camera;
+  fighter2.camera = camera;
+  camera.snapTo(fighter1, fighter2);
   timeLeft = ROUND_TIME_SECONDS;
   gameState = GAME_STATE.FIGHT;
-  stage = chosenStage;
   overlayStageSelect.classList.add('hidden');
   overlayResult.classList.add('hidden');
   clearHitEffects();
@@ -329,6 +339,7 @@ function update(dt) {
   if (gameState === GAME_STATE.FIGHT) {
     fighter1.update(dt, input, fighter2);
     fighter2.update(dt, input, fighter1);
+    camera.update(fighter1, fighter2, dt);
     updateHitEffects(dt);
 
     if (!fighter1.ko && !fighter2.ko &&
@@ -370,13 +381,18 @@ function draw() {
   const shake = getScreenShakeOffset();
   ctx.save();
   ctx.translate(shake.x, shake.y);
-  drawStage(ctx, stage);
+  drawStage(ctx, stage, camera.x);
 
   if (fighter1 && fighter2) {
+    // Les combattants et les étincelles vivent en coordonnées monde : on décale
+    // le repère de la caméra avant de les dessiner. Le HUD, lui, reste fixe.
+    ctx.save();
+    ctx.translate(-Math.round(camera.x), 0);
     // ordre de dessin simple : le perso le plus en arrière (y le plus petit à l'écran) d'abord
     const order = fighter1.x <= fighter2.x ? [fighter1, fighter2] : [fighter2, fighter1];
     for (const f of order) f.draw(ctx);
     drawHitEffects(ctx);
+    ctx.restore();
   }
   ctx.restore();
 
