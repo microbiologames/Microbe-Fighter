@@ -272,20 +272,29 @@ Les 9 sons par personnage : `punch` · `kick` · `hurt` · `ko` · `victory` ·
 > pour un perso « déguisé » plus tard. Le `narguer.wav` de Margot, seule
 > incohérence du dépôt d'origine, a été renommé `nargue.wav` ici.
 
-## ⚠️ Trois musiques sur quatre ne sont pas versionnées
+## La musique
 
-`title-screen`, `ambient-theme` et `combat-low-hp` pèsent **27 Mo chacune** en
-WAV (2 min 35). Elles ont été volontairement laissées hors du dépôt : 82 Mo dans
-l'historique git d'un dépôt neuf, c'est irréversible, et ça se télécharge à
-chaque visite.
+**Dépose-la dans [`assets/audio/music/`](assets/audio/music/README.md)**, sous
+ces quatre noms exacts — aucun code à modifier :
 
-Le **motif Strudel qui les produit** est versionné à côté, dans
-`assets/audio/music/*.js`. Seule `victory.wav` (608 Ko, 3,5 s) est incluse.
+| Fichier | Jouée quand |
+|---|---|
+| `title-screen.wav` | Écran titre et écrans de sélection |
+| `ambient-theme.wav` | Pendant le combat |
+| `combat-low-hp.wav` | Dès qu'un combattant passe sous 50 PV, en fondu |
+| `victory.wav` | Écran de fin de match |
 
-`js/engine/Music.js` est silencieux tant qu'un fichier est absent : le jeu
-tourne normalement. Pour les réactiver, dépose les `.wav` dans
-`assets/audio/music/` — ou mieux, des `.ogg`, en ajustant les quatre constantes
-en haut de `js/main.js`.
+Seul `victory.wav` est dans le dépôt. Les trois autres pesaient **27 Mo chacune**
+dans le jeu d'origine (WAV non compressé) : 82 Mo définitifs dans l'historique
+git, retéléchargés à chaque visite. Elles ont donc été écartées, mais **le motif
+Strudel qui les a produites est conservé** à côté, dans les `.js` du même
+dossier.
+
+`js/engine/Music.js` est silencieux tant qu'un fichier manque : le jeu tourne
+normalement. Préfère de l'**ogg ou du mp3** — dix fois plus léger que le WAV à
+qualité équivalente ; il suffit alors d'ajuster l'extension dans les quatre
+constantes en haut de `js/main.js`. Tout est détaillé dans le
+[README du dossier](assets/audio/music/README.md).
 
 ---
 
