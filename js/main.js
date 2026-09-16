@@ -12,10 +12,6 @@ import {
   ROUNDS_TO_WIN, ROUND_RESULT_DISPLAY_MS,
 } from './engine/Config.js';
 
-const JINGLE_STARTUP = 'assets/audio/sfx/jingle/jingle-1.wav';
-const JINGLE_FIGHT_START = 'assets/audio/sfx/jingle/jingle-2.wav';
-const JINGLE_FIGHT_END = 'assets/audio/sfx/jingle/jingle-3.wav';
-
 // Un décor différent est tiré au sort à chaque combat. Ajoute simplement le
 // nom du fichier (sans .json) ici pour qu'un nouveau décor entre dans la
 // rotation dès que son manifeste existe dans js/data/stages/.
@@ -130,7 +126,6 @@ async function boot() {
     pickRandomStage();
     renderTitleRoster();
     gameState = GAME_STATE.TITLE;
-    playSfx(JINGLE_STARTUP);
     startMusic(MUSIC, { volume: 0.45 });
   } catch (err) {
     console.error(err);
@@ -225,7 +220,6 @@ function startFight(char1, char2, chosenStage) {
   overlayStageSelect.classList.add('hidden');
   overlayResult.classList.add('hidden');
   clearHitEffects();
-  playSfx(JINGLE_FIGHT_START);
 }
 
 function endRound(winner) {
@@ -244,7 +238,6 @@ function endRound(winner) {
     resultText.textContent = `${matchWinner.character.displayName.toUpperCase()} GAGNE LE MATCH ! (${score})`;
     resultHint.textContent = 'Appuyez sur ENTRÉE pour rejouer';
     gameState = GAME_STATE.RESULT;
-    playSfx(JINGLE_FIGHT_END);
   } else {
     resultText.textContent = winner
       ? `${winner.character.displayName.toUpperCase()} REMPORTE LA MANCHE (${score})`

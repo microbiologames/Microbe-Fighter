@@ -330,7 +330,7 @@ microbe-fighter/
     stages/<slug>/background.png
     audio/sfx/{nico,raph,margot}/    ← voix enregistrées, en place
     audio/sfx/ame/                   ← VIDE, voir plus haut
-    audio/sfx/jingle/
+    audio/music/                     ← la musique, une seule piste
     audio/music/
     fonts/PressStart2P-Regular.ttf
   scripts/                    génération Pixellab + contrôle de cohérence

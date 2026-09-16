@@ -55,15 +55,14 @@ présente.
 
 ## À ne pas confondre
 
-Les **voix** des personnages sont dans `assets/audio/sfx/<personne>/`. Celles
-d'Amé restent à enregistrer — voir [`../sfx/ame/README.md`](../sfx/ame/README.md).
-
-Les **jingles** (démarrage, début et fin de combat) sont dans
-`assets/audio/sfx/jingle/` et sont déjà en place.
+Le jeu n'a plus que **deux sortes de sons** : cette musique, et les **voix** des
+personnages dans `assets/audio/sfx/<personne>/`. Celles d'Amé restent à
+enregistrer — voir [`../sfx/ame/README.md`](../sfx/ame/README.md).
 
 ## Ce qui a été retiré
 
 Le jeu d'origine avait quatre pistes (titre, ambiance, basse vie, victoire) avec
-fondu enchaîné entre elles. Ce système est supprimé, ainsi que les motifs
-Strudel qui les produisaient et `victory.wav`. Tout reste dans l'historique git
-si besoin.
+fondu enchaîné entre elles, ainsi que trois **jingles** au démarrage et au début
+et à la fin de chaque combat. Tout cela venait de Family Fight et ne collait plus
+au registre : supprimé, avec les motifs Strudel et `victory.wav`. L'historique
+git les conserve.
