@@ -72,10 +72,12 @@ pastilles au-dessus des barres de vie.
 | **Doc Pétri** — microbiologiste | `petri` | Femme | Plus vive, un peu moins d'allonge. Poing = portoir à tubes, super = vapeur d'autoclave. |
 | **B. cereus** — *Bacillus cereus* | `cereus` | Créature | Le plus grand et le plus large, lent, saut bas, encaisse. Le cogneur. Son **spore abdominal** s'embrase sur la super attaque. |
 | **L. monocytogenes** — *Listeria monocytogenes* | `listeria` | Créature | Mince et rapide, saut haut, peu de hurtbox. Griffes et ruée. Le « hit and run ». |
+| **S. aureus** — *Staphylococcus aureus* | `staph` | Grappe de petites voix | Une grappe de coques dorées, chacune avec sa tête. Vitesse moyenne. **Quasi insensible aux biocides, mais fragile face à la chaleur.** |
 
-Deux pathogènes alimentaires face à deux microbiologistes : le registre colle au
+Trois pathogènes alimentaires face à deux microbiologistes : le registre colle au
 badge ADRIA des blouses. Les noms affichés suivent la convention scientifique
-abrégée (`B. cereus`, `L. monocytogenes`) — le nom complet ne tiendrait pas sous
+abrégée (`B. cereus`, `L. monocytogenes`, `S. aureus`) — le nom complet ne tiendrait
+pas sous
 la barre de vie, qui fait 140 px pour une police de 7 px.
 
 ### Les coups
@@ -90,15 +92,45 @@ code en dur aucun personnage.
 | **Doc Pétri** | Coup direct — 14 | Jet de biocide — 18, longue portée | **Bec Bunsen** — 18 puis **brûlure 3 s** |
 | **B. cereus** | Coup direct — 16 | **Spore** — 8, et **téléporte derrière l'adversaire** | **Jet de céréulide** — 34, le plus gros coup du jeu |
 | **L. monocytogenes** | Coup direct — 13 | **Biofilm** — 0 dégât, **invulnérable 1 s** mais ralentie 1,6 s | **Gel** — 16 et **adversaire ralenti 3 s**, teinté bleu |
+| **S. aureus** | Coup direct — 15 | **Coagulase** — 6, et **fige l'adversaire 1 s** dans un cube de plasma | **Toxine staphylococcique** — 34, à égalité avec la céréulide |
 
 Les effets disponibles (`effect.type`) : `burn`, `freeze`, `shield`,
-`teleportBehind`. `effect.on: "use"` déclenche au lancement du coup plutôt qu'à
-la touche — c'est ce qui rend le biofilm et la spore utilisables même à vide.
-Un combattant sous biofilm n'encaisse ni le coup ni son effet.
+`teleportBehind`, `trap`. `effect.on: "use"` déclenche au lancement du coup
+plutôt qu'à la touche — c'est ce qui rend le biofilm et la spore utilisables même
+à vide. Un combattant sous biofilm n'encaisse ni le coup ni son effet.
+
+`trap`, la coagulase, est le seul effet qui **retire complètement la main au
+joueur** : pendant la seconde où le plasma a pris, l'adversaire ne lit plus
+aucune touche et ne bouge plus du tout — là où `freeze` se contente de le
+ralentir. Un cube jaunâtre translucide se dessine autour de lui, dans les tons de
+`COAGULATION_CUBE` (`Config.js`).
 
 Un combattant ralenti ou gelé se déplace à **un tiers** de sa vitesse
 (`SLOW_FACTOR` dans `Config.js`), et sa teinte le signale à l'écran :
-orange s'il brûle, bleu s'il est gelé, vert s'il est sous biofilm.
+orange s'il brûle, bleu s'il est gelé, jaune s'il est pris dans la coagulase,
+vert s'il est sous biofilm.
+
+### Types de dégâts et résistances
+
+Chaque coup porte un `damageType` — `physique`, `biocide`, `chaleur` ou
+`toxine` — et un personnage peut déclarer des `resistances` dans son manifeste :
+
+```json
+"resistances": { "biocide": 0.15, "chaleur": 1.6 }
+```
+
+Le nombre **multiplie** les dégâts reçus de ce type. `1` (la valeur par défaut,
+et le cas des quatre premiers personnages) ne change rien ; `0.15` veut dire
+qu'il n'encaisse que 15 % du coup ; `1.6`, qu'il en prend 60 % de plus. La
+brûlure du bec Bunsen est mise à l'échelle de la même façon, tick par tick.
+
+C'est ce qui donne à **S. aureus** son caractère : les jets de biocide des deux
+microbiologistes ne lui font presque rien (18 dégâts tombent à 3), mais le bec
+Bunsen le déchire (18 deviennent 29, et la brûlure passe de 7 à 11 dégâts par
+seconde). Face à lui, la super attaque n'est plus un luxe mais le seul vrai
+moyen de le sortir — ce qui est exactement le rapport de force réel : le
+staphylocoque résiste très bien aux désinfectants de surface et très mal à la
+chaleur.
 
 ### Croisement
 
@@ -109,7 +141,7 @@ continuent de se faire face, `facing` étant recalculé à chaque frame.
 L'équilibrage de base reste homogène : les persos se différencient par
 `moveSpeed`, `jumpVelocity`, `hurtbox`, `scale` et les portées de hitbox.
 
-Ajouter un 5ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
+Ajouter un 6ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
 `scripts/characters.js`, et un appel `loadCharacter(...)` dans `boot()` de
 `js/main.js`. Il apparaît alors tout seul dans le sélecteur et sur l'écran titre.
 
@@ -265,6 +297,7 @@ manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 | **Doc Pétri** | Femme |
 | **B. cereus** | Grognements de créature |
 | **L. monocytogenes** | Grognements et bruits visqueux |
+| **S. aureus** | Une grappe de petites voix empilées |
 
 Elles proviennent de banques **CC0** d'OpenGameArt, et sont importées et
 normalisées par `node scripts/import-voices.js`. La correspondance
@@ -330,12 +363,12 @@ microbe-fighter/
     engine/                   Config, Input, SpriteLoader, Fighter, Stage,
                               HUD, Effects, Audio, Music
     data/
-      characters/{gram,petri,cereus,listeria}.json
+      characters/{gram,petri,cereus,listeria,staph}.json
       stages/<slug>.json
   assets/
     sprites/<perso>/<animation>/     ← les exports Pixellab arrivent ici
     stages/<slug>/background.png
-    audio/sfx/{gram,petri,cereus,listeria}/   ← les voix, une par perso
+    audio/sfx/{gram,petri,cereus,listeria,staph}/  ← les voix, une par perso
     audio/music/                             ← la musique, une seule piste
     audio/music/
     fonts/PressStart2P-Regular.ttf

@@ -129,16 +129,20 @@ async function downloadImage(url, destFile) {
 // 1024x1024, et un cadrage serré donne un bien meilleur résultat.
 const REFERENCE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
 
-function findReferenceImage(kind, name) {
+// `names` peut contenir plusieurs noms : l'id du personnage, et le nom réel du
+// fichier déposé quand il diffère (« Staphylococcus aureus.jpg » pour `staph`).
+function findReferenceImage(kind, ...names) {
   const dirs = [
     path.join(ROOT, 'references', 'prepared', kind),
     path.join(ROOT, 'references', kind),
     path.join(ROOT, 'references'), // ancienne disposition, à plat
   ];
   for (const dir of dirs) {
-    for (const ext of REFERENCE_EXTENSIONS) {
-      const p = path.join(dir, name + ext);
-      if (fs.existsSync(p)) return p;
+    for (const name of names.filter(Boolean)) {
+      for (const ext of REFERENCE_EXTENSIONS) {
+        const p = path.join(dir, name + ext);
+        if (fs.existsSync(p)) return p;
+      }
     }
   }
   return null;

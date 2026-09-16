@@ -9,6 +9,7 @@ assets/audio/sfx/
   petri/      Doc Pétri         — voix de femme
   cereus/     B. cereus         — grognements de créature
   listeria/   L. monocytogenes  — grognements et bruits visqueux
+  staph/      S. aureus         — une grappe de petites voix (voir plus bas)
 ```
 
 Chaque dossier contient : `punch` · `kick` · `superattack` · `hurt` · `ko` ·
@@ -26,6 +27,9 @@ Tous les extraits proviennent de banques **CC0 (domaine public)** d'OpenGameArt.
 | [10 Slime / Water Monster](https://opengameart.org/content/10-slimewater-monsterwater) — StarNinjas | L. monocytogenes (saut, esquive) | CC0 |
 | [Hurt Sound Effects](https://opengameart.org/content/hurt-sound-effects) | Doc Gram (douleur, esquive) | CC0 |
 
+S. aureus ne puise dans aucune source nouvelle : sa voix est fabriquée à partir
+des trois packs de créatures ci-dessus, empilés et transposés — voir plus bas.
+
 **Le CC0 n'était pas un hasard.** Le dépôt est public : une licence à partage à
 l'identique — CC-BY-SA, très répandue sur OpenGameArt — aurait contaminé le
 projet entier. Plusieurs packs de meilleure qualité ont été écartés pour ça,
@@ -41,7 +45,7 @@ chaque événement à un extrait. Modifier une ligne, puis :
 
 ```bash
 node scripts/import-voices.js petri      # ré-importe un personnage
-node scripts/import-voices.js            # les quatre
+node scripts/import-voices.js            # tous
 node scripts/import-voices.js --list     # ce qui serait importé, sans rien écrire
 ```
 
@@ -51,12 +55,45 @@ tienne dans un jeu de combat :
 - mono 44,1 kHz 16 bits, quelle que soit la source (wav, ogg ou mp3) ;
 - **silence de tête et de queue coupé** — un son de combat doit partir à
   l'instant du coup, pas 200 ms plus tard ;
-- **crête normalisée**, pour que les quatre personnages soient au même niveau ;
+- **crête normalisée**, pour que tous les personnages soient au même niveau ;
 - fondu de 5 ms aux deux bouts, contre les claquements ;
 - tronqué à 2,5 s.
 
 Il affiche la durée obtenue et ce qu'il a coupé, ce qui permet de repérer les
 extraits inadaptés.
+
+## La voix de grappe de S. aureus
+
+S. aureus n'est pas un individu : c'est un **amas de coques dorées**, chacune
+avec sa propre petite tête. Lui donner une seule voix aurait sonné faux.
+
+Un événement peut donc empiler **plusieurs extraits** au lieu d'un seul. Dans
+`scripts/voices.js`, on écrit une liste de couches
+`[source, fichier, demiTons, decalageMs]` :
+
+```js
+punch: [
+  ['steampunk', 'Minion_Attack_001_0.wav', 7],
+  ['monstres',  'monster.3.ogg',           11],
+  ['steampunk', 'Minion_Attack_002_0.wav', 4],
+],
+```
+
+Chaque couche est **jouée plus vite** pour monter dans l'aigu — `demiTons` 12
+correspond à une octave, donc à une voix deux fois plus petite et plus vive —
+puis **décalée de 30 ms** sur la précédente. Ce décalage est ce qui compte :
+sans lui, les trois cris partent exactement ensemble et on entend un seul gros
+monstre au timbre bizarre ; avec lui, on entend plusieurs bestioles qui râlent
+presque en même temps.
+
+Les couches sont mises à un niveau commun avant d'être mélangées, la première
+portant le son et les suivantes remplissant derrière (`1/√n`). Sans cette
+égalisation, l'extrait le plus fort écrase les autres et la normalisation finale
+ne rattrape que le volume, pas l'équilibre.
+
+Détail d'implémentation qui a son importance : **quand il n'y a qu'une couche —
+le cas des quatre autres personnages — le calcul est exactement celui d'avant,
+au bit près.** Ajouter l'empilement n'a modifié aucune voix existante.
 
 ## Le piège : les répliques parlées
 

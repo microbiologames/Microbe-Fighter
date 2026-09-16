@@ -38,7 +38,16 @@ export const BURN_DAMAGE_PER_SEC = 7;
 export const STATUS_TINTS = {
   burning: { color: '#ff7a1a', alpha: 0.5 },
   frozen: { color: '#4fb8ff', alpha: 0.55 },
+  trapped: { color: '#e8c84a', alpha: 0.4 },
   shielded: { color: '#7ee3b8', alpha: 0.35 },
+};
+
+// Cube de plasma coagulé dans lequel la coagulase de S. aureus enferme sa cible :
+// un adversaire pris dedans ne peut plus ni bouger ni attaquer le temps de l'effet.
+export const COAGULATION_CUBE = {
+  fill: 'rgba(232, 200, 74, 0.28)',
+  edge: 'rgba(255, 233, 130, 0.85)',
+  padding: 6, // débord du cube autour de la hurtbox, en pixels du canvas
 };
 
 // Fenêtre pendant laquelle une attaque simple qui vient de partir peut encore

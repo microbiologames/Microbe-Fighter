@@ -58,6 +58,14 @@ const SOURCES = {
 const EVENTS = ['punch', 'kick', 'superattack', 'hurt', 'ko', 'victory', 'jump', 'esquive', 'nargue'];
 
 // `[source, fichier]` pour chaque événement.
+//
+// Un personnage peut aussi EMPILER plusieurs extraits sur un même événement :
+// on donne alors une liste de couches `[source, fichier, demiTons, decalageMs]`,
+// et import-voices.js les transpose, les décale et les mélange en un seul son.
+// `demiTons` monte ou descend la hauteur (12 = une octave au-dessus) ; c'est ce
+// qui fabrique une « petite » voix. `decalageMs` est optionnel : sans lui, les
+// couches sont décalées de 30 ms l'une après l'autre, ce qui donne une bouillie
+// de voix qui parlent presque ensemble plutôt qu'un choeur trop propre.
 const VOICES = {
   // --- Doc Gram : voix d'homme classique -----------------------------------
   // Le « Hero » du pack steampunk : timbre grave, articulé, sans accent marqué.
@@ -122,6 +130,63 @@ const VOICES = {
     jump:        ['slime', 'slime.3.ogg'],
     esquive:     ['slime', 'slime.7.ogg'],
     nargue:      ['monstres', 'monster.5.ogg'],
+  },
+
+  // --- S. aureus : une grappe de coques, donc une grappe de voix -------------
+  // Le personnage n'est pas un individu : c'est un amas de cocci dorés, chacun
+  // avec sa propre petite tête. Une seule voix aurait sonné faux. Chaque
+  // événement empile donc deux ou trois extraits, transposés vers l'aigu de 4 à
+  // 14 demi-tons et décalés de quelques dizaines de millisecondes : on entend
+  // plusieurs petites bestioles qui râlent en même temps sans tout à fait se
+  // synchroniser.
+  //
+  // La coagulase et le saut piochent dans le pack slime : le plasma qui prend en
+  // masse demande un son visqueux, pas un cri.
+  staph: {
+    voix: 'grappe',
+    punch: [
+      ['steampunk', 'Minion_Attack_001_0.wav', 7],
+      ['monstres',  'monster.3.ogg',           11],
+      ['steampunk', 'Minion_Attack_002_0.wav', 4],
+    ],
+    kick: [
+      ['slime',    'slime.2.ogg',   6],
+      ['monstres', 'monster.6.ogg', 10],
+      ['slime',    'slime.5.ogg',   13],
+    ],
+    superattack: [
+      ['steampunk', 'Minion_Sword_001.wav', 5],
+      ['monstres',  'monster.11.ogg',       9],
+      ['monstres',  'monster.13.ogg',       14],
+    ],
+    hurt: [
+      ['monstres',  'monster.2.ogg',            8],
+      ['steampunk', 'Minion_Bombed_001_0.wav',  12],
+      ['monstres',  'monster.8.ogg',            5],
+    ],
+    ko: [
+      ['steampunk', 'Minion_DieImpact_001_0.wav', 6],
+      ['monstres',  'monster.14.ogg',             10],
+      ['monstres',  'monster.1.ogg',              13],
+    ],
+    victory: [
+      ['steampunk', 'Minion_Sword_003.wav',  7],
+      ['monstres',  'monster.9.ogg',         11],
+      ['steampunk', 'Minion_Drunk_001.wav',  4],
+    ],
+    jump: [
+      ['slime', 'slime.3.ogg', 9],
+      ['slime', 'slime.8.ogg', 14],
+    ],
+    esquive: [
+      ['steampunk', 'Minion_Feared_001.wav', 8],
+      ['slime',     'slime.7.ogg',           12],
+    ],
+    nargue: [
+      ['steampunk', 'Minion_Drunk_001.wav',  6],
+      ['monstres',  'monster.5.ogg',         10],
+      ['steampunk', 'Minion_Feared_001.wav', 14],
+    ],
   },
 };
 

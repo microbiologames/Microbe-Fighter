@@ -9,6 +9,12 @@
 //   - fondu de 5 ms aux deux bouts, contre les claquements ;
 //   - tronqué à 2,5 s : ce sont des interjections, pas des répliques.
 //
+// Un événement peut empiler PLUSIEURS extraits (voir le format dans voices.js) :
+// chaque couche est transposée, décalée de quelques dizaines de millisecondes et
+// mélangée aux autres. C'est ce qui donne à S. aureus sa voix de grappe — une
+// poignée de petites voix qui parlent en même temps, parce que le personnage est
+// littéralement plusieurs coques.
+//
 // Usage :
 //   node scripts/import-voices.js            # les quatre personnages
 //   node scripts/import-voices.js petri      # un seul
@@ -33,6 +39,7 @@ const SILENCE_THRESHOLD = 0.012; // en dessous, on considère que c'est du silen
 const PEAK_TARGET = 0.89;
 const FADE_MS = 5;
 const MAX_SECONDS = 2.5;
+const ECART_COUCHE_MS = 30; // décalage par défaut entre deux couches empilées
 
 function loadPlaywright() {
   try { return require('playwright').chromium; } catch { return null; }
@@ -126,57 +133,110 @@ async function sourceFile(sourceKey, fileName) {
   return download(src.base + encodeURIComponent(fileName), path.join(CACHE, sourceKey, fileName));
 }
 
-// Tourne dans la page Chromium : décode, nettoie, ré-encode en WAV.
-function processInPage({ dataUrl, sampleRate, threshold, peakTarget, fadeMs, maxSeconds }) {
+// Tourne dans la page Chromium : décode chaque couche, la transpose, la nettoie,
+// mélange le tout et ré-encode en WAV.
+//
+// Une seule couche, c'est le cas courant : un extrait nettoyé, rien de plus.
+// Plusieurs couches, c'est la voix de grappe : chacune est jouée à une vitesse
+// différente — lire un son 1,5 fois plus vite le monte de 7 demi-tons et le
+// raccourcit d'autant, ce qui fait une voix plus petite ET plus vive — puis
+// décalée dans le temps pour que les entrées ne tombent pas toutes ensemble.
+function processInPage({ couches, sampleRate, threshold, peakTarget, fadeMs, maxSeconds }) {
   return new Promise((resolve, reject) => {
     (async () => {
-      const bytes = Uint8Array.from(atob(dataUrl), (c) => c.charCodeAt(0));
       const ctx = new OfflineAudioContext(1, sampleRate, sampleRate);
-      let buffer;
-      try {
-        buffer = await ctx.decodeAudioData(bytes.buffer);
-      } catch {
-        reject(new Error('décodage impossible'));
-        return;
+      const rendues = [];
+
+      for (const couche of couches) {
+        const bytes = Uint8Array.from(atob(couche.dataUrl), (c) => c.charCodeAt(0));
+        let buffer;
+        try {
+          buffer = await ctx.decodeAudioData(bytes.buffer);
+        } catch {
+          reject(new Error(`décodage impossible : ${couche.nom}`));
+          return;
+        }
+
+        // Downmix mono.
+        const n = buffer.length;
+        const mono = new Float32Array(n);
+        for (let c = 0; c < buffer.numberOfChannels; c++) {
+          const data = buffer.getChannelData(c);
+          for (let i = 0; i < n; i++) mono[i] += data[i] / buffer.numberOfChannels;
+        }
+
+        // Rééchantillonnage linéaire vers la cadence cible, vitesse de lecture
+        // comprise : `vitesse` vaut 1 sans transposition, 2 une octave au-dessus.
+        const vitesse = Math.pow(2, (couche.demiTons || 0) / 12);
+        const ratio = sampleRate / (buffer.sampleRate * vitesse);
+        const outLen = Math.max(1, Math.round(n * ratio));
+        let s = new Float32Array(outLen);
+        for (let i = 0; i < outLen; i++) {
+          const pos = i / ratio;
+          const i0 = Math.floor(pos);
+          const frac = pos - i0;
+          s[i] = (mono[i0] ?? 0) * (1 - frac) + (mono[i0 + 1] ?? 0) * frac;
+        }
+
+        // Coupe du silence de tête et de queue.
+        let debut = 0; while (debut < s.length && Math.abs(s[debut]) < threshold) debut++;
+        let fin = s.length - 1; while (fin > debut && Math.abs(s[fin]) < threshold) fin--;
+        if (fin <= debut) { debut = 0; fin = s.length - 1; }
+        s = s.slice(debut, Math.min(fin + 1, debut + Math.round(maxSeconds * sampleRate)));
+
+        let crete = 0;
+        for (let i = 0; i < s.length; i++) crete = Math.max(crete, Math.abs(s[i]));
+
+        rendues.push({
+          echantillons: s,
+          crete,
+          gainCouche: couche.gain ?? 1,
+          decalage: Math.round((couche.decalageMs || 0) / 1000 * sampleRate),
+          coupeDebut: debut / sampleRate,
+        });
       }
 
-      // Downmix mono.
-      const n = buffer.length;
-      const mono = new Float32Array(n);
-      for (let c = 0; c < buffer.numberOfChannels; c++) {
-        const data = buffer.getChannelData(c);
-        for (let i = 0; i < n; i++) mono[i] += data[i] / buffer.numberOfChannels;
+      // Longueur du mélange : celle du plus long, décalage compris, plafonnée.
+      const plafond = Math.round(maxSeconds * sampleRate);
+      const total = Math.min(
+        plafond,
+        Math.max(...rendues.map((r) => r.decalage + r.echantillons.length))
+      );
+
+      // Une seule couche : rien à mélanger, et surtout aucun calcul intermédiaire
+      // — le gain est appliqué en un seul produit plus bas. C'est ce qui garantit
+      // que l'ajout de l'empilement n'a rien changé aux voix existantes, au bit
+      // près.
+      //
+      // Plusieurs couches : chacune est d'abord ramenée à un niveau commun, la
+      // première portant le son et les suivantes remplissant derrière. Sans cette
+      // égalisation, un extrait deux fois plus fort que les autres écrase la
+      // grappe et la normalisation finale ne rattrape que le niveau, pas
+      // l'équilibre.
+      let mix;
+      if (rendues.length === 1) {
+        mix = rendues[0].echantillons;
+      } else {
+        mix = new Float32Array(total);
+        for (const r of rendues) {
+          const g = (r.crete > 0 ? 1 / r.crete : 1) * r.gainCouche;
+          const limite = Math.min(r.echantillons.length, total - r.decalage);
+          for (let i = 0; i < limite; i++) mix[r.decalage + i] += r.echantillons[i] * g;
+        }
       }
 
-      // Rééchantillonnage linéaire vers la cadence cible.
-      const ratio = sampleRate / buffer.sampleRate;
-      const outLen = Math.round(n * ratio);
-      let s = new Float32Array(outLen);
-      for (let i = 0; i < outLen; i++) {
-        const pos = i / ratio;
-        const i0 = Math.floor(pos);
-        const frac = pos - i0;
-        s[i] = (mono[i0] ?? 0) * (1 - frac) + (mono[i0 + 1] ?? 0) * frac;
-      }
-
-      // Coupe du silence de tête et de queue.
-      let start = 0; while (start < s.length && Math.abs(s[start]) < threshold) start++;
-      let end = s.length - 1; while (end > start && Math.abs(s[end]) < threshold) end--;
-      if (end <= start) { start = 0; end = s.length - 1; }
-      s = s.slice(start, Math.min(end + 1, start + Math.round(maxSeconds * sampleRate)));
-
-      // Normalisation de crête.
+      // Normalisation de crête du mélange.
       let peak = 0;
-      for (let i = 0; i < s.length; i++) peak = Math.max(peak, Math.abs(s[i]));
+      for (let i = 0; i < total; i++) peak = Math.max(peak, Math.abs(mix[i]));
       const gain = peak > 0 ? peakTarget / peak : 1;
 
       // Fondus aux extrémités.
-      const fade = Math.min(Math.round((fadeMs / 1000) * sampleRate), Math.floor(s.length / 2));
-      const out = new Int16Array(s.length);
-      for (let i = 0; i < s.length; i++) {
-        let v = s[i] * gain;
+      const fade = Math.min(Math.round((fadeMs / 1000) * sampleRate), Math.floor(total / 2));
+      const out = new Int16Array(total);
+      for (let i = 0; i < total; i++) {
+        let v = mix[i] * gain;
         if (i < fade) v *= i / fade;
-        else if (i >= s.length - fade) v *= (s.length - 1 - i) / fade;
+        else if (i >= total - fade) v *= (total - 1 - i) / fade;
         out[i] = Math.max(-32768, Math.min(32767, Math.round(v * 32767)));
       }
 
@@ -199,12 +259,26 @@ function processInPage({ dataUrl, sampleRate, threshold, peakTarget, fadeMs, max
       for (let i = 0; i < wav.length; i += CHUNK) bin += String.fromCharCode(...wav.subarray(i, i + CHUNK));
       resolve({
         base64: btoa(bin),
-        secondes: Number((s.length / sampleRate).toFixed(2)),
-        creteOrigine: Number(peak.toFixed(3)),
-        coupeDebut: Number((start / sampleRate).toFixed(2)),
+        secondes: Number((total / sampleRate).toFixed(2)),
+        creteOrigine: Number(rendues[0].crete.toFixed(3)),
+        coupeDebut: Number(rendues[0].coupeDebut.toFixed(2)),
       });
     })().catch(reject);
   });
+}
+
+// Un événement est soit `[source, fichier]`, soit une liste de couches
+// `[source, fichier, demiTons, decalageMs]`. On ramène les deux à une liste.
+function couchesDe(valeur) {
+  const liste = Array.isArray(valeur[0]) ? valeur : [valeur];
+  return liste.map(([source, fichier, demiTons = 0, decalageMs], i) => ({
+    source,
+    fichier,
+    demiTons,
+    decalageMs: decalageMs ?? i * ECART_COUCHE_MS,
+    // La première couche domine, les suivantes s'effacent progressivement.
+    gain: 1 / Math.sqrt(i + 1),
+  }));
 }
 
 async function main() {
@@ -223,8 +297,14 @@ async function main() {
     for (const c of characters) {
       console.log(`${c} (${VOICES[c].voix})`);
       for (const e of EVENTS) {
-        const [src, file] = VOICES[c][e];
-        console.log(`  ${e.padEnd(12)} ${file.padEnd(34)} ${SOURCES[src].titre} [${SOURCES[src].licence}]`);
+        for (const [i, k] of couchesDe(VOICES[c][e]).entries()) {
+          const etiquette = i === 0 ? e : '';
+          const transpose = k.demiTons ? `+${k.demiTons} demi-tons` : '';
+          console.log(
+            `  ${etiquette.padEnd(12)} ${k.fichier.padEnd(30)} ${transpose.padEnd(14)} ` +
+            `${SOURCES[k.source].titre} [${SOURCES[k.source].licence}]`
+          );
+        }
       }
     }
     return;
@@ -244,18 +324,30 @@ async function main() {
   for (const c of characters) {
     console.log(`\n${c} — voix ${VOICES[c].voix}`);
     for (const e of EVENTS) {
-      const [srcKey, fileName] = VOICES[c][e];
+      const couches = couchesDe(VOICES[c][e]);
       try {
-        const src = await sourceFile(srcKey, fileName);
-        const b64 = fs.readFileSync(src).toString('base64');
+        const prepared = [];
+        for (const k of couches) {
+          const src = await sourceFile(k.source, k.fichier);
+          prepared.push({
+            nom: k.fichier,
+            dataUrl: fs.readFileSync(src).toString('base64'),
+            demiTons: k.demiTons,
+            decalageMs: k.decalageMs,
+            gain: k.gain,
+          });
+        }
         const r = await page.evaluate(processInPage, {
-          dataUrl: b64, sampleRate: SAMPLE_RATE, threshold: SILENCE_THRESHOLD,
+          couches: prepared, sampleRate: SAMPLE_RATE, threshold: SILENCE_THRESHOLD,
           peakTarget: PEAK_TARGET, fadeMs: FADE_MS, maxSeconds: MAX_SECONDS,
         });
         const dest = path.join(SFX_DIR, c, `${e}.wav`);
         fs.mkdirSync(path.dirname(dest), { recursive: true });
         fs.writeFileSync(dest, Buffer.from(r.base64, 'base64'));
-        console.log(`  ${e.padEnd(12)} ${r.secondes}s  (crête source ${r.creteOrigine}, ${r.coupeDebut}s coupés au début)  <- ${fileName}`);
+        const provenance = couches.length === 1
+          ? couches[0].fichier
+          : `${couches.length} couches : ${couches.map((k) => `${k.fichier} +${k.demiTons}`).join(', ')}`;
+        console.log(`  ${e.padEnd(12)} ${r.secondes}s  (crête source ${r.creteOrigine}, ${r.coupeDebut}s coupés au début)  <- ${provenance}`);
         written++;
       } catch (err) {
         console.error(`  ${e.padEnd(12)} ÉCHEC : ${err.message}`);

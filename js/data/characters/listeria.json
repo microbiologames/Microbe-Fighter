@@ -37,6 +37,7 @@
       "label": "Coup direct",
       "animation": "punch",
       "damage": 13,
+      "damageType": "physique",
       "knockback": 5,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 28, "offsetY": 28, "width": 26, "height": 12 }
@@ -45,6 +46,7 @@
       "label": "Biofilm — invulnérable 1 s, mais ralentie",
       "animation": "kick",
       "damage": 0,
+      "damageType": "physique",
       "knockback": 0,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 0, "offsetY": 0, "width": 0, "height": 0 },
@@ -54,6 +56,7 @@
       "label": "Gel — ralentit l'adversaire 3 s",
       "animation": "superattack",
       "damage": 16,
+      "damageType": "froid",
       "knockback": 6,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 40, "offsetY": 30, "width": 40, "height": 20 },

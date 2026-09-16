@@ -37,6 +37,7 @@
       "label": "Coup direct",
       "animation": "punch",
       "damage": 16,
+      "damageType": "physique",
       "knockback": 6,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 30, "offsetY": 34, "width": 30, "height": 14 }
@@ -45,6 +46,7 @@
       "label": "Spore — téléportation derrière l'adversaire",
       "animation": "kick",
       "damage": 8,
+      "damageType": "physique",
       "knockback": 2,
       "activeFrames": [2, 4],
       "hitbox": { "offsetX": 26, "offsetY": 30, "width": 26, "height": 14 },
@@ -54,6 +56,7 @@
       "label": "Jet de céréulide — très gros dégâts",
       "animation": "superattack",
       "damage": 34,
+      "damageType": "toxine",
       "knockback": 9,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 44, "offsetY": 32, "width": 44, "height": 22 }

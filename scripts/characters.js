@@ -125,6 +125,35 @@ const CHARACTERS = {
       ...COMMON,
     },
   },
+
+  // --- S. aureus : une grappe de coques, donc PLUSIEURS -------------------
+  // Le trait a tenir coute que coute : le corps est fait de spheres dorees et
+  // CHACUNE porte son propre petit visage, avec une expression differente. Une
+  // coque plus grosse fait le torse. C'est ce qui le distingue d'un blob dore
+  // quelconque, et c'est ce qui justifie sa voix composee de plusieurs voix.
+  staph: {
+    label: 'S. aureus — Staphylococcus aureus',
+    reference: 'Staphylococcus aureus',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a cartoon humanoid made entirely of clustered golden-amber spheres like a bunch of grapes, ' +
+      'each individual sphere having its own tiny face with a different expression, one larger ' +
+      'sphere with an angry face forming the chest, clawed hands and feet made of smaller spheres, ' +
+      'wide menacing stance, no skin and no clothing, only spheres',
+    anims: {
+      walk: 'a humanoid made of clustered golden spheres each with its own tiny face, walking forward with a heavy rolling stride, the spheres jostling against each other, the big angry face on its chest fully visible',
+      jump: 'a humanoid made of clustered golden spheres each with its own tiny face, hovering in mid-air after a jump, the cluster loosening slightly, clawed sphere hands spread for balance',
+      crouch: 'a humanoid made of clustered golden spheres each with its own tiny face, crouching low and compacting its cluster into a dense ball, subtle breathing bob',
+      punch: 'a humanoid made of clustered golden spheres each with its own tiny face, throwing a heavy forward punch with a clawed sphere fist, full arm extension, dramatic street fighter style, the chest face snarling, the cluster twisting into the blow',
+      kick: 'a humanoid made of clustered golden spheres each with its own tiny face, standing in the LEFT half of the frame with its whole golden body clearly visible and unobscured, flicking a SMALL compact cube of translucent yellow plasma, no bigger than its own head, out of its open clawed hand toward the RIGHT at chest height, the little cube floating alone in the empty right half of the frame with a short thin trail behind it, braced firing stance, side view',
+      hurt: 'a humanoid made of clustered golden spheres each with its own tiny face, flinching backward after being hit, several spheres knocked loose and flying off, the little faces wincing in pain',
+      ko: 'a humanoid made of clustered golden spheres each with its own tiny face, collapsing into a loose heap of scattered golden spheres on the ground, defeated, the little faces with closed eyes, dizzy stars overhead',
+      taunt: 'a humanoid made of clustered golden spheres each with its own tiny face, taunting the opponent, all the little faces grinning and sneering at once, beckoning with a clawed sphere hand',
+      victory: 'a humanoid made of clustered golden spheres each with its own tiny face, celebrating a win, both clawed sphere arms raised high, every little face cheering at once, the chest face triumphant',
+      superattack: 'a humanoid made of clustered golden spheres each with its own tiny face, standing in the LEFT half of the frame with its golden spheres keeping their full amber colour and every tiny face still readable, its chest face open and spitting a NARROW horizontal stream of glowing amber toxin, no thicker than its own arm, toward the RIGHT at chest height through the empty right half of the frame, the stream starting clear of its body and never covering it, dramatic braced power pose, side view',
+      ...COMMON,
+    },
+  },
 };
 
 // Pour les coups, on garde la frame de départ (pose neutre) comme frame 0 : le

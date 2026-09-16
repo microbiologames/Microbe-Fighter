@@ -69,7 +69,7 @@ function sourcesToPrepare(names) {
 
   const wanted = [];
   for (const name of names) {
-    const match = entries.find((e) => e.base === name);
+    const match = entries.find((e) => e.base === name || e.base.toLowerCase() === name.toLowerCase());
     if (!match) {
       console.error(`Aucune image references/{${KINDS.join(',')}}/${name}.* — ignorée`);
       continue;

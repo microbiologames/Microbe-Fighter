@@ -2,7 +2,7 @@ import {
   FLOOR_Y, ARENA_LEFT, ARENA_RIGHT, GRAVITY, JUMP_VELOCITY, MOVE_SPEED,
   MAX_HEALTH, HITSTUN_MS, KNOCKBACK, DODGE_DURATION_MS, DODGE_SPEED, TAUNT_DURATION_MS,
   ENERGY_MAX, ENERGY_REGEN_PER_SEC, ENERGY_TAUNT_BONUS, SUPER_INPUT_WINDOW_MS,
-  SLOW_FACTOR, BURN_DAMAGE_PER_SEC, STATUS_TINTS,
+  SLOW_FACTOR, BURN_DAMAGE_PER_SEC, STATUS_TINTS, COAGULATION_CUBE,
 } from './Config.js';
 import { spawnHitEffect } from './Effects.js';
 import { playSfx } from './Audio.js';
@@ -80,6 +80,12 @@ export class Fighter {
     this.frozenTimer = 0;    // gelé : ralenti (attaque spéciale de Listeria)
     this.shieldTimer = 0;    // invulnérable (biofilm de Listeria)
     this.selfSlowTimer = 0;  // ralentissement qu'on s'inflige (biofilm)
+    this.trappedTimer = 0;   // figé dans un cube de plasma coagulé (coagulase)
+  }
+
+  /** Figé : ne peut plus ni se déplacer ni attaquer, mais encaisse toujours. */
+  get trapped() {
+    return this.trappedTimer > 0;
   }
 
   get slowed() {
@@ -95,6 +101,7 @@ export class Fighter {
   _statusTint() {
     if (this.burnTimer > 0) return STATUS_TINTS.burning;
     if (this.frozenTimer > 0) return STATUS_TINTS.frozen;
+    if (this.trappedTimer > 0) return STATUS_TINTS.trapped;
     if (this.shieldTimer > 0) return STATUS_TINTS.shielded;
     return null;
   }
@@ -104,12 +111,14 @@ export class Fighter {
     if (this.frozenTimer > 0) this.frozenTimer -= dt;
     if (this.shieldTimer > 0) this.shieldTimer -= dt;
     if (this.selfSlowTimer > 0) this.selfSlowTimer -= dt;
+    if (this.trappedTimer > 0) this.trappedTimer -= dt;
 
     if (this.burnTimer > 0) {
       this.burnTimer -= dt;
       // Les dégâts sont fractionnaires par frame : on accumule le reste pour ne
       // pas perdre les décimales à chaque tick.
-      this.burnResidue += (BURN_DAMAGE_PER_SEC * dt) / 1000;
+      // Une brûlure fait d'autant plus mal qu'on est sensible à la chaleur.
+      this.burnResidue += (BURN_DAMAGE_PER_SEC * this.damageFactor('chaleur') * dt) / 1000;
       const whole = Math.floor(this.burnResidue);
       if (whole > 0) {
         this.burnResidue -= whole;
@@ -138,6 +147,13 @@ export class Fighter {
       case 'freeze':
         if (target && !target.shielded) {
           target.frozenTimer = Math.max(target.frozenTimer, effect.durationMs ?? 3000);
+        }
+        break;
+      case 'trap':
+        // La coagulase fige la cible sur place. Un biofilm protège, mais rien
+        // d'autre : c'est le prix d'un effet aussi court.
+        if (target && !target.shielded) {
+          target.trappedTimer = Math.max(target.trappedTimer, effect.durationMs ?? 1000);
         }
         break;
       case 'shield':
@@ -222,9 +238,18 @@ export class Fighter {
     this._advanceAnimation(dt, true);
   }
 
+  /** Multiplicateur de dégâts du personnage face à un type d'attaque.
+   * 0,15 = quasiment insensible, 1,6 = très vulnérable, 1 = neutre.
+   * Déclaré dans "resistances" du JSON du perso ; absent = neutre. */
+  damageFactor(type) {
+    if (!type) return 1;
+    return this.character.resistances?.[type] ?? 1;
+  }
+
   takeHit(move, attackerFacing) {
     if (this.ko || this.invincible || this.shielded) return;
-    this.health = Math.max(0, this.health - move.damage);
+    const damage = Math.round(move.damage * this.damageFactor(move.damageType));
+    this.health = Math.max(0, this.health - damage);
     this.hitstunTimer = HITSTUN_MS;
     this.state = 'hurt';
     this.setAnimation('hurt');
@@ -247,6 +272,21 @@ export class Fighter {
 
     if (this.ko) {
       this._advanceAnimation(dt, false);
+      return;
+    }
+
+    // Figé par la coagulase : on continue de subir le temps et les effets, mais
+    // aucune entrée n'est lue et le personnage ne bouge plus.
+    if (this.trapped && this.hitstunTimer <= 0) {
+      this.vx = 0;
+      this._applyGravity();
+      this._clampToArena(opponent);
+      this.facing = opponent.x >= this.x ? 1 : -1;
+      if (this.state !== 'hurt') {
+        this.state = this.grounded ? 'idle' : 'jump';
+        this.setAnimation(this.state);
+      }
+      this._advanceAnimation(dt, true);
       return;
     }
 
@@ -535,6 +575,52 @@ export class Fighter {
       ctx.scale(this.facing, 1); // texte lisible même si le perso regarde à gauche
       ctx.fillText(this.animName, 0, -h - 2);
     }
+    ctx.restore();
+
+    // Le cube de plasma coagulé se dessine APRÈS le personnage et hors de son
+    // repère mis à l'échelle : c'est une boîte en coordonnées du canvas, calée
+    // sur la hurtbox, pas un élément du sprite.
+    if (this.trapped) this._drawCoagulationCube(ctx);
+  }
+
+  _drawCoagulationCube(ctx) {
+    const hb = this.getHurtbox();
+    const p = COAGULATION_CUBE.padding;
+    const x = Math.round(hb.x - p);
+    const y = Math.round(hb.y - p);
+    const w = Math.round(hb.w + p * 2);
+    const h = Math.round(hb.h + p * 2);
+    const d = Math.round(p * 1.2); // profondeur de la face du dessus, pour le relief
+
+    ctx.save();
+    ctx.fillStyle = COAGULATION_CUBE.fill;
+    ctx.fillRect(x, y, w, h);
+    // Face supérieure en biais : suffit à faire lire un volume plutôt qu'un carré.
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + d, y - d);
+    ctx.lineTo(x + w + d, y - d);
+    ctx.lineTo(x + w, y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(x + w, y);
+    ctx.lineTo(x + w + d, y - d);
+    ctx.lineTo(x + w + d, y + h - d);
+    ctx.lineTo(x + w, y + h);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = COAGULATION_CUBE.edge;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    ctx.beginPath();
+    ctx.moveTo(x + 0.5, y + 0.5); ctx.lineTo(x + d + 0.5, y - d + 0.5);
+    ctx.moveTo(x + w - 0.5, y + 0.5); ctx.lineTo(x + w + d - 0.5, y - d + 0.5);
+    ctx.moveTo(x + w - 0.5, y + h - 0.5); ctx.lineTo(x + w + d - 0.5, y + h - d - 0.5);
+    ctx.moveTo(x + d + 0.5, y - d + 0.5); ctx.lineTo(x + w + d - 0.5, y - d + 0.5);
+    ctx.moveTo(x + w + d - 0.5, y - d + 0.5); ctx.lineTo(x + w + d - 0.5, y + h - d - 0.5);
+    ctx.stroke();
     ctx.restore();
   }
 }

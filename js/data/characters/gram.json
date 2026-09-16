@@ -37,6 +37,7 @@
       "label": "Coup direct",
       "animation": "punch",
       "damage": 14,
+      "damageType": "physique",
       "knockback": 5,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 36, "offsetY": 42, "width": 32, "height": 12 }
@@ -45,6 +46,7 @@
       "label": "Jet de biocide",
       "animation": "kick",
       "damage": 18,
+      "damageType": "biocide",
       "knockback": 6,
       "activeFrames": [2, 4],
       "hitbox": { "offsetX": 52, "offsetY": 30, "width": 48, "height": 16 }
@@ -53,6 +55,7 @@
       "label": "Bec Bunsen — enflamme 3 s",
       "animation": "superattack",
       "damage": 18,
+      "damageType": "chaleur",
       "knockback": 7,
       "activeFrames": [2, 3],
       "hitbox": { "offsetX": 50, "offsetY": 34, "width": 46, "height": 22 },

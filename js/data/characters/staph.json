@@ -1,0 +1,66 @@
+{
+  "id": "staph",
+  "displayName": "S. aureus",
+  "color": "#d9a52e",
+  "scale": 0.877,
+  "groundY": 125,
+  "moveSpeed": 1.7,
+  "jumpVelocity": 7,
+  "portrait": "assets/sprites/staph/portrait/portrait.png",
+  "hurtbox": { "width": 38, "heightStand": 100, "heightCrouch": 68 },
+  "resistances": { "biocide": 0.15, "chaleur": 1.6 },
+  "sfx": {
+    "punch": "assets/audio/sfx/staph/punch.wav",
+    "kick": "assets/audio/sfx/staph/kick.wav",
+    "hurt": "assets/audio/sfx/staph/hurt.wav",
+    "ko": "assets/audio/sfx/staph/ko.wav",
+    "victory": "assets/audio/sfx/staph/victory.wav",
+    "jump": "assets/audio/sfx/staph/jump.wav",
+    "esquive": "assets/audio/sfx/staph/esquive.wav",
+    "nargue": "assets/audio/sfx/staph/nargue.wav",
+    "superattack": "assets/audio/sfx/staph/superattack.wav"
+  },
+  "animations": {
+    "idle":        { "folder": "assets/sprites/staph/idle",        "frameCount": 1, "frameDuration": 150, "loop": true, "groundY": 125 },
+    "walk":        { "folder": "assets/sprites/staph/walk",        "frameCount": 5, "frameDuration": 90,  "loop": true, "groundY": 149 },
+    "jump":        { "folder": "assets/sprites/staph/jump",        "frameCount": 5, "frameDuration": 110, "loop": true, "groundY": 149 },
+    "crouch":      { "folder": "assets/sprites/staph/crouch",      "frameCount": 5, "frameDuration": 120, "loop": false, "groundY": 149 },
+    "punch":       { "folder": "assets/sprites/staph/punch",       "frameCount": 5, "frameDuration": 55,  "loop": false, "groundY": 149 },
+    "kick":        { "folder": "assets/sprites/staph/kick",        "frameCount": 5, "frameDuration": 60,  "loop": false, "groundY": 149 },
+    "hurt":        { "folder": "assets/sprites/staph/hurt",        "frameCount": 5, "frameDuration": 70,  "loop": false, "groundY": 149 },
+    "ko":          { "folder": "assets/sprites/staph/ko",          "frameCount": 5, "frameDuration": 130, "loop": false, "groundY": 149 },
+    "taunt":       { "folder": "assets/sprites/staph/taunt",       "frameCount": 5, "frameDuration": 80,  "loop": false, "groundY": 149 },
+    "victory":     { "folder": "assets/sprites/staph/victory",     "frameCount": 5, "frameDuration": 110, "loop": true, "groundY": 149 },
+    "superattack": { "folder": "assets/sprites/staph/superattack", "frameCount": 5, "frameDuration": 65,  "loop": false, "groundY": 149 }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup direct",
+      "animation": "punch",
+      "damage": 15,
+      "damageType": "physique",
+      "knockback": 5,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 32, "offsetY": 32, "width": 30, "height": 13 }
+    },
+    "kick": {
+      "label": "Coagulase — fige l'adversaire 1 s",
+      "animation": "kick",
+      "damage": 6,
+      "damageType": "physique",
+      "knockback": 1,
+      "activeFrames": [2, 4],
+      "hitbox": { "offsetX": 46, "offsetY": 28, "width": 42, "height": 16 },
+      "effect": { "type": "trap", "durationMs": 1000 }
+    },
+    "superattack": {
+      "label": "Toxine staphylococcique — très gros dégâts",
+      "animation": "superattack",
+      "damage": 34,
+      "damageType": "toxine",
+      "knockback": 9,
+      "activeFrames": [2, 3],
+      "hitbox": { "offsetX": 44, "offsetY": 30, "width": 44, "height": 22 }
+    }
+  }
+}

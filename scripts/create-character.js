@@ -128,11 +128,11 @@ async function main() {
   };
 
   if (useReference) {
-    const reference = findReferenceImage('personnages', charKey);
+    const reference = findReferenceImage('personnages', charKey, spec.reference);
     if (!reference) {
       console.error(
         `Aucune image de référence pour "${charKey}".\n` +
-        `Dépose-la dans references/personnages/${charKey}.jpg, puis relance.\n` +
+        `Dépose-la dans references/personnages/${spec.reference ?? charKey}.jpg, puis relance.\n` +
         `Voir references/README.md. Pour t'en passer : --no-reference`
       );
       process.exit(1);
