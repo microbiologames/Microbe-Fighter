@@ -2,9 +2,10 @@ import {
   FLOOR_Y, ARENA_LEFT, ARENA_RIGHT, GRAVITY, JUMP_VELOCITY, MOVE_SPEED,
   MAX_HEALTH, HITSTUN_MS, KNOCKBACK, DODGE_DURATION_MS, DODGE_SPEED, TAUNT_DURATION_MS,
   ENERGY_MAX, ENERGY_REGEN_PER_SEC, ENERGY_TAUNT_BONUS, SUPER_INPUT_WINDOW_MS,
-  SLOW_FACTOR, BURN_DAMAGE_PER_SEC, STATUS_TINTS, COAGULATION_CUBE,
+  SLOW_FACTOR, BURN_DAMAGE_PER_SEC, POISON_DAMAGE_PER_SEC, MARK_DAMAGE_BONUS,
+  STATUS_TINTS, COAGULATION_CUBE,
 } from './Config.js';
-import { spawnHitEffect } from './Effects.js';
+import { spawnHitEffect, spawnGasCloud } from './Effects.js';
 import { playSfx } from './Audio.js';
 
 // Valeurs par défaut si le perso ne définit pas son propre "hurtbox" dans son JSON.
@@ -63,6 +64,7 @@ export class Fighter {
     this.hitstunTimer = 0;
     this.attackName = null;
     this.attackHasHit = false;
+    this.gasSpawned = false;
     this.attackElapsed = 0; // depuis le début du coup en cours, pour la fenêtre de super
     this.ko = false;
     this.winner = false;
@@ -81,6 +83,17 @@ export class Fighter {
     this.shieldTimer = 0;    // invulnérable (biofilm de Listeria)
     this.selfSlowTimer = 0;  // ralentissement qu'on s'inflige (biofilm)
     this.trappedTimer = 0;   // figé dans un cube de plasma coagulé (coagulase)
+    this.paralysedTimer = 0; // paralysie flasque : marche mais ne peut plus agir
+    this.poisonTimer = 0;    // gaz putride : dégâts continus
+    this.poisonResidue = 0;
+    this.marks = 0;          // marques d'aflatoxine : vulnérabilité permanente
+  }
+
+  /** Paralysie flasque de la neurotoxine botulique : les jambes répondent
+   * encore, plus rien d'autre. C'est la différence avec la coagulase, qui
+   * cloue complètement sur place. */
+  get paralysed() {
+    return this.paralysedTimer > 0;
   }
 
   /** Figé : ne peut plus ni se déplacer ni attaquer, mais encaisse toujours. */
@@ -100,8 +113,10 @@ export class Fighter {
    * prime sur le bouclier : c'est l'ordre de gravité pour le joueur. */
   _statusTint() {
     if (this.burnTimer > 0) return STATUS_TINTS.burning;
+    if (this.poisonTimer > 0) return STATUS_TINTS.poisoned;
     if (this.frozenTimer > 0) return STATUS_TINTS.frozen;
     if (this.trappedTimer > 0) return STATUS_TINTS.trapped;
+    if (this.paralysedTimer > 0) return STATUS_TINTS.paralysed;
     if (this.shieldTimer > 0) return STATUS_TINTS.shielded;
     return null;
   }
@@ -112,48 +127,93 @@ export class Fighter {
     if (this.shieldTimer > 0) this.shieldTimer -= dt;
     if (this.selfSlowTimer > 0) this.selfSlowTimer -= dt;
     if (this.trappedTimer > 0) this.trappedTimer -= dt;
+    if (this.paralysedTimer > 0) this.paralysedTimer -= dt;
 
+    // Brûlure et gaz putride marchent pareil : des dégâts par seconde, mis à
+    // l'échelle de la résistance au type correspondant.
     if (this.burnTimer > 0) {
       this.burnTimer -= dt;
-      // Les dégâts sont fractionnaires par frame : on accumule le reste pour ne
-      // pas perdre les décimales à chaque tick.
-      // Une brûlure fait d'autant plus mal qu'on est sensible à la chaleur.
-      this.burnResidue += (BURN_DAMAGE_PER_SEC * this.damageFactor('chaleur') * dt) / 1000;
-      const whole = Math.floor(this.burnResidue);
-      if (whole > 0) {
-        this.burnResidue -= whole;
-        this.health = Math.max(0, this.health - whole);
-        if (this.health <= 0 && !this.ko) {
-          this.ko = true;
-          this.state = 'ko';
-          this.setAnimation('ko');
-          playSfx(this.character.sfx?.ko);
-        }
+      this.burnResidue = this._tickDamageOverTime(
+        this.burnResidue, BURN_DAMAGE_PER_SEC * this.damageFactor('chaleur'), dt);
+    }
+    if (this.poisonTimer > 0) {
+      this.poisonTimer -= dt;
+      this.poisonResidue = this._tickDamageOverTime(
+        this.poisonResidue, POISON_DAMAGE_PER_SEC * this.damageFactor('toxine'), dt);
+    }
+  }
+
+  /** Un tick de dégâts continus. Les dégâts par frame sont fractionnaires : on
+   * reporte le reste d'une frame sur la suivante, sinon les décimales se
+   * perdent et une brûlure de 7/s n'en inflige que 4. Renvoie le nouveau
+   * reliquat. */
+  _tickDamageOverTime(residue, perSecond, dt) {
+    residue += (perSecond * dt) / 1000;
+    const whole = Math.floor(residue);
+    if (whole > 0) {
+      residue -= whole;
+      this.health = Math.max(0, this.health - whole);
+      if (this.health <= 0 && !this.ko) {
+        this.ko = true;
+        this.state = 'ko';
+        this.setAnimation('ko');
+        playSfx(this.character.sfx?.ko);
       }
     }
+    return residue;
   }
 
   /** Applique l'`effect` d'un coup. `self` reçoit les effets qui se posent sur
    * l'attaquant (bouclier, téléportation), `target` ceux qui se posent sur
    * l'adversaire (brûlure, gel). */
+  /** Un personnage peut être totalement insensible à un effet, via "immunities"
+   * dans son JSON. Une résistance réduit les DÉGÂTS ; une immunité annule
+   * l'ÉTAT. P. fluorescens pousse à 4 °C : la geler n'a aucun sens, et un
+   * simple `froid: 0` ne l'aurait pas empêchée d'être ralentie. */
+  isImmuneTo(effectType) {
+    return this.character.immunities?.includes(effectType) ?? false;
+  }
+
   static applyEffect(effect, self, target) {
     if (!effect) return;
+    // Le biofilm protège de tout ce qui se pose sur la cible, et une immunité
+    // déclarée protège de son effet en particulier.
+    if (target && (target.shielded || target.isImmuneTo(effect.type))) {
+      const surSoi = effect.type === 'shield' || effect.type === 'teleportBehind' || effect.type === 'dash';
+      if (!surSoi) return;
+    }
     switch (effect.type) {
       case 'burn':
-        if (target && !target.shielded) {
-          target.burnTimer = Math.max(target.burnTimer, effect.durationMs ?? 3000);
-        }
+        if (target) target.burnTimer = Math.max(target.burnTimer, effect.durationMs ?? 3000);
         break;
       case 'freeze':
-        if (target && !target.shielded) {
-          target.frozenTimer = Math.max(target.frozenTimer, effect.durationMs ?? 3000);
-        }
+        if (target) target.frozenTimer = Math.max(target.frozenTimer, effect.durationMs ?? 3000);
         break;
       case 'trap':
-        // La coagulase fige la cible sur place. Un biofilm protège, mais rien
-        // d'autre : c'est le prix d'un effet aussi court.
-        if (target && !target.shielded) {
-          target.trappedTimer = Math.max(target.trappedTimer, effect.durationMs ?? 1000);
+        // La coagulase cloue la cible sur place : plus aucune entrée n'est lue.
+        if (target) target.trappedTimer = Math.max(target.trappedTimer, effect.durationMs ?? 1000);
+        break;
+      case 'paralyse':
+        // La neurotoxine botulique coupe la commande motrice sans immobiliser :
+        // la cible marche encore, mais ne peut plus frapper, esquiver ni sauter.
+        if (target) target.paralysedTimer = Math.max(target.paralysedTimer, effect.durationMs ?? 2500);
+        break;
+      case 'poison':
+        if (target) target.poisonTimer = Math.max(target.poisonTimer, effect.durationMs ?? 4000);
+        break;
+      case 'mark':
+        // L'aflatoxine ne s'élimine pas : chaque marque majore définitivement
+        // les dégâts encaissés. C'est l'exposition chronique, pas l'intoxication
+        // aiguë, qui fait le danger réel de la B1.
+        if (target) target.marks = Math.min(target.marks + 1, effect.maxStacks ?? 5);
+        break;
+      case 'dash':
+        // La ruée flagellaire : on se propulse vers l'avant, sans traverser
+        // l'adversaire ni sortir du terrain.
+        {
+          const left = self.camera ? self.camera.leftBound : ARENA_LEFT;
+          const right = self.camera ? self.camera.rightBound : ARENA_RIGHT;
+          self.x = Math.max(left, Math.min(right, self.x + self.facing * (effect.distance ?? 40)));
         }
         break;
       case 'shield':
@@ -196,6 +256,7 @@ export class Fighter {
     this.state = moveName;
     this.attackName = moveName;
     this.attackHasHit = false;
+    this.gasSpawned = false;
     this.setAnimation(move.animation);
     this.attackElapsed = 0;
     if (moveName === 'superattack') this.energy = 0;
@@ -246,9 +307,14 @@ export class Fighter {
     return this.character.resistances?.[type] ?? 1;
   }
 
+  /** Majoration due aux marques d'aflatoxine : +10 % par marque, définitif. */
+  get markFactor() {
+    return 1 + this.marks * MARK_DAMAGE_BONUS;
+  }
+
   takeHit(move, attackerFacing) {
     if (this.ko || this.invincible || this.shielded) return;
-    const damage = Math.round(move.damage * this.damageFactor(move.damageType));
+    const damage = Math.round(move.damage * this.damageFactor(move.damageType) * this.markFactor);
     this.health = Math.max(0, this.health - damage);
     this.hitstunTimer = HITSTUN_MS;
     this.state = 'hurt';
@@ -355,7 +421,12 @@ export class Fighter {
     // Se tourne vers l'adversaire
     this.facing = opponent.x >= this.x ? 1 : -1;
 
-    const superReady = this.character.moves.superattack && this.energy >= ENERGY_MAX && (
+    // Paralysie flasque : les jambes répondent encore, plus rien d'autre. Le
+    // joueur garde la marche et l'accroupissement, mais perd les coups, le saut,
+    // l'esquive et la narguerie. C'est un effet de contrôle, pas d'immobilisation.
+    const peutAgir = !this.paralysed;
+
+    const superReady = peutAgir && this.character.moves.superattack && this.energy >= ENERGY_MAX && (
       (input.justPressed(this.playerIndex, 'punch') && input.isDown(this.playerIndex, 'kick')) ||
       (input.justPressed(this.playerIndex, 'kick') && input.isDown(this.playerIndex, 'punch'))
     );
@@ -364,19 +435,19 @@ export class Fighter {
       return;
     }
 
-    if (input.justPressed(this.playerIndex, 'punch')) {
+    if (peutAgir && input.justPressed(this.playerIndex, 'punch')) {
       this.startAttack('punch', opponent);
       return;
     }
-    if (input.justPressed(this.playerIndex, 'kick')) {
+    if (peutAgir && input.justPressed(this.playerIndex, 'kick')) {
       this.startAttack('kick', opponent);
       return;
     }
-    if (this.grounded && input.justPressed(this.playerIndex, 'dodge')) {
+    if (peutAgir && this.grounded && input.justPressed(this.playerIndex, 'dodge')) {
       this.startDodge(opponent);
       return;
     }
-    if (this.grounded && input.justPressed(this.playerIndex, 'taunt')) {
+    if (peutAgir && this.grounded && input.justPressed(this.playerIndex, 'taunt')) {
       this.startTaunt();
       return;
     }
@@ -385,7 +456,7 @@ export class Fighter {
     const right = input.isDown(this.playerIndex, 'right');
     const down = input.isDown(this.playerIndex, 'down');
 
-    if (this.grounded && input.justPressed(this.playerIndex, 'up')) {
+    if (peutAgir && this.grounded && input.justPressed(this.playerIndex, 'up')) {
       this.vy = this.character.jumpVelocity ?? JUMP_VELOCITY;
       this.vx = (left ? -1 : right ? 1 : 0) * this._moveSpeed();
       this.state = 'jump';
@@ -501,6 +572,13 @@ export class Fighter {
 
     const box = this.getHitbox(move);
     const hurt = opponent.getHurtbox();
+
+    // La nappe part dès la frame active, qu'on touche ou non : un jet de gaz
+    // qui ne sortirait qu'en cas de contact n'aurait aucun sens.
+    if (move.effect?.type === 'poison' && !this.gasSpawned) {
+      this.gasSpawned = true;
+      spawnGasCloud(box.x + box.w / 2, box.y + box.h / 2, this.facing);
+    }
     if (rectsOverlap(box, hurt)) {
       // Un adversaire en esquive, protégé par un biofilm ou déjà K.O. n'encaisse
       // ni le coup ni son effet : on relit son état avant de trancher.

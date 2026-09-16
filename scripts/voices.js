@@ -26,7 +26,10 @@ const SOURCES = {
     page: 'https://opengameart.org/content/female-rpg-voice-starter-pack',
     licence: 'CC0',
     archive: 'https://opengameart.org/sites/default/files/RPG%20Voice%20Starter%20Pack.zip',
-    // Le pack contient trois voix féminines (Type 1 à 3), toutes utilisables.
+    // Le pack contient TROIS voix féminines distinctes (Type 1 à 3). `prefixe`
+    // donne celle par défaut ; les autres s'atteignent en préfixant le nom du
+    // fichier, par exemple 'Type 2/attack1.wav'. C'est ce qui permet de donner
+    // à Salmonella une voix qui n'est pas celle de Doc Pétri.
     prefixe: 'RPG Voice Starter Pack/Type 1/',
   },
   monstres: {
@@ -187,6 +190,105 @@ const VOICES = {
       ['monstres',  'monster.5.ogg',         10],
       ['steampunk', 'Minion_Feared_001.wav', 14],
     ],
+  },
+
+  // --- Salmonella : la voix de la mechante sure d'elle -----------------------
+  // Type 2 du pack feminin, DESCENDU de quatre a six demi-tons : le timbre perd
+  // sa clarte et gagne une autorite un peu inquietante, tres loin de Doc Petri
+  // qui utilise le Type 1 tel quel. Les coups portes ajoutent une couche de
+  // grognement pour le poids des tentacules metalliques.
+  salmonella: {
+    voix: 'femme grave, arrogante',
+    punch: [
+      ['femaleRpg', 'Type 2/attack1.wav', -5],
+      ['monstres',  'monster.12.ogg',     -2],
+    ],
+    kick: [
+      ['femaleRpg', 'Type 2/attack2.wav', -4],
+      ['monstres',  'monster.16.ogg',     -3],
+    ],
+    superattack: [
+      ['femaleRpg', 'Type 2/attack3.wav', -6],
+      ['monstres',  'monster.11.ogg',     -4],
+    ],
+    hurt:    [['femaleRpg', 'Type 2/damaged1.wav', -5]],
+    ko:      [['femaleRpg', 'Type 2/damaged3.wav', -6]],
+    victory: [['femaleRpg', 'Type 2/healed1.wav',  -4]],
+    jump:    [['femaleRpg', 'Type 2/jump1.wav',    -4]],
+    esquive: [['femaleRpg', 'Type 2/jump2.wav',    -5]],
+    nargue:  [['femaleRpg', 'Type 2/curse.wav',    -5]],
+  },
+
+  // --- C. botulinum : enorme, lent, sous pression ----------------------------
+  // Des grognements DESCENDUS de six a huit demi-tons. La transposition vers le
+  // grave allonge aussi le son - un grognement d'une seconde en fait 1,6 - ce
+  // qui tombe juste pour un personnage qui traine des pieds. Deux couches
+  // decalees de 60 ms au lieu de 30 : le decalage plus large donne une seconde
+  // attaque du son, comme une respiration qui suit le rale.
+  botulinum: {
+    voix: 'creature enorme et lente',
+    punch:       [['monstres', 'monster.13.ogg', -7], ['monstres', 'monster.6.ogg', -4, 60]],
+    kick:        [['monstres', 'monster.15.ogg', -6], ['slime',    'slime.9.ogg',   -5, 70]],
+    superattack: [['monstres', 'monster.10.ogg', -8], ['monstres', 'monster.3.ogg', -5, 80]],
+    hurt:        [['monstres', 'monster.8.ogg',  -6]],
+    ko:          [['monstres', 'monster.1.ogg',  -8]],
+    victory:     [['monstres', 'monster.16.ogg', -7]],
+    jump:        [['slime',    'slime.6.ogg',    -6]],
+    esquive:     [['slime',    'slime.10.ogg',   -5]],
+    nargue:      [['monstres', 'monster.12.ogg', -7]],
+  },
+
+  // --- P. fluorescens : etheree et visqueuse ---------------------------------
+  // Le seul perso dont la voix monte : le pack slime transpose vers l'aigu perd
+  // son cote gros tas et devient liquide et leger, ce qui colle a sa silhouette
+  // gracile. Une couche de voix feminine tres aigue par-dessus donne le souffle
+  // presque humain qu'on entend derriere.
+  pseudomonas: {
+    voix: 'etheree, liquide',
+    punch:       [['slime', 'slime.1.ogg', 5], ['femaleRpg', 'Type 3/attack1.wav', 4, 25]],
+    kick:        [['slime', 'slime.4.ogg', 6], ['femaleRpg', 'Type 3/attack2.wav', 5, 25]],
+    superattack: [['slime', 'slime.8.ogg', 4], ['femaleRpg', 'Type 3/attack3.wav', 3, 35]],
+    hurt:        [['femaleRpg', 'Type 3/damaged1.wav', 4]],
+    ko:          [['femaleRpg', 'Type 3/damaged3.wav', 3]],
+    victory:     [['femaleRpg', 'Type 3/healed3.wav',  4], ['slime', 'slime.2.ogg', 6, 40]],
+    jump:        [['slime', 'slime.5.ogg', 7]],
+    esquive:     [['slime', 'slime.3.ogg', 8]],
+    nargue:      [['femaleRpg', 'Type 3/curse.wav', 5]],
+  },
+
+  // --- S. putrefaciens : la bete a quatre pattes ----------------------------
+  // Le quadrupede est le seul a garder les grognements a peu pres a leur hauteur
+  // d'origine : c'est un animal, pas un colosse ni une bestiole. Le gaz lui vaut
+  // une couche de slime sur toutes ses attaques, discrete mais systematique.
+  shewanella: {
+    voix: 'bete a quatre pattes',
+    punch:       [['monstres', 'monster.7.ogg',  -1], ['slime', 'slime.4.ogg',  2, 35]],
+    kick:        [['monstres', 'monster.5.ogg',  -2], ['slime', 'slime.7.ogg',  1, 35]],
+    superattack: [['monstres', 'monster.4.ogg',  -3], ['slime', 'slime.10.ogg', 0, 45]],
+    hurt:        [['monstres', 'monster.9.ogg',  -1]],
+    ko:          [['monstres', 'monster.2.ogg',  -3]],
+    victory:     [['monstres', 'monster.6.ogg',  -2]],
+    jump:        [['slime',    'slime.1.ogg',    -1]],
+    esquive:     [['slime',    'slime.6.ogg',     1]],
+    nargue:      [['monstres', 'monster.15.ogg', -2], ['slime', 'slime.9.ogg', 2, 50]],
+  },
+
+  // --- A. flavus : ni cri ni grognement, du bruissement sec ------------------
+  // Une moisissure n'a pas de voix. Pousses tres haut - neuf a quatorze
+  // demi-tons - les grognements perdent tout leur corps et ne laissent que le
+  // souffle et le grain : ca crisse et ca bruisse comme de la poussiere de
+  // spores, sans plus jamais evoquer un animal. Trois couches pour l'epaisseur.
+  aspergillus: {
+    voix: 'bruissement sec de spores',
+    punch:       [['monstres', 'monster.3.ogg',  10], ['slime', 'slime.7.ogg', 12, 20], ['monstres', 'monster.8.ogg', 14, 40]],
+    kick:        [['monstres', 'monster.14.ogg', 11], ['slime', 'slime.3.ogg', 13, 20], ['slime',    'slime.8.ogg',    9, 40]],
+    superattack: [['monstres', 'monster.10.ogg',  9], ['monstres', 'monster.5.ogg', 12, 25], ['slime', 'slime.5.ogg', 14, 50]],
+    hurt:        [['monstres', 'monster.9.ogg',  12], ['slime', 'slime.2.ogg', 10, 25]],
+    ko:          [['monstres', 'monster.13.ogg', 10], ['monstres', 'monster.1.ogg', 13, 30]],
+    victory:     [['monstres', 'monster.16.ogg', 11], ['slime', 'slime.4.ogg', 14, 30]],
+    jump:        [['slime',    'slime.6.ogg',    13]],
+    esquive:     [['slime',    'slime.10.ogg',   12]],
+    nargue:      [['monstres', 'monster.12.ogg', 10], ['monstres', 'monster.7.ogg', 13, 35]],
   },
 };
 

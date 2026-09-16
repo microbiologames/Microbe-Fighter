@@ -154,6 +154,119 @@ const CHARACTERS = {
       ...COMMON,
     },
   },
+
+  salmonella: {
+    label: 'Salmonella — Salmonella enterica',
+    reference: 'Salmonella enterica',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a cartoon humanoid rod-shaped bacterium, smooth pink capsule body with rounded ends, ' +
+      'a dark almost black oval core in the middle of its chest, short bristly pili covering the whole body, ' +
+      'six long segmented metallic grey tentacles like mechanical octopus arms sprouting from all over its ' +
+      'body and curling around it, one tentacle tipped with a syringe needle, smirking menacing face, wide stance',
+    anims: {
+      walk: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, walking forward carried by its six long segmented metallic tentacles that plant themselves on the ground one after another, body swaying slightly above them',
+      jump: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, launched in mid-air, its six long metallic tentacles splayed wide around it like a spider, body held upright',
+      crouch: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, crouching low and folding its six metallic tentacles tight against its body, coiled and ready to spring',
+      punch: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, whipping one long segmented metallic tentacle forward to the RIGHT like a striking snake, the tentacle straightening to full length, the other tentacles braced behind it, dramatic street fighter style',
+      kick: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, lunging forward to the RIGHT propelled by its six metallic tentacles pushing off the ground behind it, body streamlined and leaning into the charge, tentacles trailing back, a burst of speed lines behind it',
+      taunt: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, taunting the opponent, its metallic tentacles rising and waving lazily above it, smirking with half-lidded arrogant eyes',
+      victory: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, celebrating a win, all six metallic tentacles raised high and spread in a triumphant fan, grinning widely',
+      superattack: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, standing in the LEFT half of the frame with its whole pink body clearly visible, holding one metallic tentacle out straight to the RIGHT at chest height with a SMALL syringe needle at its tip, a single thin jet of pale fluid squirting from the needle toward the RIGHT through the empty right half of the frame, the jet no thicker than the needle and never touching its body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  botulinum: {
+    label: 'C. botulinum — Clostridium botulinum',
+    reference: 'Clostridium botulinum',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a cartoon humanoid rod-shaped bacterium, dull greyish-white body with taut cracked skin, ' +
+      'an enormous pearly iridescent sphere bulging out of its belly and distending its body sideways, ' +
+      'heavy drooping eyelids and a slack mouth, limp dangling hands, slow and swollen, ' +
+      'looking bloated and under pressure',
+    anims: {
+      walk: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, shuffling forward slowly and heavily, dragging its feet, arms hanging limp at its sides, the bulging sphere swaying with each step',
+      jump: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, heaved barely off the ground in a sluggish hop, limbs dangling loosely, the heavy sphere pulling it down',
+      crouch: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, sinking down into a crouch, its swollen body compressing, head lolling forward',
+      punch: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, throwing a slow heavy forward punch to the RIGHT with a limp loose fist, arm extending fully, drooping eyelids, dramatic street fighter style',
+      kick: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, its swollen body suddenly distending and bursting outward with a short puff of pale gas around its waist, shoving forward to the RIGHT with both limp arms, cracked skin splitting',
+      taunt: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, taunting the opponent with a slow lazy shrug, both hands hanging slack, eyelids drooping, utterly unbothered',
+      victory: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, celebrating a win with a slow heavy raise of both limp arms, the pearly sphere gleaming, a faint satisfied sag to its face',
+      superattack: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, standing in the LEFT half of the frame with its whole grey body clearly visible, both palms open and pushing toward the RIGHT, three or four THIN translucent nerve-like threads stretching horizontally from its palms to the RIGHT through the empty right half of the frame, the threads limp and drooping like cut puppet strings, nothing glowing around its body, side view',
+      ...COMMON,
+    },
+  },
+
+  pseudomonas: {
+    label: 'P. fluorescens — Pseudomonas fluorescens',
+    reference: 'Pseudomonas fluorescens',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a cartoon humanoid rod-shaped bacterium, slender translucent body in glowing yellow-green chartreuse, ' +
+      'lit from inside with the brightest glow at the centre of its torso, a tuft of three long soft glowing ' +
+      'flagella sprouting from ONE end only at the back of its head and trailing behind like a ponytail, ' +
+      'thick glistening slime dripping off its body, calm serene face with pale glowing eyes, graceful silhouette',
+    anims: {
+      walk: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, gliding forward smoothly, the tuft of long glowing flagella at the back of its head streaming behind it, slime dripping from its body, inner glow pulsing',
+      jump: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, suspended in mid-air, its tuft of long glowing flagella fanning out behind it, body arched gracefully, slime droplets floating around it',
+      crouch: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, folding down into a low crouch, its glowing flagella curling around it, inner glow dimming',
+      punch: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, striking forward to the RIGHT with one slender glowing arm at full extension, slime flicking off its fist, its inner glow flaring bright at the moment of impact, dramatic street fighter style',
+      kick: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, standing in the LEFT half of the frame with its whole glowing body clearly visible, flicking a SMALL compact ball of luminous yellow-green slime, no bigger than its own head, from its open hand toward the RIGHT at chest height, the little ball flying alone through the empty right half of the frame with a short dripping trail, side view',
+      taunt: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, taunting the opponent with a slow graceful beckoning gesture, its flagella swirling elegantly, inner glow brightening, serene superior expression',
+      victory: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, celebrating a win, arms spread wide and head tilted back, its inner glow blazing at full brightness, flagella fanned out behind it like a halo',
+      superattack: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, standing in the LEFT half of the frame with its whole glowing body clearly visible and its colour unchanged, both hands thrust toward the RIGHT, a NARROW horizontal stream of thick luminous yellow-green enzyme fluid, no thicker than its own arm, shooting toward the RIGHT at chest height through the empty right half of the frame, the stream starting clear of its body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  shewanella: {
+    label: 'S. putrefaciens — Shewanella putrefaciens',
+    reference: 'Shewanella putrefasciens',
+    // Décrit d'après l'image de référence fournie : c'est un QUADRUPÈDE, d'où
+    // le template "cat" plutôt que "mannequin" (voir `template` ci-dessous).
+    template: 'cat',
+    description:
+      'a cartoon four-legged creature walking on all fours, hunched arched back, rust-brown metallic skin ' +
+      'with oily iridescent green and violet sheen, its hands and feet blackened as if mineralised into ' +
+      'charcoal black, a single long thin whip-like tail curling behind it, a drooping heavy head with ' +
+      'sad half-lidded eyes hanging low between its shoulders, vents along its back leaking olive-green gas',
+    anims: {
+      walk: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, prowling forward on all fours with a low dragging gait, head hanging low, olive-green gas leaking from the vents along its back',
+      jump: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, pouncing through the air on all fours, legs tucked under its body, tail streaming behind, gas trailing from its back',
+      crouch: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, flattening itself low against the ground on all fours, shoulders hunched high, head pressed down, ready to pounce',
+      punch: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, rearing up slightly and swiping forward to the RIGHT with one blackened front paw at full extension, the other three limbs braced on the ground, snarling',
+      kick: 'a THICK JET OF OLIVE-GREEN GAS blasting horizontally to the RIGHT at knee height across the empty right half of the frame, sprayed from the back vents of a rust-brown four-legged creature with blackened hands and feet and a long thin tail, the creature standing on all fours in the LEFT half of the frame with its whole rust-brown body clearly visible and no gas on top of it, side view',
+      taunt: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, arching its back high on all fours and shaking itself, releasing a lazy puff of olive-green gas from its back vents, head turned to sneer at the opponent',
+      victory: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, standing tall on all fours with its back arched and head raised for the first time, tail held high, gas billowing proudly from its back vents',
+      superattack: 'a DENSE ROLLING CLOUD OF DARK OLIVE-GREEN GAS billowing horizontally to the RIGHT along the ground, filling the empty right half of the frame and reaching the right edge, vomited from the open mouth of a rust-brown four-legged creature with blackened hands and feet and a long thin tail, the creature standing on all fours in the LEFT half of the frame with its head lowered toward the RIGHT and its whole rust-brown body clearly visible outside the cloud, the heavy gas sinking and spreading low instead of rising, side view',
+      ...COMMON,
+    },
+  },
+
+  aspergillus: {
+    label: 'A. flavus — Aspergillus flavus',
+    reference: 'Aspergillus flavus',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a cartoon humanoid creature whose whole body is braided from yellow-olive filaments twisted into ' +
+      'limbs and torso, with a faint cold blue glow seeping from between the filaments, dark brown hard ' +
+      'nodules under the skin of its arms and chest, pale bony hands and feet, and in place of a head a ' +
+      'single thick rough stalk rising from its shoulders and opening into a perfect spiky sphere covered ' +
+      'all over in radiating spore chains like a sea urchin, two dark sunken eyes set in the sphere',
+    anims: {
+      walk: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, stalking forward hunched, pale bony hands swinging low, a trail of fine yellow spore dust shaking loose from its head sphere with each step',
+      jump: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, leaping through the air, filament limbs stretched out, a cloud of yellow spore dust bursting from its head sphere',
+      crouch: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, crouching low and compacting its filaments, its head sphere tucked down between its shoulders',
+      punch: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, driving a pale bony fist forward to the RIGHT at full arm extension, the filaments of its arm twisting tight like rope, dramatic street fighter style',
+      kick: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, shaking its head sphere violently to fling a THICK short burst of yellow spore dust forward to the RIGHT at head height, the dust cloud compact and staying in front of it, its filament body fully visible and untouched, side view',
+      taunt: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, tilting its head sphere slowly to one side and spreading its pale bony hands, the blue glow between its filaments pulsing brighter, silently mocking',
+      victory: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, celebrating a win, both filament arms raised high, its head sphere releasing a slow rising halo of golden spore dust, the blue glow blazing between its filaments',
+      superattack: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, standing in the LEFT half of the frame with its whole yellow-olive filament body clearly visible, one pale bony hand thrust toward the RIGHT, a NARROW horizontal beam of cold blue light, no thicker than its own arm, lancing from its palm toward the RIGHT at chest height through the empty right half of the frame, the beam starting clear of its body, side view, braced stance',
+      ...COMMON,
+    },
+  },
 };
 
 // Pour les coups, on garde la frame de départ (pose neutre) comme frame 0 : le

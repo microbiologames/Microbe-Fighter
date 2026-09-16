@@ -34,11 +34,18 @@ export const TAUNT_DURATION_MS = 500;
 export const SLOW_FACTOR = 1 / 3;
 // Dégâts par seconde d'une brûlure (bec Bunsen des microbiologistes).
 export const BURN_DAMAGE_PER_SEC = 7;
+// Le gaz putride de S. putrefaciens : moins violent que la flamme, mais il dure
+// plus longtemps et il est le seul effet continu de type toxine.
+export const POISON_DAMAGE_PER_SEC = 5;
+// Chaque marque d'aflatoxine majore définitivement les dégâts encaissés.
+export const MARK_DAMAGE_BONUS = 0.1;
 // Teintes appliquées au sprite selon l'état, avec leur opacité.
 export const STATUS_TINTS = {
   burning: { color: '#ff7a1a', alpha: 0.5 },
   frozen: { color: '#4fb8ff', alpha: 0.55 },
   trapped: { color: '#e8c84a', alpha: 0.4 },
+  poisoned: { color: '#7a8c3a', alpha: 0.5 },
+  paralysed: { color: '#9a8fb0', alpha: 0.45 },
   shielded: { color: '#7ee3b8', alpha: 0.35 },
 };
 

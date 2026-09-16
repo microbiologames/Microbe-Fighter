@@ -12,6 +12,7 @@
 //   node scripts/create-character.js gram --description "texte qui remplace celui de characters.js"
 //   node scripts/create-character.js gram --no-reference   (génération depuis la seule description)
 //   node scripts/create-character.js gram --poses-only     (re-télécharge idle + portrait)
+//   node scripts/create-character.js shewanella --template cat  (quadrupède)
 //
 // Persos : gram, petri, cereus, listeria
 
@@ -21,6 +22,9 @@ const { ROOT, api, pollJob, writeBase64Image, downloadImage, findReferenceImage 
 const { CHARACTERS } = require('./characters');
 
 const CHARACTERS_DIR = path.join(ROOT, 'references', 'personnages');
+
+// Les squelettes proposés par Pixellab. Le premier est bipède, les autres non.
+const TEMPLATES = ['mannequin', 'bear', 'cat', 'dog', 'horse', 'lion'];
 
 // Mémorise ce qu'il faut pour reprendre le travail sans rien recréer :
 // l'id du personnage (pour generate-sprites.js) et l'id du job de création
@@ -120,12 +124,28 @@ async function main() {
     return;
   }
 
+  // Le template décide du SQUELETTE 3D auquel Pixellab ajuste les frames, donc
+  // de la façon dont le personnage pourra être animé. `mannequin` est le seul
+  // template bipède ; `bear`, `cat`, `dog`, `horse` et `lion` sont quadrupèdes,
+  // et ajoutent d'eux-mêmes « on all fours » à la description.
+  //
+  // Se tromper ici ne se rattrape pas plus tard : l'endpoint d'animation ne
+  // prend pas de template, il hérite de celui du personnage. Un quadrupède créé
+  // en `mannequin` sortira debout sur deux pattes à chaque animation.
+  const templateIndex = args.indexOf('--template');
+  const template = templateIndex !== -1 ? args[templateIndex + 1] : spec.template ?? 'mannequin';
+  if (!TEMPLATES.includes(template)) {
+    console.error(`Template inconnu : ${template}. Attendu : ${TEMPLATES.join(', ')}`);
+    process.exit(1);
+  }
+
   const body = {
     description,
     image_size: { width: 128, height: 128 },
-    template_id: 'mannequin',
+    template_id: template,
     view: 'side',
   };
+  if (template !== 'mannequin') console.log(`[${charKey}] quadrupède, squelette « ${template} »`);
 
   if (useReference) {
     const reference = findReferenceImage('personnages', charKey, spec.reference);

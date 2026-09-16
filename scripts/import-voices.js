@@ -115,20 +115,42 @@ async function ensureArchive(key) {
     const raw = buf.subarray(start, start + compSize);
     const data = method === 0 ? raw : zlib.inflateRawSync(raw);
 
-    const out = path.join(dir, path.basename(name));
+    // On conserve l'ARBORESCENCE de l'archive. Écrire tout à plat avec
+    // basename() paraît plus simple, mais écrase les homonymes : le pack de voix
+    // féminines contient trois voix (Type 1, 2 et 3) aux fichiers identiquement
+    // nommés, et deux d'entre elles disparaissaient silencieusement, la
+    // survivante dépendant de l'ordre du zip.
+    //
+    // `name` vient du zip, donc d'une source externe : on vérifie qu'il ne sort
+    // pas du dossier de destination avant d'écrire quoi que ce soit.
+    const out = path.resolve(dir, name);
+    if (out !== dir && !out.startsWith(dir + path.sep)) {
+      console.warn(`  entrée ignorée, chemin suspect : ${name}`);
+      continue;
+    }
+    fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, data);
   }
   fs.writeFileSync(path.join(dir, '.ok'), '');
   return dir;
 }
 
+// Résout un fichier d'archive. `fileName` est relatif au `prefixe` de la source
+// — ce qui permet d'écrire 'Type 2/attack1.wav' pour aller chercher une autre
+// voix du même pack. On tolère aussi un chemin déjà complet.
 async function sourceFile(sourceKey, fileName) {
   const src = SOURCES[sourceKey];
   if (src.archive) {
     const dir = await ensureArchive(sourceKey);
-    const p = path.join(dir, path.basename(fileName));
-    if (!fs.existsSync(p)) throw new Error(`${fileName} absent de ${src.titre}`);
-    return p;
+    // Trois chemins possibles, du plus specifique au plus general : le prefixe
+    // de la source, puis son DOSSIER PARENT (qui permet d'ecrire
+    // 'Type 2/attack1.wav' quand le prefixe pointe sur Type 1), puis la racine.
+    const parent = path.dirname(src.prefixe || '.');
+    for (const candidate of [path.join(src.prefixe || '', fileName), path.join(parent, fileName), fileName]) {
+      const p = path.resolve(dir, candidate);
+      if ((p === dir || p.startsWith(dir + path.sep)) && fs.existsSync(p)) return p;
+    }
+    throw new Error(`${fileName} absent de ${src.titre}`);
   }
   return download(src.base + encodeURIComponent(fileName), path.join(CACHE, sourceKey, fileName));
 }

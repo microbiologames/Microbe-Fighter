@@ -1,0 +1,159 @@
+{
+  "id": "shewanella",
+  "displayName": "S. putrefaciens",
+  "color": "#9c6b4f",
+  "scale": 0.673,
+  "groundY": 115,
+  "moveSpeed": 2.5,
+  "jumpVelocity": 6.2,
+  "portrait": "assets/sprites/shewanella/portrait/portrait.png",
+  "hurtbox": {
+    "width": 48,
+    "heightStand": 72,
+    "heightCrouch": 52
+  },
+  "resistances": {
+    "froid": 0.3,
+    "chaleur": 1.3
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/shewanella/punch.wav",
+    "kick": "assets/audio/sfx/shewanella/kick.wav",
+    "hurt": "assets/audio/sfx/shewanella/hurt.wav",
+    "ko": "assets/audio/sfx/shewanella/ko.wav",
+    "victory": "assets/audio/sfx/shewanella/victory.wav",
+    "jump": "assets/audio/sfx/shewanella/jump.wav",
+    "esquive": "assets/audio/sfx/shewanella/esquive.wav",
+    "nargue": "assets/audio/sfx/shewanella/nargue.wav",
+    "superattack": "assets/audio/sfx/shewanella/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/shewanella/idle",
+      "frameCount": 1,
+      "frameDuration": 150,
+      "loop": true, "groundY": 115
+    },
+    "walk": {
+      "folder": "assets/sprites/shewanella/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 141
+    },
+    "jump": {
+      "folder": "assets/sprites/shewanella/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 141
+    },
+    "crouch": {
+      "folder": "assets/sprites/shewanella/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 141
+    },
+    "punch": {
+      "folder": "assets/sprites/shewanella/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 141
+    },
+    "kick": {
+      "folder": "assets/sprites/shewanella/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 141
+    },
+    "hurt": {
+      "folder": "assets/sprites/shewanella/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 141
+    },
+    "ko": {
+      "folder": "assets/sprites/shewanella/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 141
+    },
+    "taunt": {
+      "folder": "assets/sprites/shewanella/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 141
+    },
+    "victory": {
+      "folder": "assets/sprites/shewanella/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 141
+    },
+    "superattack": {
+      "folder": "assets/sprites/shewanella/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 141
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de patte",
+      "animation": "punch",
+      "damage": 14,
+      "damageType": "physique",
+      "knockback": 5,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 34,
+        "offsetY": 20,
+        "width": 32,
+        "height": 13
+      }
+    },
+    "kick": {
+      "label": "Jet d’H₂S — gaz putride",
+      "animation": "kick",
+      "damage": 10,
+      "damageType": "toxine",
+      "knockback": 3,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 44,
+        "offsetY": 14,
+        "width": 46,
+        "height": 16
+      },
+      "effect": {
+        "type": "poison",
+        "durationMs": 3500
+      }
+    },
+    "superattack": {
+      "label": "Putréfaction — nappe de gaz persistante",
+      "animation": "superattack",
+      "damage": 26,
+      "damageType": "toxine",
+      "knockback": 6,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 46,
+        "offsetY": 10,
+        "width": 54,
+        "height": 18
+      },
+      "effect": {
+        "type": "poison",
+        "durationMs": 5000
+      }
+    }
+  }
+}

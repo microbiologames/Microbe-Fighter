@@ -111,18 +111,29 @@ function renderTitleRoster() {
 
 async function boot() {
   try {
-    const [[gramChar, petriChar, cereusChar, listeriaChar, staphChar, ...loadedStages]] = await Promise.all([
+    const [[gramChar, petriChar, cereusChar, listeriaChar, staphChar,
+           salmonellaChar, botulinumChar, pseudomonasChar, shewanellaChar, aspergillusChar,
+           ...loadedStages]] = await Promise.all([
       Promise.all([
         loadCharacter('js/data/characters/gram.json'),
         loadCharacter('js/data/characters/petri.json'),
         loadCharacter('js/data/characters/cereus.json'),
         loadCharacter('js/data/characters/listeria.json'),
         loadCharacter('js/data/characters/staph.json'),
+        loadCharacter('js/data/characters/salmonella.json'),
+        loadCharacter('js/data/characters/botulinum.json'),
+        loadCharacter('js/data/characters/pseudomonas.json'),
+        loadCharacter('js/data/characters/shewanella.json'),
+        loadCharacter('js/data/characters/aspergillus.json'),
         ...STAGE_FILES.map((f) => loadStage(`js/data/stages/${f}.json`)),
       ]),
       document.fonts.load('16px "Press Start 2P"'),
     ]);
-    roster = [gramChar, petriChar, cereusChar, listeriaChar, staphChar];
+    roster = [
+      gramChar, petriChar,
+      cereusChar, listeriaChar, staphChar, salmonellaChar, botulinumChar,
+      pseudomonasChar, shewanellaChar, aspergillusChar,
+    ];
     stages = loadedStages;
     pickRandomStage();
     renderTitleRoster();

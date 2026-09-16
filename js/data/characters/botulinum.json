@@ -1,0 +1,155 @@
+{
+  "id": "botulinum",
+  "displayName": "C. botulinum",
+  "color": "#c9c6bd",
+  "scale": 0.847,
+  "groundY": 125,
+  "moveSpeed": 1.2,
+  "jumpVelocity": 5.8,
+  "portrait": "assets/sprites/botulinum/portrait/portrait.png",
+  "hurtbox": {
+    "width": 42,
+    "heightStand": 100,
+    "heightCrouch": 70
+  },
+  "resistances": {
+    "chaleur": 0.25,
+    "biocide": 0.6
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/botulinum/punch.wav",
+    "kick": "assets/audio/sfx/botulinum/kick.wav",
+    "hurt": "assets/audio/sfx/botulinum/hurt.wav",
+    "ko": "assets/audio/sfx/botulinum/ko.wav",
+    "victory": "assets/audio/sfx/botulinum/victory.wav",
+    "jump": "assets/audio/sfx/botulinum/jump.wav",
+    "esquive": "assets/audio/sfx/botulinum/esquive.wav",
+    "nargue": "assets/audio/sfx/botulinum/nargue.wav",
+    "superattack": "assets/audio/sfx/botulinum/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/botulinum/idle",
+      "frameCount": 1,
+      "frameDuration": 150,
+      "loop": true, "groundY": 125
+    },
+    "walk": {
+      "folder": "assets/sprites/botulinum/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 149
+    },
+    "jump": {
+      "folder": "assets/sprites/botulinum/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 149
+    },
+    "crouch": {
+      "folder": "assets/sprites/botulinum/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 149
+    },
+    "punch": {
+      "folder": "assets/sprites/botulinum/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 149
+    },
+    "kick": {
+      "folder": "assets/sprites/botulinum/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 149
+    },
+    "hurt": {
+      "folder": "assets/sprites/botulinum/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 149
+    },
+    "ko": {
+      "folder": "assets/sprites/botulinum/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 149
+    },
+    "taunt": {
+      "folder": "assets/sprites/botulinum/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 149
+    },
+    "victory": {
+      "folder": "assets/sprites/botulinum/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 149
+    },
+    "superattack": {
+      "folder": "assets/sprites/botulinum/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 149
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup direct",
+      "animation": "punch",
+      "damage": 12,
+      "damageType": "physique",
+      "knockback": 4,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 30,
+        "offsetY": 32,
+        "width": 30,
+        "height": 14
+      }
+    },
+    "kick": {
+      "label": "Bombage — repousse violemment",
+      "animation": "kick",
+      "damage": 10,
+      "damageType": "physique",
+      "knockback": 11,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 26,
+        "offsetY": 30,
+        "width": 32,
+        "height": 20
+      }
+    },
+    "superattack": {
+      "label": "Neurotoxine botulique — paralyse 2,5 s",
+      "animation": "superattack",
+      "damage": 14,
+      "damageType": "toxine",
+      "knockback": 3,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 44,
+        "offsetY": 30,
+        "width": 44,
+        "height": 20
+      },
+      "effect": {
+        "type": "paralyse",
+        "durationMs": 2500
+      }
+    }
+  }
+}

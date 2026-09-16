@@ -1,0 +1,155 @@
+{
+  "id": "salmonella",
+  "displayName": "Salmonella",
+  "color": "#e8909b",
+  "scale": 0.891,
+  "groundY": 126,
+  "moveSpeed": 2.3,
+  "jumpVelocity": 7.8,
+  "portrait": "assets/sprites/salmonella/portrait/portrait.png",
+  "hurtbox": {
+    "width": 34,
+    "heightStand": 98,
+    "heightCrouch": 66
+  },
+  "resistances": {
+    "chaleur": 1.3
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/salmonella/punch.wav",
+    "kick": "assets/audio/sfx/salmonella/kick.wav",
+    "hurt": "assets/audio/sfx/salmonella/hurt.wav",
+    "ko": "assets/audio/sfx/salmonella/ko.wav",
+    "victory": "assets/audio/sfx/salmonella/victory.wav",
+    "jump": "assets/audio/sfx/salmonella/jump.wav",
+    "esquive": "assets/audio/sfx/salmonella/esquive.wav",
+    "nargue": "assets/audio/sfx/salmonella/nargue.wav",
+    "superattack": "assets/audio/sfx/salmonella/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/salmonella/idle",
+      "frameCount": 1,
+      "frameDuration": 150,
+      "loop": true, "groundY": 126
+    },
+    "walk": {
+      "folder": "assets/sprites/salmonella/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 152
+    },
+    "jump": {
+      "folder": "assets/sprites/salmonella/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 152
+    },
+    "crouch": {
+      "folder": "assets/sprites/salmonella/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 152
+    },
+    "punch": {
+      "folder": "assets/sprites/salmonella/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 152
+    },
+    "kick": {
+      "folder": "assets/sprites/salmonella/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 152
+    },
+    "hurt": {
+      "folder": "assets/sprites/salmonella/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 152
+    },
+    "ko": {
+      "folder": "assets/sprites/salmonella/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 152
+    },
+    "taunt": {
+      "folder": "assets/sprites/salmonella/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 152
+    },
+    "victory": {
+      "folder": "assets/sprites/salmonella/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 152
+    },
+    "superattack": {
+      "folder": "assets/sprites/salmonella/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 152
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de flagelle",
+      "animation": "punch",
+      "damage": 15,
+      "damageType": "physique",
+      "knockback": 5,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 40,
+        "offsetY": 30,
+        "width": 36,
+        "height": 13
+      }
+    },
+    "kick": {
+      "label": "Ruée flagellaire — se propulse vers l’avant",
+      "animation": "kick",
+      "damage": 12,
+      "damageType": "physique",
+      "knockback": 3,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 30,
+        "offsetY": 32,
+        "width": 30,
+        "height": 16
+      },
+      "effect": {
+        "type": "dash",
+        "on": "use",
+        "distance": 40
+      }
+    },
+    "superattack": {
+      "label": "Invasion — injection T3SS",
+      "animation": "superattack",
+      "damage": 32,
+      "damageType": "toxine",
+      "knockback": 8,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 48,
+        "offsetY": 30,
+        "width": 46,
+        "height": 18
+      }
+    }
+  }
+}

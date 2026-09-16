@@ -6,12 +6,18 @@ brancher.
 ```
 references/
   personnages/    ← les combattants
-    gram.jpg          Doc Gram          (microbiologiste, voix de Nico)
-    petri.jpg         Doc Pétri         (microbiologiste, voix d'Amé)
-    cereus.jpg        B. cereus         (Bacillus cereus, voix de Raph)
-    listeria.jpg      L. monocytogenes  (Listeria monocytogenes, voix de Margot)
+    gram.jpg                    Doc Gram
+    petri.jpg                   Doc Pétri
+    cereus.jpg                  B. cereus
+    listeria.jpg                L. monocytogenes
+    Staphylococcus aureus.jpg   S. aureus
+    Salmonella enterica.jpg     Salmonella
+    Clostridium botulinum.jpg   C. botulinum
+    Pseudomonas fluorescens.jpg P. fluorescens
+    Shewanella putrefasciens.jpg S. putrefaciens   ← QUADRUPÈDE, voir plus bas
+    Aspergillus flavus.jpg      A. flavus
   decors/         ← les fonds de scène — voir decors/README.md
-    paillasse.jpg, hotte.jpg, ...
+    Labo.jpg, Labo (nuit).jpg
   prepared/       ← versions recadrées pour l'API (générées, ne pas éditer)
 ```
 
@@ -28,15 +34,40 @@ node scripts/measure-sprites.js --write   # cale groundY et scale sur les vrais 
 node scripts/check-assets.js              # contrôle final
 ```
 
+## Un quadrupède se décide à la CRÉATION, jamais après
+
+`template_id` choisit le **squelette 3D** auquel Pixellab ajuste les frames.
+`mannequin` est le seul bipède ; `bear`, `cat`, `dog`, `horse` et `lion` sont
+quadrupèdes et ajoutent d'eux-mêmes « on all fours » à la description.
+
+```js
+// dans scripts/characters.js
+shewanella: {
+  template: 'cat',   // sans cette ligne, il sortirait debout sur deux pattes
+  ...
+}
+```
+
+**Se tromper ici ne se rattrape pas plus tard.** L'endpoint d'animation ne prend
+pas de template : il hérite de celui du personnage. Un quadrupède créé en
+`mannequin` se redressera sur deux pattes à *chacune* des dix animations, et il
+faudra tout refaire depuis la création.
+
+*S. putrefaciens* est sorti en quadrupède du générateur d'images, à la surprise
+générale — d'où `cat`, choisi pour sa silhouette basse, son dos arqué et sa
+longue queue fine. Son manifeste s'en ressent : `heightStand` 72 au lieu d'une
+centaine, parce qu'un quadrupède est large et bas, pas haut.
+
 ## Le nom du fichier compte, l'extension non
 
-Le fichier doit s'appeler **exactement** comme l'`id` du personnage :
-`gram`, `petri`, `cereus` ou `listeria`, et vivre dans
+Le fichier doit porter soit l'`id` du personnage (`gram`, `cereus`…), soit le nom
+déclaré dans le champ `reference` de `scripts/characters.js` — ce qui permet de
+déposer `Salmonella enterica.jpg` sans le renommer. Il doit vivre dans
 `references/personnages/`. Extensions acceptées : `.png`, `.jpg`, `.jpeg`,
 `.webp`.
 
 Un nom qui ne correspond à aucun perso ne sera jamais lu. Pour ajouter un
-cinquième personnage, déclare-le d'abord dans `scripts/characters.js`, puis
+personnage, déclare-le d'abord dans `scripts/characters.js`, puis
 crée son manifeste dans `js/data/characters/` et ajoute-le au `boot()` de
 `js/main.js`.
 

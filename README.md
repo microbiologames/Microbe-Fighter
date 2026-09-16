@@ -73,9 +73,17 @@ pastilles au-dessus des barres de vie.
 | **B. cereus** — *Bacillus cereus* | `cereus` | Créature | Le plus grand et le plus large, lent, saut bas, encaisse. Le cogneur. Son **spore abdominal** s'embrase sur la super attaque. |
 | **L. monocytogenes** — *Listeria monocytogenes* | `listeria` | Créature | Mince et rapide, saut haut, peu de hurtbox. Griffes et ruée. Le « hit and run ». |
 | **S. aureus** — *Staphylococcus aureus* | `staph` | Grappe de petites voix | Une grappe de coques dorées, chacune avec sa tête. Vitesse moyenne. **Quasi insensible aux biocides, mais fragile face à la chaleur.** |
+| **Salmonella** — *Salmonella enterica* | `salmonella` | Femme grave | Bacille rose à six flagelles métalliques façon Docteur Octopus. Rapide et mobile, mais la chaleur la tue. |
+| **C. botulinum** — *Clostridium botulinum* | `botulinum` | Créature énorme et lente | Difforme, déformé par sa spore. Le plus lent du jeu. **Ses spores encaissent la chaleur**, sa neurotoxine paralyse. |
+| **P. fluorescens** — *Pseudomonas fluorescens* | `pseudomonas` | Éthérée, liquide | Fine et luminescente. Rapide, fragile, et **totalement insensible au gel** : elle pousse à 4 °C. |
+| **S. putrefaciens** — *Shewanella putrefaciens* | `shewanella` | Bête à quatre pattes | **Le seul quadrupède** : bas sur pattes, large, très rapide, mais saute mal. Empoisonne au gaz. |
+| **A. flavus** — *Aspergillus flavus* | `aspergillus` | Bruissement sec de spores | **Une moisissure, pas une bactérie.** Lent et résistant. Son aflatoxine marque l'adversaire à vie. |
 
-Trois pathogènes alimentaires face à deux microbiologistes : le registre colle au
-badge ADRIA des blouses. Les noms affichés suivent la convention scientifique
+**Dix personnages : deux microbiologistes contre huit micro-organismes.** Cinq
+pathogènes alimentaires (*B. cereus*, *L. monocytogenes*, *S. aureus*,
+*Salmonella*, *C. botulinum*), deux flores d'altération (*P. fluorescens*,
+*S. putrefaciens*) et une moisissure toxinogène (*A. flavus*). Le registre colle
+au badge ADRIA des blouses. Les noms affichés suivent la convention scientifique
 abrégée (`B. cereus`, `L. monocytogenes`, `S. aureus`) — le nom complet ne tiendrait
 pas sous
 la barre de vie, qui fait 140 px pour une police de 7 px.
@@ -93,17 +101,40 @@ code en dur aucun personnage.
 | **B. cereus** | Coup direct — 16 | **Spore** — 8, et **téléporte derrière l'adversaire** | **Jet de céréulide** — 34, le plus gros coup du jeu |
 | **L. monocytogenes** | Coup direct — 13 | **Biofilm** — 0 dégât, **invulnérable 1 s** mais ralentie 1,6 s | **Gel** — 16 et **adversaire ralenti 3 s**, teinté bleu |
 | **S. aureus** | Coup direct — 15 | **Coagulase** — 6, et **fige l'adversaire 1 s** dans un cube de plasma | **Toxine staphylococcique** — 34, à égalité avec la céréulide |
+| **Salmonella** | Coup de flagelle — 15 | **Ruée flagellaire** — 12, **se propulse de 40 px vers l'avant** | **Invasion** — 32, injection par l'aiguille du T3SS |
+| **C. botulinum** | Coup direct — 12 | **Bombage** — 10, mais le **plus gros recul du jeu** | **Neurotoxine** — 14 et **paralyse 2,5 s** |
+| **P. fluorescens** | Coup direct — 13 | **Jet de pyoverdine** — 16, longue portée | **Protéases thermostables** — 30 |
+| **S. putrefaciens** | Coup de patte — 14 | **Jet d'H₂S** — 10 et **empoisonne 3,5 s** | **Putréfaction** — 26 et **empoisonne 5 s** |
+| **A. flavus** | Coup de mycélium — 14 | **Nuage de conidies** — 8, la plus large zone du jeu | **Aflatoxine B1** — 20 et **marque à vie** (voir plus bas) |
 
-Les effets disponibles (`effect.type`) : `burn`, `freeze`, `shield`,
-`teleportBehind`, `trap`. `effect.on: "use"` déclenche au lancement du coup
+Les effets disponibles (`effect.type`) : `burn`, `poison`, `freeze`, `shield`,
+`teleportBehind`, `dash`, `trap`, `paralyse`, `mark`. `effect.on: "use"`
+déclenche au lancement du coup
 plutôt qu'à la touche — c'est ce qui rend le biofilm et la spore utilisables même
 à vide. Un combattant sous biofilm n'encaisse ni le coup ni son effet.
 
-`trap`, la coagulase, est le seul effet qui **retire complètement la main au
-joueur** : pendant la seconde où le plasma a pris, l'adversaire ne lit plus
-aucune touche et ne bouge plus du tout — là où `freeze` se contente de le
-ralentir. Un cube jaunâtre translucide se dessine autour de lui, dans les tons de
-`COAGULATION_CUBE` (`Config.js`).
+**Trois effets retirent la main au joueur, à trois degrés différents** — c'est
+la distinction la plus importante du jeu :
+
+| Effet | Ce qu'il reste au joueur |
+|---|---|
+| `freeze` (Gel) | Tout, mais à **un tiers de la vitesse** |
+| `paralyse` (Neurotoxine) | **La marche et l'accroupissement seulement** : plus de coups, plus de saut, plus d'esquive |
+| `trap` (Coagulase) | **Rien du tout**, plus aucune touche n'est lue |
+
+`paralyse` traduit la paralysie *flasque* de la toxine botulique : elle coupe la
+commande motrice sans figer le corps, au contraire du tétanos qui raidit. Le
+personnage garde donc ses jambes, et c'est ce qui la rend jouable — 2,5 s de
+`trap` seraient insupportables.
+
+`trap` dessine un cube jaunâtre translucide autour de la cible
+(`COAGULATION_CUBE` dans `Config.js`).
+
+`mark`, l'aflatoxine, est le seul effet **définitif** : chaque marque majore de
+10 % tous les dégâts que la cible encaissera jusqu'à la fin du combat, cumulable
+cinq fois. Rien ne l'enlève, pas même le biofilm une fois posée. Le danger réel
+de l'aflatoxine B1 n'est pas l'intoxication aiguë mais l'**exposition chronique
+cumulative** — c'est le cancérogène hépatique naturel le plus puissant connu.
 
 Un combattant ralenti ou gelé se déplace à **un tiers** de sa vitesse
 (`SLOW_FACTOR` dans `Config.js`), et sa teinte le signale à l'écran :
@@ -124,6 +155,17 @@ et le cas des quatre premiers personnages) ne change rien ; `0.15` veut dire
 qu'il n'encaisse que 15 % du coup ; `1.6`, qu'il en prend 60 % de plus. La
 brûlure du bec Bunsen est mise à l'échelle de la même façon, tick par tick.
 
+Une **immunité** est autre chose qu'une résistance. `resistances` réduit les
+**dégâts** ; `immunities` annule l'**état** :
+
+```json
+"immunities": ["freeze"]
+```
+
+*P. fluorescens* pousse à 4 °C, la geler n'a aucun sens. Un simple `froid: 0`
+n'aurait annulé que les dégâts du Gel de Listeria, pas le ralentissement qui va
+avec — il fallait les deux mécanismes.
+
 C'est ce qui donne à **S. aureus** son caractère : les jets de biocide des deux
 microbiologistes ne lui font presque rien (18 dégâts tombent à 3), mais le bec
 Bunsen le déchire (18 deviennent 29, et la brûlure passe de 7 à 11 dégâts par
@@ -141,7 +183,7 @@ continuent de se faire face, `facing` étant recalculé à chaque frame.
 L'équilibrage de base reste homogène : les persos se différencient par
 `moveSpeed`, `jumpVelocity`, `hurtbox`, `scale` et les portées de hitbox.
 
-Ajouter un 6ᵉ perso = un JSON dans `js/data/characters/`, une entrée dans
+Ajouter un perso = un JSON dans `js/data/characters/`, une entrée dans
 `scripts/characters.js`, et un appel `loadCharacter(...)` dans `boot()` de
 `js/main.js`. Il apparaît alors tout seul dans le sélecteur et sur l'écran titre.
 
@@ -298,6 +340,11 @@ manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 | **B. cereus** | Grognements de créature |
 | **L. monocytogenes** | Grognements et bruits visqueux |
 | **S. aureus** | Une grappe de petites voix empilées |
+| **Salmonella** | Femme grave et arrogante |
+| **C. botulinum** | Créature énorme et lente |
+| **P. fluorescens** | Éthérée et liquide |
+| **S. putrefaciens** | Bête à quatre pattes |
+| **A. flavus** | Bruissement sec de spores |
 
 Elles proviennent de banques **CC0** d'OpenGameArt, et sont importées et
 normalisées par `node scripts/import-voices.js`. La correspondance
@@ -363,12 +410,12 @@ microbe-fighter/
     engine/                   Config, Input, SpriteLoader, Fighter, Stage,
                               HUD, Effects, Audio, Music
     data/
-      characters/{gram,petri,cereus,listeria,staph}.json
+      characters/<perso>.json          dix personnages
       stages/<slug>.json
   assets/
     sprites/<perso>/<animation>/     ← les exports Pixellab arrivent ici
     stages/<slug>/background.png
-    audio/sfx/{gram,petri,cereus,listeria,staph}/  ← les voix, une par perso
+    audio/sfx/<perso>/                ← les voix, une par perso
     audio/music/                             ← la musique, une seule piste
     audio/music/
     fonts/PressStart2P-Regular.ttf

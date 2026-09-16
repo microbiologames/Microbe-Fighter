@@ -10,6 +10,11 @@ assets/audio/sfx/
   cereus/     B. cereus         — grognements de créature
   listeria/   L. monocytogenes  — grognements et bruits visqueux
   staph/      S. aureus         — une grappe de petites voix (voir plus bas)
+  salmonella/ Salmonella        — femme grave et arrogante
+  botulinum/  C. botulinum      — créature énorme et lente
+  pseudomonas/P. fluorescens    — éthérée et liquide
+  shewanella/ S. putrefaciens   — bête à quatre pattes
+  aspergillus/A. flavus         — bruissement sec de spores
 ```
 
 Chaque dossier contient : `punch` · `kick` · `superattack` · `hurt` · `ko` ·
@@ -27,8 +32,10 @@ Tous les extraits proviennent de banques **CC0 (domaine public)** d'OpenGameArt.
 | [10 Slime / Water Monster](https://opengameart.org/content/10-slimewater-monsterwater) — StarNinjas | L. monocytogenes (saut, esquive) | CC0 |
 | [Hurt Sound Effects](https://opengameart.org/content/hurt-sound-effects) | Doc Gram (douleur, esquive) | CC0 |
 
-S. aureus ne puise dans aucune source nouvelle : sa voix est fabriquée à partir
-des trois packs de créatures ci-dessus, empilés et transposés — voir plus bas.
+**Les dix personnages sortent de ces cinq packs seulement.** Ce qui les
+distingue n'est pas la source mais la TRANSPOSITION : le même grognement descendu
+de sept demi-tons devient un colosse, monté de douze il devient un bruissement
+sec. Voir « Une voix par transposition » plus bas.
 
 **Le CC0 n'était pas un hasard.** Le dépôt est public : une licence à partage à
 l'identique — CC-BY-SA, très répandue sur OpenGameArt — aurait contaminé le
@@ -55,12 +62,32 @@ tienne dans un jeu de combat :
 - mono 44,1 kHz 16 bits, quelle que soit la source (wav, ogg ou mp3) ;
 - **silence de tête et de queue coupé** — un son de combat doit partir à
   l'instant du coup, pas 200 ms plus tard ;
+- **transposé**, si `demiTons` est donné (voir ci-dessus) ;
 - **crête normalisée**, pour que tous les personnages soient au même niveau ;
 - fondu de 5 ms aux deux bouts, contre les claquements ;
 - tronqué à 2,5 s.
 
 Il affiche la durée obtenue et ce qu'il a coupé, ce qui permet de repérer les
 extraits inadaptés.
+
+## Une voix par transposition
+
+Cinq packs pour dix personnages, et pourtant aucun ne sonne comme un autre : tout
+se joue sur `demiTons`, le nombre de demi-tons dont on décale chaque extrait.
+
+| Personnage | Transposition | Ce que ça donne |
+|---|---|---|
+| **C. botulinum** | **−6 à −8** | Le son s'allonge autant qu'il descend : un grognement d'une seconde en fait 1,6. Un colosse qui traîne des pieds. |
+| **Salmonella** | **−4 à −6** | Le Type 2 du pack féminin perd sa clarté et gagne une autorité inquiétante. |
+| **S. putrefaciens** | **−1 à −3** | À peine touchée : c'est un animal, ni un colosse ni une bestiole. |
+| **P. fluorescens** | **+3 à +8** | Le slime cesse d'être un gros tas et devient liquide et léger. |
+| **S. aureus** | **+4 à +14** | Plusieurs petites voix à la fois — voir ci-dessous. |
+| **A. flavus** | **+9 à +14** | Poussé si haut que le grognement perd tout son corps : il ne reste que le souffle et le grain. Ça crisse, ça ne rugit plus. |
+
+Le pack féminin contient **trois voix** (Type 1, 2 et 3), atteignables en
+préfixant le nom du fichier : `['femaleRpg', 'Type 2/attack1.wav', -5]`. Doc
+Pétri utilise le Type 1, Salmonella le Type 2 descendu, P. fluorescens le Type 3
+monté — trois personnages, une seule source, aucune confusion possible.
 
 ## La voix de grappe de S. aureus
 
@@ -114,3 +141,15 @@ narguer).
 Rien n'oblige à passer par le script : déposer neuf `.wav` aux bons noms dans le
 dossier d'un personnage suffit, sans toucher au code. C'est ainsi que
 fonctionnaient les voix d'origine.
+
+## Un piège du dépliage des archives
+
+Les packs livrés en `.zip` sont dépliés en conservant leur **arborescence**.
+Écrire tout à plat est tentant et c'était le cas au début — mais le pack de voix
+féminines contient trois dossiers (`Type 1`, `Type 2`, `Type 3`) aux fichiers
+identiquement nommés. Aplatir en faisait disparaître deux sur trois
+silencieusement, la survivante dépendant de l'ordre des entrées du zip.
+
+Symptôme à reconnaître : un pack annoncé pour *N* fichiers qui en laisse trois
+fois moins dans le cache, et une voix qui n'est pas celle qu'on croit avoir
+choisie.
