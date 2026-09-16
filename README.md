@@ -174,6 +174,19 @@ moyen de le sortir — ce qui est exactement le rapport de force réel : le
 staphylocoque résiste très bien aux désinfectants de surface et très mal à la
 chaleur.
 
+### L'idle est animé
+
+Les onze animations de chaque personnage comprennent une **boucle de repos** de
+cinq frames : respiration, balancement, tentacules qui ondulent, lueur qui
+pulse, poussière de spores qui retombe. C'est l'état où on regarde le
+personnage le plus longtemps — en garde, entre deux échanges — et une image
+fixe y faisait mannequin de vitrine.
+
+Chaque perso respire à son rythme, et ça raconte quelque chose : *C. botulinum*
+a une respiration lente et pénible qui déséquilibre sa spore, *L. monocytogenes*
+une respiration courte et nerveuse, *S. putrefaciens* souffle son gaz par les
+évents du dos à chaque expiration.
+
 ### Croisement
 
 Dès que l'un des deux est en l'air, la séparation des corps est levée : on peut

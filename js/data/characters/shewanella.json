@@ -3,7 +3,7 @@
   "displayName": "S. putrefaciens",
   "color": "#9c6b4f",
   "scale": 0.673,
-  "groundY": 115,
+  "groundY": 141,
   "moveSpeed": 2.5,
   "jumpVelocity": 6.2,
   "portrait": "assets/sprites/shewanella/portrait/portrait.png",
@@ -30,9 +30,9 @@
   "animations": {
     "idle": {
       "folder": "assets/sprites/shewanella/idle",
-      "frameCount": 1,
-      "frameDuration": 150,
-      "loop": true, "groundY": 115
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 141
     },
     "walk": {
       "folder": "assets/sprites/shewanella/walk",

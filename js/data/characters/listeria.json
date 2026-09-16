@@ -3,7 +3,7 @@
   "displayName": "L. monocytogenes",
   "color": "#a05ab0",
   "scale": 0.798,
-  "groundY": 123,
+  "groundY": 143,
   "moveSpeed": 2.6,
   "jumpVelocity": 8.6,
   "portrait": "assets/sprites/listeria/portrait/portrait.png",
@@ -20,7 +20,7 @@
     "superattack": "assets/audio/sfx/listeria/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/listeria/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 123 },
+    "idle":        { "folder": "assets/sprites/listeria/idle",        "frameCount": 5, "frameDuration": 180,    "loop": true, "groundY": 143 },
     "walk":        { "folder": "assets/sprites/listeria/walk",        "frameCount": 5, "frameDuration": 90,    "loop": true, "groundY": 143 },
     "jump":        { "folder": "assets/sprites/listeria/jump",        "frameCount": 5, "frameDuration": 110,    "loop": true, "groundY": 143 },
     "crouch":      { "folder": "assets/sprites/listeria/crouch",      "frameCount": 5, "frameDuration": 120,    "loop": false, "groundY": 143 },

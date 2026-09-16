@@ -3,7 +3,7 @@
   "displayName": "P. fluorescens",
   "color": "#c8e05a",
   "scale": 0.941,
-  "groundY": 121,
+  "groundY": 139,
   "moveSpeed": 2.4,
   "jumpVelocity": 8.2,
   "portrait": "assets/sprites/pseudomonas/portrait/portrait.png",
@@ -34,9 +34,9 @@
   "animations": {
     "idle": {
       "folder": "assets/sprites/pseudomonas/idle",
-      "frameCount": 1,
-      "frameDuration": 150,
-      "loop": true, "groundY": 121
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 139
     },
     "walk": {
       "folder": "assets/sprites/pseudomonas/walk",

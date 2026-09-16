@@ -3,7 +3,7 @@
   "displayName": "A. flavus",
   "color": "#b5a63c",
   "scale": 0.897,
-  "groundY": 120,
+  "groundY": 140,
   "moveSpeed": 1.8,
   "jumpVelocity": 7.2,
   "portrait": "assets/sprites/aspergillus/portrait/portrait.png",
@@ -31,9 +31,9 @@
   "animations": {
     "idle": {
       "folder": "assets/sprites/aspergillus/idle",
-      "frameCount": 1,
-      "frameDuration": 150,
-      "loop": true, "groundY": 120
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 140
     },
     "walk": {
       "folder": "assets/sprites/aspergillus/walk",

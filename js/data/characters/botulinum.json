@@ -3,7 +3,7 @@
   "displayName": "C. botulinum",
   "color": "#c9c6bd",
   "scale": 0.847,
-  "groundY": 125,
+  "groundY": 149,
   "moveSpeed": 1.2,
   "jumpVelocity": 5.8,
   "portrait": "assets/sprites/botulinum/portrait/portrait.png",
@@ -30,9 +30,9 @@
   "animations": {
     "idle": {
       "folder": "assets/sprites/botulinum/idle",
-      "frameCount": 1,
-      "frameDuration": 150,
-      "loop": true, "groundY": 125
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 149
     },
     "walk": {
       "folder": "assets/sprites/botulinum/walk",

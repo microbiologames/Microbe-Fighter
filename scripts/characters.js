@@ -49,6 +49,7 @@ const CHARACTERS = {
       'blue nitrile gloves on both hands, a small teal rectangular badge on the chest pocket, ' +
       'dark olive trousers, beige sneakers, confident and focused, ready for an arcade duel',
     anims: {
+      idle: 'a bearded microbiologist in a white lab coat and blue gloves standing still in a relaxed fighting stance, breathing calmly, his chest rising and falling, the hem of his open lab coat swaying gently, fists loosely raised, weight shifting almost imperceptibly from one foot to the other, alert and waiting',
       walk: 'walking forward calmly in a lab coat with a steady confident stride',
       jump: 'hovering in mid-air after jumping, lab coat flaring open, arms out for balance',
       crouch: 'crouching low into a defensive stance, one knee down, subtle breathing bob',
@@ -70,6 +71,7 @@ const CHARACTERS = {
       'a small teal rectangular badge on the chest pocket, dark olive trousers, beige sneakers, ' +
       'determined and quick, ready for an arcade duel',
     anims: {
+      idle: 'a female microbiologist in a white lab coat and blue gloves standing still in a relaxed fighting stance, breathing calmly, her chest rising and falling, the hem of her open lab coat swaying gently, fists loosely raised, weight shifting almost imperceptibly from one foot to the other, alert and waiting',
       walk: 'walking forward briskly in a lab coat with a light determined stride',
       jump: 'hovering in mid-air after jumping, lab coat flaring open, arms out for balance',
       crouch: 'crouching low into a defensive stance, one knee down, subtle breathing bob',
@@ -94,6 +96,7 @@ const CHARACTERS = {
       'the body, and a large oval endospore embedded in its belly with angry yellow glaring eyes, ' +
       'heavy bulky brawler build',
     anims: {
+      idle: 'a large green rod-shaped bacterium humanoid with a glowing spore in its belly, standing still in a heavy fighting stance, breathing slowly and deeply, its bulky green body swelling and settling with each breath, the abdominal spore pulsing faintly, fists loosely raised, waiting',
       walk: 'lumbering forward heavily, bulky green rod body swaying, flagella dragging behind, belly endospore glowing',
       jump: 'hovering in mid-air after a heavy jump, green rod body squashed, flagella splayed out, arms out for balance',
       crouch: 'crouching low into a compact defensive stance, green body hunched over its belly endospore, subtle breathing bob',
@@ -114,6 +117,7 @@ const CHARACTERS = {
       'glowing red eyes and a wide jagged grin full of sharp teeth, many long curling green flagella ' +
       'all around the body, sleek and vicious build',
     anims: {
+      idle: 'a lean pale bacterium humanoid with clawed hands, standing still in a low twitchy fighting stance, breathing quickly and shallowly, its slender body bobbing lightly, claws flexing open and closed, head tilting slightly, impatient and ready to dart',
       walk: 'a purple rod-shaped Listeria with red eyes and green flagella, WALKING forward on its two legs, a clear side-view walk cycle with legs alternating step after step, body upright and leaning slightly into the stride, flagella trailing behind',
       jump: 'hovering in mid-air after a high jump, purple rod body arched, flagella trailing, claws spread',
       crouch: 'crouching low and coiled like a predator ready to pounce, subtle breathing bob, red eyes glaring',
@@ -141,6 +145,7 @@ const CHARACTERS = {
       'sphere with an angry face forming the chest, clawed hands and feet made of smaller spheres, ' +
       'wide menacing stance, no skin and no clothing, only spheres',
     anims: {
+      idle: 'a humanoid made of clustered golden spheres each with its own tiny face, standing still in a braced fighting stance, the whole cluster breathing as one, the individual spheres jostling and rolling slightly against each other, the big angry face on its chest fully visible, the little faces blinking and shifting expression, waiting',
       walk: 'a humanoid made of clustered golden spheres each with its own tiny face, walking forward with a heavy rolling stride, the spheres jostling against each other, the big angry face on its chest fully visible',
       jump: 'a humanoid made of clustered golden spheres each with its own tiny face, hovering in mid-air after a jump, the cluster loosening slightly, clawed sphere hands spread for balance',
       crouch: 'a humanoid made of clustered golden spheres each with its own tiny face, crouching low and compacting its cluster into a dense ball, subtle breathing bob',
@@ -165,6 +170,7 @@ const CHARACTERS = {
       'six long segmented metallic grey tentacles like mechanical octopus arms sprouting from all over its ' +
       'body and curling around it, one tentacle tipped with a syringe needle, smirking menacing face, wide stance',
     anims: {
+      idle: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, standing still in an arrogant fighting stance, its pink body breathing slowly, its six long segmented metallic tentacles undulating and coiling lazily around it in the air, the syringe-tipped tentacle swaying, smirking and waiting',
       walk: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, walking forward carried by its six long segmented metallic tentacles that plant themselves on the ground one after another, body swaying slightly above them',
       jump: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, launched in mid-air, its six long metallic tentacles splayed wide around it like a spider, body held upright',
       crouch: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, crouching low and folding its six metallic tentacles tight against its body, coiled and ready to spring',
@@ -187,6 +193,7 @@ const CHARACTERS = {
       'heavy drooping eyelids and a slack mouth, limp dangling hands, slow and swollen, ' +
       'looking bloated and under pressure',
     anims: {
+      idle: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, standing still and swaying heavily, breathing slow and laboured, the enormous bulging sphere rising and sinking with each breath and pulling its body off balance, arms hanging limp, eyelids drooping, barely awake',
       walk: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, shuffling forward slowly and heavily, dragging its feet, arms hanging limp at its sides, the bulging sphere swaying with each step',
       jump: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, heaved barely off the ground in a sluggish hop, limbs dangling loosely, the heavy sphere pulling it down',
       crouch: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, sinking down into a crouch, its swollen body compressing, head lolling forward',
@@ -209,6 +216,7 @@ const CHARACTERS = {
       'flagella sprouting from ONE end only at the back of its head and trailing behind like a ponytail, ' +
       'thick glistening slime dripping off its body, calm serene face with pale glowing eyes, graceful silhouette',
     anims: {
+      idle: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, standing still and hovering slightly, its slender body undulating gently, its inner glow pulsing slowly brighter and dimmer like a heartbeat, the tuft of long glowing flagella at the back of its head drifting slowly behind it, slime dripping from its body, serene and waiting',
       walk: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, gliding forward smoothly, the tuft of long glowing flagella at the back of its head streaming behind it, slime dripping from its body, inner glow pulsing',
       jump: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, suspended in mid-air, its tuft of long glowing flagella fanning out behind it, body arched gracefully, slime droplets floating around it',
       crouch: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, folding down into a low crouch, its glowing flagella curling around it, inner glow dimming',
@@ -233,6 +241,7 @@ const CHARACTERS = {
       'charcoal black, a single long thin whip-like tail curling behind it, a drooping heavy head with ' +
       'sad half-lidded eyes hanging low between its shoulders, vents along its back leaking olive-green gas',
     anims: {
+      idle: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, standing still on all fours, its arched back rising and falling with slow heavy breathing, its long thin tail swaying lazily behind it, small puffs of olive-green gas escaping from the vents along its back, head hanging low, waiting',
       walk: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, prowling forward on all fours with a low dragging gait, head hanging low, olive-green gas leaking from the vents along its back',
       jump: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, pouncing through the air on all fours, legs tucked under its body, tail streaming behind, gas trailing from its back',
       crouch: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, flattening itself low against the ground on all fours, shoulders hunched high, head pressed down, ready to pounce',
@@ -256,6 +265,7 @@ const CHARACTERS = {
       'single thick rough stalk rising from its shoulders and opening into a perfect spiky sphere covered ' +
       'all over in radiating spore chains like a sea urchin, two dark sunken eyes set in the sphere',
     anims: {
+      idle: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, standing still, its braided filaments slowly writhing and tightening around its limbs, its head sphere turning almost imperceptibly, fine yellow spore dust drifting off the spore chains and falling around it, the cold blue glow between its filaments pulsing slowly, waiting',
       walk: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, stalking forward hunched, pale bony hands swinging low, a trail of fine yellow spore dust shaking loose from its head sphere with each step',
       jump: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, leaping through the air, filament limbs stretched out, a cloud of yellow spore dust bursting from its head sphere',
       crouch: 'a humanoid creature of braided yellow-olive filaments with a spiky spore-covered sphere for a head, crouching low and compacting its filaments, its head sphere tucked down between its shoulders',
@@ -271,11 +281,15 @@ const CHARACTERS = {
 
 // Pour les coups, on garde la frame de départ (pose neutre) comme frame 0 : le
 // coup part visuellement de la garde, ce qui rend les 5 frames lisibles.
-const KEEP_FIRST_FRAME = new Set(['punch', 'kick', 'hurt', 'ko', 'taunt', 'victory', 'superattack']);
+// `keep_first_frame` conserve la pose de référence du personnage comme frame 0.
+// L'idle en fait partie : sans ça, la boucle de respiration repartirait d'une
+// pose inventée et le personnage changerait d'allure au repos, qui est
+// justement l'état où on le regarde le plus longtemps.
+const KEEP_FIRST_FRAME = new Set(['idle', 'punch', 'kick', 'hurt', 'ko', 'taunt', 'victory', 'superattack']);
 
 // L'ordre dans lequel generate-sprites.js les génère par défaut.
 const ANIMATION_ORDER = [
-  'walk', 'jump', 'crouch', 'punch', 'kick', 'hurt', 'ko', 'taunt', 'victory', 'superattack',
+  'idle', 'walk', 'jump', 'crouch', 'punch', 'kick', 'hurt', 'ko', 'taunt', 'victory', 'superattack',
 ];
 
 module.exports = { CHARACTERS, KEEP_FIRST_FRAME, ANIMATION_ORDER };

@@ -3,7 +3,7 @@
   "displayName": "S. aureus",
   "color": "#d9a52e",
   "scale": 0.877,
-  "groundY": 125,
+  "groundY": 149,
   "moveSpeed": 1.7,
   "jumpVelocity": 7,
   "portrait": "assets/sprites/staph/portrait/portrait.png",
@@ -21,7 +21,7 @@
     "superattack": "assets/audio/sfx/staph/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/staph/idle",        "frameCount": 1, "frameDuration": 150, "loop": true, "groundY": 125 },
+    "idle":        { "folder": "assets/sprites/staph/idle",        "frameCount": 5, "frameDuration": 180, "loop": true, "groundY": 149 },
     "walk":        { "folder": "assets/sprites/staph/walk",        "frameCount": 5, "frameDuration": 90,  "loop": true, "groundY": 149 },
     "jump":        { "folder": "assets/sprites/staph/jump",        "frameCount": 5, "frameDuration": 110, "loop": true, "groundY": 149 },
     "crouch":      { "folder": "assets/sprites/staph/crouch",      "frameCount": 5, "frameDuration": 120, "loop": false, "groundY": 149 },

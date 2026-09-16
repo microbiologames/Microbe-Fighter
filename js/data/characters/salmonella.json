@@ -3,7 +3,7 @@
   "displayName": "Salmonella",
   "color": "#e8909b",
   "scale": 0.891,
-  "groundY": 126,
+  "groundY": 152,
   "moveSpeed": 2.3,
   "jumpVelocity": 7.8,
   "portrait": "assets/sprites/salmonella/portrait/portrait.png",
@@ -29,9 +29,9 @@
   "animations": {
     "idle": {
       "folder": "assets/sprites/salmonella/idle",
-      "frameCount": 1,
-      "frameDuration": 150,
-      "loop": true, "groundY": 126
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 152
     },
     "walk": {
       "folder": "assets/sprites/salmonella/walk",

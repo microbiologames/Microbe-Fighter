@@ -28,11 +28,33 @@ Puis, pour chaque perso :
 
 ```bash
 node scripts/prepare-reference.js gram    # recadre et redimensionne (1 fois par image)
-node scripts/create-character.js gram     # crée le perso + récupère idle et portrait
-node scripts/generate-sprites.js gram     # les 10 animations de combat
+node scripts/create-character.js gram     # crée le perso + récupère la pose fixe et le portrait
+node scripts/generate-sprites.js gram     # les 11 animations, idle compris
 node scripts/measure-sprites.js --write   # cale groundY et scale sur les vrais sprites
 node scripts/check-assets.js              # contrôle final
 ```
+
+## L'idle est une animation, pas une pose
+
+`create-character.js` dépose une **pose fixe** dans `assets/sprites/<perso>/idle/000.png`,
+récupérée des rotations du personnage. Elle sert de filet : tant que les
+animations ne sont pas générées, le perso s'affiche quand même.
+
+`generate-sprites.js` la **remplace** ensuite par une vraie boucle de cinq
+frames — respiration, balancement, ce qui donne vie au personnage à l'arrêt.
+`idle` fait partie d'`ANIMATION_ORDER`, donc **tout personnage ajouté par la
+suite l'aura sans rien avoir à faire** : il suffit de lui écrire une description
+`idle` dans `scripts/characters.js`, comme pour les dix autres.
+
+Deux conséquences à connaître :
+
+- **Ne relance pas `create-character.js --poses-only` après coup.** Il réécrirait
+  `idle/000.png` avec la pose fixe, sur un canevas plus petit que les quatre
+  autres frames, et le personnage sauterait d'une frame à l'autre. Si ça arrive,
+  `node scripts/generate-sprites.js <perso> idle` répare tout.
+- **`measure-sprites.js` prend l'idle comme référence** pour le `scale` et la
+  ligne de sol de toutes les autres animations. Il faut donc le **re-mesurer
+  après** avoir généré l'idle, pas avant.
 
 ## Un quadrupède se décide à la CRÉATION, jamais après
 

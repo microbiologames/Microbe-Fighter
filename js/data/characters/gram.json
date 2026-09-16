@@ -3,7 +3,7 @@
   "displayName": "Doc Gram",
   "color": "#e8eef2",
   "scale": 0.97,
-  "groundY": 118,
+  "groundY": 132,
   "moveSpeed": 1.9,
   "jumpVelocity": 7.5,
   "portrait": "assets/sprites/gram/portrait/portrait.png",
@@ -20,7 +20,7 @@
     "superattack": "assets/audio/sfx/gram/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/gram/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 118 },
+    "idle":        { "folder": "assets/sprites/gram/idle",        "frameCount": 5, "frameDuration": 180,    "loop": true, "groundY": 132 },
     "walk":        { "folder": "assets/sprites/gram/walk",        "frameCount": 5, "frameDuration": 90,    "loop": true, "groundY": 132 },
     "jump":        { "folder": "assets/sprites/gram/jump",        "frameCount": 5, "frameDuration": 110,    "loop": true, "groundY": 132 },
     "crouch":      { "folder": "assets/sprites/gram/crouch",      "frameCount": 5, "frameDuration": 120,    "loop": false, "groundY": 132 },

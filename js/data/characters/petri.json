@@ -3,7 +3,7 @@
   "displayName": "Doc Pétri",
   "color": "#b8e6d0",
   "scale": 0.877,
-  "groundY": 120,
+  "groundY": 136,
   "moveSpeed": 2.1,
   "jumpVelocity": 7.8,
   "portrait": "assets/sprites/petri/portrait/portrait.png",
@@ -20,7 +20,7 @@
     "superattack": "assets/audio/sfx/petri/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/petri/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 120 },
+    "idle":        { "folder": "assets/sprites/petri/idle",        "frameCount": 5, "frameDuration": 180,    "loop": true, "groundY": 136 },
     "walk":        { "folder": "assets/sprites/petri/walk",        "frameCount": 5, "frameDuration": 90,    "loop": true, "groundY": 136 },
     "jump":        { "folder": "assets/sprites/petri/jump",        "frameCount": 5, "frameDuration": 110,    "loop": true, "groundY": 136 },
     "crouch":      { "folder": "assets/sprites/petri/crouch",      "frameCount": 5, "frameDuration": 120,    "loop": false, "groundY": 136 },
