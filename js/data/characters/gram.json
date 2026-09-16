@@ -9,15 +9,15 @@
   "portrait": "assets/sprites/gram/portrait/portrait.png",
   "hurtbox": { "width": 28, "heightStand": 98, "heightCrouch": 66 },
   "sfx": {
-    "punch": "assets/audio/sfx/nico/punch.wav",
-    "kick": "assets/audio/sfx/nico/kick.wav",
-    "hurt": "assets/audio/sfx/nico/hurt.wav",
-    "ko": "assets/audio/sfx/nico/ko.wav",
-    "victory": "assets/audio/sfx/nico/victory.wav",
-    "jump": "assets/audio/sfx/nico/jump.wav",
-    "esquive": "assets/audio/sfx/nico/esquive.wav",
-    "nargue": "assets/audio/sfx/nico/nargue.wav",
-    "superattack": "assets/audio/sfx/nico/superattack.wav"
+    "punch": "assets/audio/sfx/gram/punch.wav",
+    "kick": "assets/audio/sfx/gram/kick.wav",
+    "hurt": "assets/audio/sfx/gram/hurt.wav",
+    "ko": "assets/audio/sfx/gram/ko.wav",
+    "victory": "assets/audio/sfx/gram/victory.wav",
+    "jump": "assets/audio/sfx/gram/jump.wav",
+    "esquive": "assets/audio/sfx/gram/esquive.wav",
+    "nargue": "assets/audio/sfx/gram/nargue.wav",
+    "superattack": "assets/audio/sfx/gram/superattack.wav"
   },
   "animations": {
     "idle":        { "folder": "assets/sprites/gram/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 118 },

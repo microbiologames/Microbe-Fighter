@@ -56,8 +56,8 @@ présente.
 ## À ne pas confondre
 
 Le jeu n'a plus que **deux sortes de sons** : cette musique, et les **voix** des
-personnages dans `assets/audio/sfx/<personne>/`. Celles d'Amé restent à
-enregistrer — voir [`../sfx/ame/README.md`](../sfx/ame/README.md).
+personnages dans `assets/audio/sfx/<perso>/` — voir
+[`../sfx/README.md`](../sfx/README.md).
 
 ## Ce qui a été retiré
 

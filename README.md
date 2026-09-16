@@ -68,10 +68,10 @@ pastilles au-dessus des barres de vie.
 
 | Perso | `id` | Voix | Profil |
 |---|---|---|---|
-| **Doc Gram** — microbiologiste | `gram` | **Nico** (`sfx/nico/`) | Grand, élancé, allonge maximale, un peu lent. Poing = micropipette, super = chalumeau Bunsen. |
-| **Doc Pétri** — microbiologiste | `petri` | **Amé** (`sfx/ame/`) — **à enregistrer** | Plus vive, un peu moins d'allonge. Poing = portoir à tubes, super = vapeur d'autoclave. |
-| **B. cereus** — *Bacillus cereus* | `cereus` | **Raph** (`sfx/raph/`) | Le plus grand et le plus large, lent, saut bas, encaisse. Le cogneur. Son **spore abdominal** s'embrase sur la super attaque. |
-| **L. monocytogenes** — *Listeria monocytogenes* | `listeria` | **Margot** (`sfx/margot/`) | Mince et rapide, saut haut, peu de hurtbox. Griffes et ruée. Le « hit and run ». |
+| **Doc Gram** — microbiologiste | `gram` | Homme | Grand, élancé, allonge maximale, un peu lent. Poing = micropipette, super = chalumeau Bunsen. |
+| **Doc Pétri** — microbiologiste | `petri` | Femme | Plus vive, un peu moins d'allonge. Poing = portoir à tubes, super = vapeur d'autoclave. |
+| **B. cereus** — *Bacillus cereus* | `cereus` | Créature | Le plus grand et le plus large, lent, saut bas, encaisse. Le cogneur. Son **spore abdominal** s'embrase sur la super attaque. |
+| **L. monocytogenes** — *Listeria monocytogenes* | `listeria` | Créature | Mince et rapide, saut haut, peu de hurtbox. Griffes et ruée. Le « hit and run ». |
 
 Deux pathogènes alimentaires face à deux microbiologistes : le registre colle au
 badge ADRIA des blouses. Les noms affichés suivent la convention scientifique
@@ -176,6 +176,8 @@ node scripts/check-assets.js              # contrôle de cohérence, sans API
 | `scripts/generate-sprites.js` | Les 10 animations de combat, et aligne `frameCount` sur ce qui est livré. |
 | `scripts/generate-stage-background.js` | Les fonds de décor, via l'API. |
 | `scripts/import-wide-stage.js` | **Sans API.** Importe un décor panoramique déjà en pixel art et cale sa ligne de sol. |
+| `scripts/import-voices.js` | Télécharge, normalise et installe les voix depuis les banques CC0. |
+| `scripts/voices.js` | La correspondance événement → extrait. **Le seul fichier à éditer pour changer une voix.** |
 | `scripts/characters.js` | Les descriptions physiques et d'actions. **Le seul fichier à éditer pour changer l'allure d'un perso.** |
 
 ### La clé Pixellab
@@ -250,27 +252,32 @@ manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 
 ---
 
-## ⚠️ Les voix d'Amé manquent
+## Les voix
 
-Trois voix sur quatre sont là et branchées : **Nico**, **Raph** et **Margot**,
-reprises de `sf-pixel-fight`. La quatrième, celle d'**Amé** (Doc Pétri), **n'a
-jamais été enregistrée** — le dossier `assets/audio/sfx/ame/` est **vide
-volontairement**.
+**Quatre voix, une par personnage**, dans
+[`assets/audio/sfx/<perso>/`](assets/audio/sfx/README.md) : neuf sons chacune
+(`punch`, `kick`, `superattack`, `hurt`, `ko`, `victory`, `jump`, `esquive`,
+`nargue`).
 
-Le jeu tourne quand même : `js/engine/Audio.js` avale l'erreur quand un fichier
-est absent, Doc Pétri est simplement muette.
+| Personnage | Voix |
+|---|---|
+| **Doc Gram** | Homme |
+| **Doc Pétri** | Femme |
+| **B. cereus** | Grognements de créature |
+| **L. monocytogenes** | Grognements et bruits visqueux |
 
-**Pour la brancher : déposer les 9 WAV dans `assets/audio/sfx/ame/`. Aucun code
-à modifier.** Noms exacts et consignes d'enregistrement dans
-[`assets/audio/sfx/ame/README.md`](assets/audio/sfx/ame/README.md).
+Elles proviennent de banques **CC0** d'OpenGameArt, et sont importées et
+normalisées par `node scripts/import-voices.js`. La correspondance
+événement → extrait tient dans un seul fichier,
+[`scripts/voices.js`](scripts/voices.js) : changer une voix, c'est changer une
+ligne puis relancer le script.
 
-Les 9 sons par personnage : `punch` · `kick` · `hurt` · `ko` · `victory` ·
-`jump` · `esquive` · `nargue` · `superattack`.
+Le détail des sources, des licences et des pièges est dans le
+[README du dossier](assets/audio/sfx/README.md).
 
-> Les dossiers de voix sont nommés d'après **la personne** (`nico`, `ame`,
-> `raph`, `margot`), pas d'après le personnage : une même voix peut resservir
-> pour un perso « déguisé » plus tard. Le `narguer.wav` de Margot, seule
-> incohérence du dépôt d'origine, a été renommé `nargue.wav` ici.
+> Les voix du jeu d'origine étaient celles de **personnes réelles** — approprié
+> pour un jeu de famille, beaucoup moins pour un dépôt public. Elles ont été
+> retirées et remplacées par ces extraits libres.
 
 ## La musique
 
@@ -328,9 +335,8 @@ microbe-fighter/
   assets/
     sprites/<perso>/<animation>/     ← les exports Pixellab arrivent ici
     stages/<slug>/background.png
-    audio/sfx/{nico,raph,margot}/    ← voix enregistrées, en place
-    audio/sfx/ame/                   ← VIDE, voir plus haut
-    audio/music/                     ← la musique, une seule piste
+    audio/sfx/{gram,petri,cereus,listeria}/   ← les voix, une par perso
+    audio/music/                             ← la musique, une seule piste
     audio/music/
     fonts/PressStart2P-Regular.ttf
   scripts/                    génération Pixellab + contrôle de cohérence

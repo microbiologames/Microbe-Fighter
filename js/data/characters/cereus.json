@@ -9,15 +9,15 @@
   "portrait": "assets/sprites/cereus/portrait/portrait.png",
   "hurtbox": { "width": 40, "heightStand": 102, "heightCrouch": 70 },
   "sfx": {
-    "punch": "assets/audio/sfx/raph/punch.wav",
-    "kick": "assets/audio/sfx/raph/kick.wav",
-    "hurt": "assets/audio/sfx/raph/hurt.wav",
-    "ko": "assets/audio/sfx/raph/ko.wav",
-    "victory": "assets/audio/sfx/raph/victory.wav",
-    "jump": "assets/audio/sfx/raph/jump.wav",
-    "esquive": "assets/audio/sfx/raph/esquive.wav",
-    "nargue": "assets/audio/sfx/raph/nargue.wav",
-    "superattack": "assets/audio/sfx/raph/superattack.wav"
+    "punch": "assets/audio/sfx/cereus/punch.wav",
+    "kick": "assets/audio/sfx/cereus/kick.wav",
+    "hurt": "assets/audio/sfx/cereus/hurt.wav",
+    "ko": "assets/audio/sfx/cereus/ko.wav",
+    "victory": "assets/audio/sfx/cereus/victory.wav",
+    "jump": "assets/audio/sfx/cereus/jump.wav",
+    "esquive": "assets/audio/sfx/cereus/esquive.wav",
+    "nargue": "assets/audio/sfx/cereus/nargue.wav",
+    "superattack": "assets/audio/sfx/cereus/superattack.wav"
   },
   "animations": {
     "idle":        { "folder": "assets/sprites/cereus/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 124 },

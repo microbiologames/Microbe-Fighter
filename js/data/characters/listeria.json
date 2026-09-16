@@ -9,15 +9,15 @@
   "portrait": "assets/sprites/listeria/portrait/portrait.png",
   "hurtbox": { "width": 32, "heightStand": 91, "heightCrouch": 62 },
   "sfx": {
-    "punch": "assets/audio/sfx/margot/punch.wav",
-    "kick": "assets/audio/sfx/margot/kick.wav",
-    "hurt": "assets/audio/sfx/margot/hurt.wav",
-    "ko": "assets/audio/sfx/margot/ko.wav",
-    "victory": "assets/audio/sfx/margot/victory.wav",
-    "jump": "assets/audio/sfx/margot/jump.wav",
-    "esquive": "assets/audio/sfx/margot/esquive.wav",
-    "nargue": "assets/audio/sfx/margot/nargue.wav",
-    "superattack": "assets/audio/sfx/margot/superattack.wav"
+    "punch": "assets/audio/sfx/listeria/punch.wav",
+    "kick": "assets/audio/sfx/listeria/kick.wav",
+    "hurt": "assets/audio/sfx/listeria/hurt.wav",
+    "ko": "assets/audio/sfx/listeria/ko.wav",
+    "victory": "assets/audio/sfx/listeria/victory.wav",
+    "jump": "assets/audio/sfx/listeria/jump.wav",
+    "esquive": "assets/audio/sfx/listeria/esquive.wav",
+    "nargue": "assets/audio/sfx/listeria/nargue.wav",
+    "superattack": "assets/audio/sfx/listeria/superattack.wav"
   },
   "animations": {
     "idle":        { "folder": "assets/sprites/listeria/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 123 },

@@ -9,15 +9,15 @@
   "portrait": "assets/sprites/petri/portrait/portrait.png",
   "hurtbox": { "width": 28, "heightStand": 93, "heightCrouch": 62 },
   "sfx": {
-    "punch": "assets/audio/sfx/ame/punch.wav",
-    "kick": "assets/audio/sfx/ame/kick.wav",
-    "hurt": "assets/audio/sfx/ame/hurt.wav",
-    "ko": "assets/audio/sfx/ame/ko.wav",
-    "victory": "assets/audio/sfx/ame/victory.wav",
-    "jump": "assets/audio/sfx/ame/jump.wav",
-    "esquive": "assets/audio/sfx/ame/esquive.wav",
-    "nargue": "assets/audio/sfx/ame/nargue.wav",
-    "superattack": "assets/audio/sfx/ame/superattack.wav"
+    "punch": "assets/audio/sfx/petri/punch.wav",
+    "kick": "assets/audio/sfx/petri/kick.wav",
+    "hurt": "assets/audio/sfx/petri/hurt.wav",
+    "ko": "assets/audio/sfx/petri/ko.wav",
+    "victory": "assets/audio/sfx/petri/victory.wav",
+    "jump": "assets/audio/sfx/petri/jump.wav",
+    "esquive": "assets/audio/sfx/petri/esquive.wav",
+    "nargue": "assets/audio/sfx/petri/nargue.wav",
+    "superattack": "assets/audio/sfx/petri/superattack.wav"
   },
   "animations": {
     "idle":        { "folder": "assets/sprites/petri/idle",        "frameCount": 1, "frameDuration": 150,    "loop": true, "groundY": 120 },
