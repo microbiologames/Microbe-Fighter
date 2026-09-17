@@ -1,0 +1,159 @@
+{
+  "id": "metchnikoff",
+  "displayName": "É. Metchnikoff",
+  "color": "#e0d5b8",
+  "scale": 0.97,
+  "groundY": 129,
+  "moveSpeed": 1.9,
+  "jumpVelocity": 7.2,
+  "portrait": "assets/sprites/metchnikoff/portrait/portrait.png",
+  "hurtbox": {
+    "width": 30,
+    "heightStand": 98,
+    "heightCrouch": 66
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/metchnikoff/punch.wav",
+    "kick": "assets/audio/sfx/metchnikoff/kick.wav",
+    "hurt": "assets/audio/sfx/metchnikoff/hurt.wav",
+    "ko": "assets/audio/sfx/metchnikoff/ko.wav",
+    "victory": "assets/audio/sfx/metchnikoff/victory.wav",
+    "jump": "assets/audio/sfx/metchnikoff/jump.wav",
+    "esquive": "assets/audio/sfx/metchnikoff/esquive.wav",
+    "nargue": "assets/audio/sfx/metchnikoff/nargue.wav",
+    "superattack": "assets/audio/sfx/metchnikoff/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/metchnikoff/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 129
+    },
+    "walk": {
+      "folder": "assets/sprites/metchnikoff/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 129
+    },
+    "jump": {
+      "folder": "assets/sprites/metchnikoff/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "crouch": {
+      "folder": "assets/sprites/metchnikoff/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 129
+    },
+    "punch": {
+      "folder": "assets/sprites/metchnikoff/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 129
+    },
+    "kick": {
+      "folder": "assets/sprites/metchnikoff/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 129
+    },
+    "hurt": {
+      "folder": "assets/sprites/metchnikoff/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 129
+    },
+    "ko": {
+      "folder": "assets/sprites/metchnikoff/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 129
+    },
+    "taunt": {
+      "folder": "assets/sprites/metchnikoff/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 129
+    },
+    "victory": {
+      "folder": "assets/sprites/metchnikoff/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "superattack": {
+      "folder": "assets/sprites/metchnikoff/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 129
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de bol",
+      "animation": "punch",
+      "damage": 12,
+      "damageType": "physique",
+      "knockback": 5,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 34,
+        "offsetY": 30,
+        "width": 34,
+        "height": 13
+      }
+    },
+    "kick": {
+      "label": "Lactobacille — part combattre seul",
+      "animation": "kick",
+      "damage": 4,
+      "damageType": "physique",
+      "knockback": 1,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 30,
+        "offsetY": 30,
+        "width": 26,
+        "height": 14
+      },
+      "effect": {
+        "type": "summon",
+        "on": "use",
+        "count": 1,
+        "damage": 7
+      }
+    },
+    "superattack": {
+      "label": "Équipe de lactobacilles — quatre alliés",
+      "animation": "superattack",
+      "damage": 6,
+      "damageType": "physique",
+      "knockback": 2,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 32,
+        "offsetY": 30,
+        "width": 28,
+        "height": 16
+      },
+      "effect": {
+        "type": "summon",
+        "on": "use",
+        "count": 4,
+        "damage": 7
+      }
+    }
+  }
+}

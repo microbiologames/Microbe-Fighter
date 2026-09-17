@@ -81,9 +81,21 @@ function drawRoundPips(ctx, wins, edgeX, y, alignRight) {
   }
 }
 
+// La police du jeu, Press Start 2P, n'a PAS de capitales accentuées. « Doc
+// Pétri » passé en majuscules y ressortait en « DOC PéTRI » : le É manquant
+// faisait tomber ce seul caractère sur une police de repli, plus petite et pas
+// du tout pixel. On retire donc les diacritiques avant d'afficher — c'est la
+// solution des bornes d'arcade, et « E. METCHNIKOFF » se lit très bien.
+//
+// Uniquement à l'affichage du canvas : les écrans HTML (sélection, écran titre)
+// utilisent une autre police et gardent leurs accents.
+function sansAccents(texte) {
+  return texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 function drawName(ctx, name, x, y, align) {
   ctx.fillStyle = '#ffd23f';
   ctx.font = '7px "Press Start 2P", monospace';
   ctx.textAlign = align;
-  ctx.fillText(name.toUpperCase(), x, y);
+  ctx.fillText(sansAccents(name).toUpperCase(), x, y);
 }

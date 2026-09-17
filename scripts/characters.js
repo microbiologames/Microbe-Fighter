@@ -277,6 +277,186 @@ const CHARACTERS = {
       ...COMMON,
     },
   },
+
+  mullis: {
+    label: 'Kary Mullis — inventeur de la PCR',
+    reference: 'Kary Mullis',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'an elderly male scientist, bald on top with short white hair at the sides, clean-shaven, an open white lab coat over an orange and brown plaid shirt, a brown belt, beige trousers, brown shoes, wiry and energetic, ready for an arcade duel',
+    anims: {
+      idle: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, standing in a loose restless fighting stance, breathing quickly, shifting his weight impatiently from foot to foot, the hem of his lab coat swaying, one hand flexing',
+      walk: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, striding forward quickly and eagerly, lab coat flapping behind him',
+      jump: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, in mid-air after a jump, lab coat flaring open, arms out for balance',
+      crouch: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, thrusting a micropipette forward to the RIGHT like a rapier at full arm extension, ejecting a tiny drop of clear liquid, dramatic street fighter style, sharp focused expression',
+      kick: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, standing in the LEFT half of the frame with his whole body clearly visible, flicking a SMALL bright blue glowing capsule of DNA, no bigger than his fist, from his open hand toward the RIGHT at chest height, the little capsule flying alone through the empty right half of the frame with a short sparkling trail, side view',
+      taunt: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, taunting the opponent with a cocky grin, spinning a micropipette between his fingers, beckoning with his free hand',
+      victory: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, celebrating a win, both arms thrown up in triumph, a huge delighted grin, a micropipette raised overhead',
+      superattack: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, standing in the LEFT half of the frame with his whole body clearly visible, both hands pushed toward the RIGHT, a NARROW horizontal spiral of small bright blue glowing DNA capsules, no thicker than his own arm, corkscrewing away toward the RIGHT at chest height through the empty right half of the frame, the spiral starting clear of his body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  franklin: {
+    label: 'Rosalind Franklin — structure de l ADN',
+    reference: 'Rosalind Franklin',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a female scientist with short dark curly hair, a buttoned white lab coat, blue jeans, brown shoes, calm and precise, ready for an arcade duel',
+    anims: {
+      idle: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, standing very still in a composed fighting stance, breathing slowly and evenly, her chest rising and falling, the hem of her lab coat barely moving, eyes steady and measuring',
+      walk: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, walking forward with a steady deliberate stride, lab coat swaying',
+      jump: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, in mid-air after a jump, lab coat flaring, arms out for balance',
+      crouch: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, driving a precise straight punch forward to the RIGHT at full arm extension, body squared and balanced, dramatic street fighter style, intensely focused',
+      kick: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, standing in the LEFT half of the frame with her whole body clearly visible, launching a SMALL bright blue glowing capsule of DNA, no bigger than her fist, from her open palm toward the RIGHT at chest height, the little capsule flying alone through the empty right half of the frame with a short sparkling trail, side view',
+      taunt: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, taunting the opponent with a cool raised eyebrow and a small dismissive gesture, holding up a dark photographic plate',
+      victory: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, celebrating a win, holding a dark photographic plate overhead in both hands, a quiet proud smile',
+      superattack: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, standing in the LEFT half of the frame with her whole body clearly visible, both hands pushed toward the RIGHT, a NARROW horizontal double helix of bright blue glowing DNA, no thicker than her own arm, spiralling away toward the RIGHT at chest height through the empty right half of the frame, the helix starting clear of her body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  baranyi: {
+    label: 'József Baranyi — microbiologie previsionnelle',
+    reference: 'József Baranyi',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'an elderly bald male scientist wearing round glasses, a long open white lab coat over a dark grey sweater, olive green trousers, brown shoes, thoughtful and calm, ready for an arcade duel',
+    anims: {
+      idle: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, standing still in a calm fighting stance, breathing slowly, adjusting his glasses with one finger, the hem of his long lab coat swaying gently, watching and calculating',
+      walk: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, walking forward at an unhurried measured pace, long lab coat swaying',
+      jump: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, in mid-air after a jump, long lab coat flaring open, arms out for balance',
+      crouch: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, jabbing a wooden ruler forward to the RIGHT at full arm extension like a fencing thrust, dramatic street fighter style, stern expression',
+      kick: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, standing in the LEFT half of the frame with his whole body clearly visible, casting a SMALL compact cluster of glowing pale cyan geometric symbols and a rising curve, no bigger than his head, from his open hand toward the RIGHT at chest height, the little cluster floating alone through the empty right half of the frame, side view',
+      taunt: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, taunting the opponent by tapping his temple knowingly and giving a small superior smile, chalk in his other hand',
+      victory: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, celebrating a win, raising a piece of chalk overhead, a calm satisfied smile, glasses gleaming',
+      superattack: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, standing in the LEFT half of the frame with his whole body clearly visible, both hands sweeping toward the RIGHT, a NARROW horizontal stream of glowing pale cyan numbers, equations and curves, no thicker than his own arm, streaming away toward the RIGHT at chest height through the empty right half of the frame, the stream starting clear of his body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  charpentier: {
+    label: 'Emmanuelle Charpentier — CRISPR-Cas9',
+    reference: 'Emmanuelle Charpentier',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a female scientist with dark curly shoulder-length hair, an open white lab coat over dark clothes, a lanyard around her neck, dark trousers, black boots, sharp and determined, ready for an arcade duel',
+    anims: {
+      idle: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing still in a poised fighting stance, breathing calmly, her lanyard swinging slightly, fingers opening and closing like scissor blades, eyes fixed on her target',
+      walk: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, walking forward with a brisk purposeful stride, lab coat flapping',
+      jump: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, in mid-air after a jump, lab coat flaring, arms out for balance',
+      crouch: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, stabbing a pair of fine surgical scissors forward to the RIGHT at full arm extension, dramatic street fighter style, sharply focused',
+      kick: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing in the LEFT half of the frame with her whole body clearly visible, hurling a SMALL pair of glowing violet scissors, no bigger than her hand, spinning away toward the RIGHT at chest height through the empty right half of the frame, the little scissors flying alone with a short violet trail, side view',
+      taunt: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, taunting the opponent by snipping a pair of scissors twice in the air with a confident smirk',
+      victory: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, celebrating a win, holding a pair of scissors up high, a bright triumphant smile',
+      superattack: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing in the LEFT half of the frame with her whole body clearly visible, both hands flung toward the RIGHT, a NARROW horizontal swarm of small glowing violet scissors, the swarm no thicker than her own arm, spinning away toward the RIGHT at chest height through the empty right half of the frame, the swarm starting clear of her body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  fraser: {
+    label: 'Claire Fraser — sequencage de genome complet',
+    reference: 'Claire Fraser',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a female scientist with shoulder-length auburn hair, a buttoned white lab coat, grey trousers, dark shoes, confident and analytical, ready for an arcade duel',
+    anims: {
+      idle: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing still in an alert fighting stance, breathing calmly, her hair shifting slightly, one hand slowly opening and closing as if drawing something toward her',
+      walk: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, walking forward with a confident stride, lab coat swaying',
+      jump: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, in mid-air after a jump, lab coat flaring, arms out for balance',
+      crouch: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, driving a straight punch forward to the RIGHT at full arm extension, dramatic street fighter style, determined expression',
+      kick: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, one hand outstretched toward the RIGHT and pulling, a NARROW horizontal ribbon of glowing green DNA strands, no thicker than her own arm, streaming from the RIGHT edge of the frame back INTO her open palm, the ribbon flowing right to left through the empty right half of the frame, side view',
+      taunt: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, taunting the opponent with a knowing smile and a slow beckoning curl of her fingers, as if drawing something out of them',
+      victory: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, celebrating a win, arms raised with a broad confident smile, glowing green threads dissolving around her hands',
+      superattack: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, both hands outstretched toward the RIGHT and pulling hard, a THICK horizontal torrent of glowing green DNA strands streaming from the RIGHT edge of the frame back INTO her open palms, the torrent flowing right to left through the empty right half of the frame and never covering her body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  evans: {
+    label: 'Alice Evans — pasteurisation',
+    reference: 'Alice Evans',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'an elderly female scientist with white hair pinned up, a long open white lab coat over a dark high-necked dress, a pearl necklace, dark shoes, dignified and stubborn, ready for an arcade duel',
+    anims: {
+      idle: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, standing very upright and still in a dignified fighting stance, breathing steadily, the hem of her long lab coat swaying gently, her pearl necklace catching the light, unflinching',
+      walk: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, walking forward with a firm determined stride, long lab coat swaying',
+      jump: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, in mid-air after a jump, long lab coat flaring, arms out for balance',
+      crouch: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, swinging a heavy steel milk can forward to the RIGHT at full arm extension, dramatic street fighter style, fierce determined expression',
+      kick: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, standing in the LEFT half of the frame with her whole body clearly visible, hurling a SMALL burst of white-hot steam, no bigger than her head, from a steel milk can toward the RIGHT at chest height, the compact steam burst flying alone through the empty right half of the frame, side view',
+      taunt: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, taunting the opponent with a stern disapproving shake of her head and a pointed finger',
+      victory: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, celebrating a win, raising a steel milk can overhead, a fierce satisfied smile',
+      superattack: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, standing in the LEFT half of the frame with her whole body clearly visible, aiming a heavy steel milk can toward the RIGHT, a NARROW horizontal jet of white-hot steam, no thicker than her own arm, blasting toward the RIGHT at chest height through the empty right half of the frame, the jet starting clear of her body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  appert: {
+    label: 'Nicolas Appert — inventeur de la conserve',
+    reference: 'Nicolas Appert',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'a bald male scientist from the early nineteenth century with hair at the sides, wearing an open white lab coat over a dark blue high-collared waistcoat and period shirt, dark trousers, sturdy and stubborn, ready for an arcade duel',
+    anims: {
+      idle: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing still and solid in a heavy fighting stance, breathing slowly and deeply, his broad chest rising and falling, the hem of his lab coat swaying, patient and immovable',
+      walk: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, walking forward with a slow heavy deliberate stride, lab coat swaying',
+      jump: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, in mid-air after a heavy jump, lab coat flaring, arms out for balance',
+      crouch: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, swinging a heavy thick glass preserving jar forward to the RIGHT at full arm extension like a club, dramatic street fighter style, grim expression',
+      kick: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, hurling a SMALL burst of white-hot steam, no bigger than his head, from a thick glass preserving jar toward the RIGHT at chest height, the compact steam burst flying alone through the empty right half of the frame, side view',
+      taunt: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, taunting the opponent by calmly sealing a glass preserving jar and tapping its lid, utterly unimpressed',
+      victory: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, celebrating a win, holding a sealed glass preserving jar overhead in both hands, a broad satisfied grin',
+      superattack: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, both hands pushing a heavy riveted iron pressure vessel toward the RIGHT, a THICK horizontal blast of white-hot pressurised steam roaring from its open valve toward the RIGHT at chest height through the empty right half of the frame, the blast starting clear of his body and never covering it, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  pasteur: {
+    label: 'Louis Pasteur — microbiologie culturale',
+    reference: 'Louis Pasteur',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'an elderly male scientist with grey hair and a full grey beard, a white lab coat over a dark waistcoat and a black bow tie, dark trousers, grave and authoritative, ready for an arcade duel',
+    anims: {
+      idle: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, standing still in a grave upright fighting stance, breathing slowly, his beard shifting with each breath, the hem of his lab coat swaying gently, watchful and severe',
+      walk: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, walking forward with a slow authoritative stride, lab coat swaying',
+      jump: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, in mid-air after a jump, lab coat flaring, arms out for balance',
+      crouch: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, swinging a long-necked swan-neck glass flask forward to the RIGHT at full arm extension, dramatic street fighter style, severe expression',
+      kick: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, standing in the LEFT half of the frame with his whole body clearly visible, holding a lit Bunsen burner out at full arm extension to the RIGHT, one long orange and blue flame shooting sideways to the RIGHT from the nozzle like a blowtorch, the flame stretching horizontally through the empty right half of the frame, no fire touching or surrounding his body, side view, braced stance',
+      taunt: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, taunting the opponent by slowly wagging a finger with a severe disapproving frown, holding a petri dish in his other hand',
+      victory: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, celebrating a win, raising a swan-neck flask overhead, a grave dignified nod of satisfaction',
+      superattack: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, standing in the LEFT half of the frame with his whole body clearly visible, both hands flung toward the RIGHT, a SINGLE large translucent amber cube of jelly, no taller than himself, forming alone in the empty right half of the frame at ground level, the cube completely clear of his body, side view, braced stance',
+      ...COMMON,
+    },
+  },
+
+  metchnikoff: {
+    label: 'Élie Metchnikoff — ferments lactiques et probiotiques',
+    reference: 'Élie Metchnikoff',
+    // Décrit d'après l'image de référence fournie.
+    description:
+      'an elderly male scientist with grey hair and a full white beard, round spectacles, a white lab coat over a dark waistcoat and bow tie, dark trousers, kindly but formidable, ready for an arcade duel',
+    anims: {
+      idle: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, standing still in a calm open fighting stance, breathing slowly, his long white beard shifting with each breath, one hand cupped protectively at his chest as if holding something alive',
+      walk: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, walking forward with a steady patient stride, lab coat swaying',
+      jump: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, in mid-air after a jump, lab coat flaring, arms out for balance',
+      crouch: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, crouching low into a defensive stance, one knee bent, subtle breathing bob',
+      punch: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, thrusting a ceramic yoghurt bowl forward to the RIGHT at full arm extension like a shield bash, dramatic street fighter style, fierce expression',
+      kick: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, opening a ceramic bowl from which ONE small round creamy-white rod-shaped creature with a tiny determined face leaps out toward the RIGHT at chest height, the little creature flying alone through the empty right half of the frame, side view',
+      taunt: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, taunting the opponent by calmly stirring a bowl of yoghurt and smiling kindly, utterly unbothered',
+      victory: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, celebrating a win, raising a ceramic bowl overhead, a warm delighted smile, tiny creamy-white rod-shaped creatures dancing around him',
+      superattack: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, tipping a ceramic bowl toward the RIGHT from which a LINE of four small round creamy-white rod-shaped creatures with tiny determined faces charges away toward the RIGHT at chest height through the empty right half of the frame, the little creatures clear of his body, side view, braced stance',
+      ...COMMON,
+    },
+  },
 };
 
 // Pour les coups, on garde la frame de départ (pose neutre) comme frame 0 : le

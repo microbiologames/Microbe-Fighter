@@ -48,6 +48,18 @@ const SOURCES = {
     licence: 'CC0',
     base: 'https://opengameart.org/sites/default/files/',
   },
+  // Quatre voix d'homme DIFFERENTES dans un seul pack, ce qui etait exactement
+  // le manque : les neuf microbiologistes historiques comptent cinq hommes, et
+  // le pack steampunk n'en offrait qu'une, deja prise par Doc Gram. Les
+  // vocalistes se distinguent par le prefixe du fichier : `yell*`, `1yell*`,
+  // `2yell*`, `3yell*` et `3grunt*`.
+  yells: {
+    titre: 'Male Grunt / Yelling sounds',
+    page: 'https://opengameart.org/content/male-gruntyelling-sounds',
+    licence: 'CC0',
+    archive: 'https://opengameart.org/sites/default/files/yelling%20sounds.zip',
+    prefixe: 'yelling sounds/',
+  },
   slime: {
     titre: '10 Slime / Water Monster — StarNinjas',
     page: 'https://opengameart.org/content/10-slimewater-monsterwater',
@@ -289,6 +301,152 @@ const VOICES = {
     jump:        [['slime',    'slime.6.ogg',    13]],
     esquive:     [['slime',    'slime.10.ogg',   12]],
     nargue:      [['monstres', 'monster.12.ogg', 10], ['monstres', 'monster.7.ogg', 13, 35]],
+  },
+
+  // ===========================================================================
+  //  Les microbiologistes historiques
+  // ===========================================================================
+  //
+  // Cinq hommes, quatre femmes. Les hommes prennent les quatre vocalistes du
+  // pack `yells`, un chacun, le cinquieme se separant par la transposition. Les
+  // femmes reprennent les trois voix du pack feminin, a des hauteurs qu'aucun
+  // perso existant n'occupe : Doc Petri tient le Type 1 a sa hauteur d'origine,
+  // Salmonella le Type 2 descendu, P. fluorescens le Type 3 monte.
+
+  // K. Mullis : vif, enthousiaste. Vocaliste 1, monte de deux demi-tons.
+  mullis: {
+    voix: 'homme vif',
+    punch:       [['yells', '1yell1.wav',  2]],
+    kick:        [['yells', '1yell2.wav',  2]],
+    superattack: [['yells', '1yell3.wav',  1]],
+    hurt:        [['yells', '1yell4.wav',  3]],
+    ko:          [['yells', '1yell5.wav',  1]],
+    victory:     [['yells', '1yell6.wav',  2]],
+    jump:        [['yells', '1yell7.wav',  3]],
+    esquive:     [['yells', '1yell8.wav',  3]],
+    nargue:      [['yells', '1yell9.wav',  2]],
+  },
+
+  // J. Baranyi : posé, sans emportement. Vocaliste 2, a peine descendu.
+  baranyi: {
+    voix: 'homme posé',
+    punch:       [['yells', '2yell1.wav',  -1]],
+    kick:        [['yells', '2yell10.wav', -1]],
+    superattack: [['yells', '2yell4.wav',  -2]],
+    hurt:        [['yells', '2yell9.wav',  -1]],
+    ko:          [['yells', '2yell5.wav',  -2]],
+    victory:     [['yells', '2yell11.wav', -1]],
+    jump:        [['yells', '2yell7.wav',   0]],
+    esquive:     [['yells', '2yell2.wav',   0]],
+    nargue:      [['yells', '2yell3.wav',  -1]],
+  },
+
+  // N. Appert : massif et lent. Vocaliste 3, descendu de quatre demi-tons — ce
+  // qui allonge aussi les sons, et c'est tant mieux pour un personnage lourd.
+  appert: {
+    voix: 'homme massif',
+    punch:       [['yells', '3yell3.wav',  -4]],
+    kick:        [['yells', '3yell4.wav',  -4]],
+    superattack: [['yells', '3yell11.wav', -5]],
+    hurt:        [['yells', '3yell5.wav',  -4]],
+    ko:          [['yells', '3yell12.wav', -5]],
+    victory:     [['yells', '3yell14.wav', -4]],
+    jump:        [['yells', '3yell8.wav',  -3]],
+    esquive:     [['yells', '3yell7.wav',  -3]],
+    nargue:      [['yells', '3yell15.wav', -4]],
+  },
+
+  // L. Pasteur : grave, autoritaire. Le vocaliste sans prefixe, descendu de deux.
+  pasteur: {
+    voix: 'homme grave',
+    punch:       [['yells', 'yell13.wav', -2]],
+    kick:        [['yells', 'yell12.wav', -2]],
+    superattack: [['yells', 'yell8.wav',  -3]],
+    hurt:        [['yells', 'yell6.wav',  -2]],
+    ko:          [['yells', 'yell4.wav',  -3]],
+    victory:     [['yells', 'yell9.wav',  -2]],
+    jump:        [['yells', 'yell7.wav',  -1]],
+    esquive:     [['yells', 'yell3.wav',  -1]],
+    nargue:      [['yells', 'yell2.wav',  -2]],
+  },
+
+  // É. Metchnikoff : le plus age, chaleureux. Le pack ne compte que QUATRE
+  // vocalistes pour cinq hommes : il partage donc le vocaliste 3 avec
+  // N. Appert. C'est la paire qui se confond le moins, parce qu'ils ne
+  // partagent pas le meme registre — Appert prend les cris (`3yell`),
+  // Metchnikoff les grognements (`3grunt`) — et qu'un demi-ton et demi les
+  // separe encore.
+  metchnikoff: {
+    voix: 'homme âgé, chaleureux',
+    punch:       [['yells', '3grunt4.wav', -5]],
+    kick:        [['yells', '3grunt1.wav', -5]],
+    superattack: [['yells', '3yell2.wav',  -6]],
+    hurt:        [['yells', '3grunt5.wav', -5]],
+    ko:          [['yells', '3yell10.wav', -6]],
+    victory:     [['yells', '3yell9.wav',  -5]],
+    jump:        [['yells', '3grunt3.wav', -4]],
+    esquive:     [['yells', '3grunt2.wav', -4]],
+    nargue:      [['yells', '3grunt6.wav', -4]],
+  },
+
+  // R. Franklin : calme et mesurée. Type 3 legerement descendu — P. fluorescens
+  // occupe le meme Type 3 mais cinq a dix demi-tons plus haut.
+  franklin: {
+    voix: 'femme mesurée',
+    punch:       [['femaleRpg', 'Type 3/attack1.wav',  -2]],
+    kick:        [['femaleRpg', 'Type 3/attack2.wav',  -2]],
+    superattack: [['femaleRpg', 'Type 3/attack3.wav',  -3]],
+    hurt:        [['femaleRpg', 'Type 3/damaged1.wav', -2]],
+    ko:          [['femaleRpg', 'Type 3/damaged3.wav', -3]],
+    victory:     [['femaleRpg', 'Type 3/healed1.wav',  -2]],
+    jump:        [['femaleRpg', 'Type 3/jump1.wav',    -1]],
+    esquive:     [['femaleRpg', 'Type 3/jump2.wav',    -1]],
+    nargue:      [['femaleRpg', 'Type 3/curse.wav',    -2]],
+  },
+
+  // E. Charpentier : nette, tranchante. Type 2 monte — Salmonella tient le meme
+  // Type 2 descendu, les deux ne se confondent pas.
+  charpentier: {
+    voix: 'femme tranchante',
+    punch:       [['femaleRpg', 'Type 2/attack1.wav',  2]],
+    kick:        [['femaleRpg', 'Type 2/attack2.wav',  2]],
+    superattack: [['femaleRpg', 'Type 2/attack3.wav',  1]],
+    hurt:        [['femaleRpg', 'Type 2/damaged1.wav', 3]],
+    ko:          [['femaleRpg', 'Type 2/damaged3.wav', 1]],
+    victory:     [['femaleRpg', 'Type 2/healed1.wav',  2]],
+    jump:        [['femaleRpg', 'Type 2/jump1.wav',    3]],
+    esquive:     [['femaleRpg', 'Type 2/jump2.wav',    3]],
+    nargue:      [['femaleRpg', 'Type 2/curse.wav',    2]],
+  },
+
+  // C. Fraser : assurée. Type 1 descendu de trois — Doc Petri tient le Type 1
+  // a sa hauteur d'origine.
+  fraser: {
+    voix: 'femme assurée',
+    punch:       [['femaleRpg', 'attack1.wav',  -3]],
+    kick:        [['femaleRpg', 'attack2.wav',  -3]],
+    superattack: [['femaleRpg', 'attack3.wav',  -4]],
+    hurt:        [['femaleRpg', 'damaged1.wav', -3]],
+    ko:          [['femaleRpg', 'damaged3.wav', -4]],
+    victory:     [['femaleRpg', 'healed1.wav',  -3]],
+    jump:        [['femaleRpg', 'jump1.wav',    -2]],
+    esquive:     [['femaleRpg', 'jump2.wav',    -2]],
+    nargue:      [['femaleRpg', 'curse.wav',    -3]],
+  },
+
+  // A. Evans : la plus agee du roster. Type 3 nettement descendu, la voix se
+  // pose et se voile.
+  evans: {
+    voix: 'femme âgée, sévère',
+    punch:       [['femaleRpg', 'Type 3/attack1.wav',  -6]],
+    kick:        [['femaleRpg', 'Type 3/attack2.wav',  -6]],
+    superattack: [['femaleRpg', 'Type 3/attack3.wav',  -7]],
+    hurt:        [['femaleRpg', 'Type 3/damaged2.wav', -6]],
+    ko:          [['femaleRpg', 'Type 3/damaged3.wav', -7]],
+    victory:     [['femaleRpg', 'Type 3/healed2.wav',  -6]],
+    jump:        [['femaleRpg', 'Type 3/jump3.wav',    -5]],
+    esquive:     [['femaleRpg', 'Type 3/jump1.wav',    -5]],
+    nargue:      [['femaleRpg', 'Type 3/hex.wav',      -6]],
   },
 };
 

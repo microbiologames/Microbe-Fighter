@@ -32,74 +32,85 @@
       "folder": "assets/sprites/botulinum/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 149
+      "loop": true,
+      "groundY": 149
     },
     "walk": {
       "folder": "assets/sprites/botulinum/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 149
+      "loop": true,
+      "groundY": 149
     },
     "jump": {
       "folder": "assets/sprites/botulinum/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 149
+      "loop": true,
+      "groundY": 149
     },
     "crouch": {
       "folder": "assets/sprites/botulinum/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     },
     "punch": {
       "folder": "assets/sprites/botulinum/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     },
     "kick": {
       "folder": "assets/sprites/botulinum/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     },
     "hurt": {
       "folder": "assets/sprites/botulinum/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     },
     "ko": {
       "folder": "assets/sprites/botulinum/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     },
     "taunt": {
       "folder": "assets/sprites/botulinum/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     },
     "victory": {
       "folder": "assets/sprites/botulinum/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 149
+      "loop": true,
+      "groundY": 149
     },
     "superattack": {
       "folder": "assets/sprites/botulinum/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 149
+      "loop": false,
+      "groundY": 149
     }
   },
   "moves": {
     "punch": {
       "label": "Coup direct",
       "animation": "punch",
-      "damage": 12,
+      "damage": 13,
       "damageType": "physique",
       "knockback": 4,
       "activeFrames": [
@@ -133,7 +144,7 @@
     "superattack": {
       "label": "Neurotoxine botulique — paralyse 2,5 s",
       "animation": "superattack",
-      "damage": 14,
+      "damage": 16,
       "damageType": "toxine",
       "knockback": 3,
       "activeFrames": [

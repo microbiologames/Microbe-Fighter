@@ -79,7 +79,43 @@ pastilles au-dessus des barres de vie.
 | **S. putrefaciens** — *Shewanella putrefaciens* | `shewanella` | Bête à quatre pattes | **Le seul quadrupède** : bas sur pattes, large, très rapide, mais saute mal. Empoisonne au gaz. |
 | **A. flavus** — *Aspergillus flavus* | `aspergillus` | Bruissement sec de spores | **Une moisissure, pas une bactérie.** Lent et résistant. Son aflatoxine marque l'adversaire à vie. |
 
-**Dix personnages : deux microbiologistes contre huit micro-organismes.** Cinq
+### Les microbiologistes historiques
+
+Neuf scientifiques qui ont réellement existé, et dont le **talent propre fait le
+personnage**. Aucun n'est un reskin d'un autre.
+
+| Perso | `id` | Ce qu'il/elle a fait | Ce que ça donne en jeu |
+|---|---|---|---|
+| **K. Mullis** | `mullis` | Inventeur de la **PCR** | Le plus rapide du roster. Dégâts faibles, cadence élevée. |
+| **R. Franklin** | `franklin` | Découvreuse de la **structure de l'ADN** | La précision : lente, longue portée, les plus gros dégâts par coup. |
+| **J. Baranyi** | `baranyi` | Pionnier de la **microbiologie prévisionnelle** | Le contrôle : ses attaques **ralentissent la croissance** de l'adversaire. |
+| **E. Charpentier** | `charpentier` | Découvreuse de **CRISPR-Cas9** | Ses ciseaux **traversent les défenses** — la seule à toucher Listeria sous biofilm. |
+| **C. Fraser** | `fraser` | Pionnière du **séquençage de génome complet** | **Aspire l'ADN** : la seule du jeu à se soigner en frappant. |
+| **A. Evans** | `evans` | Pionnière de la **pasteurisation** | Chaleur rapide — mais **sans effet sur les spores**. |
+| **N. Appert** | `appert` | Inventeur de la **conserve** | Lent et lourd, mais son **autoclave ignore toute thermorésistance**. |
+| **L. Pasteur** | `pasteur` | Pionnier de la **microbiologie culturale** | Bec bunsen, et un **piège en gélose** qui cloue l'adversaire 1,8 s. |
+| **É. Metchnikoff** | `metchnikoff` | Pionnier des **ferments lactiques et probiotiques** | Le seul à **invoquer des alliés** : ses lactobacilles combattent tout seuls. |
+
+#### Deux paires, et pourquoi elles ne sont pas des doublons
+
+La liste de départ donnait les **mêmes noms de coups** à deux paires. Les noms
+sont conservés ; ce sont les statistiques et un détail de la spéciale qui les
+séparent — et dans les deux cas la différence est réelle.
+
+**Mullis et Franklin** lancent tous deux des amplicons. Mullis a *inventé la
+réaction* : chez lui c'est le débit, il est le plus rapide du jeu et frappe
+faible. Franklin a *résolu la structure* par diffraction : chez elle c'est la
+justesse, elle est lente, porte plus loin et frappe beaucoup plus fort.
+
+**Evans et Appert** chauffent tous deux. Mais **pasteuriser n'est pas
+stériliser** : la pasteurisation détruit les formes végétatives et laisse les
+spores intactes, l'appertisation les détruit aussi. En jeu, la spéciale d'Evans
+subit normalement les résistances — **C. botulinum, à 0,25 en chaleur, se moque
+d'elle** — tandis que celle d'Appert porte `ignoreResistance` et passe outre.
+Appert est le seul personnage du roster capable de tuer un sporulé à la chaleur,
+et c'est exactement ce que fait un barème 121 °C / 3 min.
+
+**Dix-neuf personnages : onze microbiologistes contre huit micro-organismes.** Cinq
 pathogènes alimentaires (*B. cereus*, *L. monocytogenes*, *S. aureus*,
 *Salmonella*, *C. botulinum*), deux flores d'altération (*P. fluorescens*,
 *S. putrefaciens*) et une moisissure toxinogène (*A. flavus*). Le registre colle
@@ -106,10 +142,21 @@ code en dur aucun personnage.
 | **P. fluorescens** | Coup direct — 13 | **Jet de pyoverdine** — 16, longue portée | **Protéases thermostables** — 30 |
 | **S. putrefaciens** | Coup de patte — 14 | **Jet d'H₂S** — 10 et **empoisonne 3,5 s** | **Putréfaction** — 26 et **empoisonne 5 s** |
 | **A. flavus** | Coup de mycélium — 14 | **Nuage de conidies** — 8, la plus large zone du jeu | **Aflatoxine B1** — 20 et **marque à vie** (voir plus bas) |
+| **K. Mullis** | Coup de micropipette — 11 | **Jet d'amplicon** — 13, sort très vite | **Tornade d'amplicons** — 26 |
+| **R. Franklin** | Coup droit — 15 | **Jet d'amplicon** — 19, la plus longue portée | **Tornade d'amplicons** — 33, le plus gros coup unique du jeu |
+| **J. Baranyi** | Coup de règle — 13 | **Attaque mathématique** — 12 et **ralentit 2 s** | **Tornade de mathématiques** — 25 et **ralentit 4 s** |
+| **E. Charpentier** | Coup de ciseaux — 13 | **Attaque CRISPR** — 16, **traverse les défenses** | **Tornade de ciseaux** — 29, **traverse les défenses** |
+| **C. Fraser** | Coup droit — 12 | **Aspiration de l'ADN** — 12, **rend la moitié en vie** | **Aspiration intense** — 24, **rend 60 % en vie** |
+| **A. Evans** | Coup de bidon — 13 | **Choc thermique** — 17 + brûlure 2 s | **Autoclave** — 27 + brûlure 3 s |
+| **N. Appert** | Coup de bocal — 15 | **Choc thermique** — 16 + brûlure 2,5 s | **Autoclave 121 °C** — 30, **ignore toute thermorésistance** |
+| **L. Pasteur** | Coup de ballon — 14 | **Bec bunsen** — 17 + brûlure 3 s | **Piège agar** — 10 et **fige 1,8 s** dans un cube de gélose |
+| **É. Metchnikoff** | Coup de bol — 12 | **Lactobacille** — lâche **un allié** autonome | **Équipe de lactobacilles** — en lâche **quatre** |
 
 Les effets disponibles (`effect.type`) : `burn`, `poison`, `freeze`, `shield`,
-`teleportBehind`, `dash`, `trap`, `paralyse`, `mark`. `effect.on: "use"`
-déclenche au lancement du coup
+`teleportBehind`, `dash`, `trap`, `paralyse`, `mark`, `drain`, `summon`.
+Deux **drapeaux** se posent en plus sur le coup lui-même, pas dans son `effect` :
+`pierce` (traverse biofilm et esquive) et `ignoreResistance` (ignore les
+résistances de la cible). `effect.on: "use"` déclenche au lancement du coup
 plutôt qu'à la touche — c'est ce qui rend le biofilm et la spore utilisables même
 à vide. Un combattant sous biofilm n'encaisse ni le coup ni son effet.
 
@@ -129,6 +176,27 @@ personnage garde donc ses jambes, et c'est ce qui la rend jouable — 2,5 s de
 
 `trap` dessine un cube jaunâtre translucide autour de la cible
 (`COAGULATION_CUBE` dans `Config.js`).
+
+`drain` est le seul moyen du jeu de **regagner de la vie**. C. Fraser récupère
+une part des dégâts qu'elle inflige — calculée sur les dégâts **réellement
+encaissés**, donc nulle sur un coup qui ne passe pas et réduite quand la cible
+résiste. Sans cette précision, elle se soignerait à plein tarif en tapant dans
+un biofilm.
+
+`summon` lâche des alliés autonomes qui traversent le terrain et mordent
+l'adversaire tout seuls — les lactobacilles d'É. Metchnikoff, voir
+[`js/engine/Allies.js`](js/engine/Allies.js). C'est le seul endroit du moteur où
+quelque chose agit sans qu'un joueur appuie sur une touche. Leur morsure passe
+par `takeHit` comme n'importe quel coup, donc les résistances et les marques
+s'y appliquent.
+
+`pierce` et `ignoreResistance` sont les deux manières de **passer outre une
+défense**, et elles ne visent pas la même :
+
+| Drapeau | Ce qu'il ignore | Qui l'a |
+|---|---|---|
+| `pierce` | Le **biofilm** et l'**esquive** — ce qui rend intouchable | E. Charpentier (CRISPR) |
+| `ignoreResistance` | Les **résistances** de la cible à un type de dégâts | N. Appert (autoclave) |
 
 `mark`, l'aflatoxine, est le seul effet **définitif** : chaque marque majore de
 10 % tous les dégâts que la cible encaissera jusqu'à la fin du combat, cumulable
@@ -186,6 +254,39 @@ Chaque perso respire à son rythme, et ça raconte quelque chose : *C. botulinum
 a une respiration lente et pénible qui déséquilibre sa spore, *L. monocytogenes*
 une respiration courte et nerveuse, *S. putrefaciens* souffle son gaz par les
 évents du dos à chaque expiration.
+
+### L'équilibre
+
+Avec dix-neuf personnages, l'équilibrage ne peut plus se faire à l'œil.
+`scripts/equilibre.js` calcule, pour chacun, les dégâts d'une **séquence
+complète** — poing, pied, spéciale — en incluant les effets continus, qu'on
+oublie facilement : une brûlure de 3 s ajoute 21 dégâts, autant qu'un coup
+entier.
+
+C'est ce calcul qui a fait apparaître le problème. N. Appert et A. Evans
+cumulaient de gros dégâts directs **et** de longues brûlures, et sortaient à 100
+et 92 quand L. monocytogenes était à 29 : un écart de 3,45. Ce sont les
+**durées** des effets qui ont été raccourcies, pas les dégâts directs, qui
+portent l'identité du personnage. L'écart est retombé à **2,5**.
+
+```
+S. putrefaciens   81        K. Mullis         50
+N. Appert         79        C. Fraser         48
+A. Evans          76        A. flavus         42
+Doc Gram          71        C. botulinum      39
+R. Franklin       67        L. monocytogenes  32
+```
+
+**Le bas du tableau n'est pas le bas du classement.** Les deux derniers sont des
+personnages de **contrôle** : le biofilm de Listeria la rend invulnérable une
+seconde, la neurotoxine de C. botulinum paralyse 2,5 s. Ils gagnent en
+empêchant l'autre de jouer, pas en tapant fort. De même, C. Fraser à 48 est la
+seule à se soigner, et L. Pasteur à 55 a une spéciale à 10 dégâts qui cloue
+l'adversaire presque deux secondes.
+
+Un total de dégâts ne mesure donc qu'une moitié du personnage. Il sert à
+repérer ce qui **cumule** dégâts et utilité — c'était le cas d'Appert et d'Evans
+— pas à classer.
 
 ### Croisement
 
@@ -358,6 +459,15 @@ manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 | **P. fluorescens** | Éthérée et liquide |
 | **S. putrefaciens** | Bête à quatre pattes |
 | **A. flavus** | Bruissement sec de spores |
+| **K. Mullis** | Homme vif |
+| **R. Franklin** | Femme mesurée |
+| **J. Baranyi** | Homme posé |
+| **E. Charpentier** | Femme tranchante |
+| **C. Fraser** | Femme assurée |
+| **A. Evans** | Femme âgée, sévère |
+| **N. Appert** | Homme massif |
+| **L. Pasteur** | Homme grave |
+| **É. Metchnikoff** | Homme âgé, chaleureux |
 
 Elles proviennent de banques **CC0** d'OpenGameArt, et sont importées et
 normalisées par `node scripts/import-voices.js`. La correspondance

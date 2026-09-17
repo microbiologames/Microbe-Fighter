@@ -32,67 +32,78 @@
       "folder": "assets/sprites/shewanella/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "walk": {
       "folder": "assets/sprites/shewanella/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "jump": {
       "folder": "assets/sprites/shewanella/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "crouch": {
       "folder": "assets/sprites/shewanella/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "punch": {
       "folder": "assets/sprites/shewanella/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "kick": {
       "folder": "assets/sprites/shewanella/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "hurt": {
       "folder": "assets/sprites/shewanella/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "ko": {
       "folder": "assets/sprites/shewanella/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "taunt": {
       "folder": "assets/sprites/shewanella/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "victory": {
       "folder": "assets/sprites/shewanella/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "superattack": {
       "folder": "assets/sprites/shewanella/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     }
   },
   "moves": {
@@ -131,7 +142,7 @@
       },
       "effect": {
         "type": "poison",
-        "durationMs": 3500
+        "durationMs": 2500
       }
     },
     "superattack": {
@@ -152,7 +163,7 @@
       },
       "effect": {
         "type": "poison",
-        "durationMs": 5000
+        "durationMs": 3500
       }
     }
   }

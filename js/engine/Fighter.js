@@ -3,9 +3,10 @@ import {
   MAX_HEALTH, HITSTUN_MS, KNOCKBACK, DODGE_DURATION_MS, DODGE_SPEED, TAUNT_DURATION_MS,
   ENERGY_MAX, ENERGY_REGEN_PER_SEC, ENERGY_TAUNT_BONUS, SUPER_INPUT_WINDOW_MS,
   SLOW_FACTOR, BURN_DAMAGE_PER_SEC, POISON_DAMAGE_PER_SEC, MARK_DAMAGE_BONUS,
-  STATUS_TINTS, COAGULATION_CUBE,
+  STATUS_TINTS, TRAP_CUBES,
 } from './Config.js';
 import { spawnHitEffect, spawnGasCloud } from './Effects.js';
+import { spawnAllies } from './Allies.js';
 import { playSfx } from './Audio.js';
 
 // Valeurs par défaut si le perso ne définit pas son propre "hurtbox" dans son JSON.
@@ -82,7 +83,8 @@ export class Fighter {
     this.frozenTimer = 0;    // gelé : ralenti (attaque spéciale de Listeria)
     this.shieldTimer = 0;    // invulnérable (biofilm de Listeria)
     this.selfSlowTimer = 0;  // ralentissement qu'on s'inflige (biofilm)
-    this.trappedTimer = 0;   // figé dans un cube de plasma coagulé (coagulase)
+    this.trappedTimer = 0;   // figé dans un cube (coagulase ou gélose)
+    this.trapStyle = 'coagulase'; // quel cube dessiner, posé par l'effet
     this.paralysedTimer = 0; // paralysie flasque : marche mais ne peut plus agir
     this.poisonTimer = 0;    // gaz putride : dégâts continus
     this.poisonResidue = 0;
@@ -179,7 +181,7 @@ export class Fighter {
     // Le biofilm protège de tout ce qui se pose sur la cible, et une immunité
     // déclarée protège de son effet en particulier.
     if (target && (target.shielded || target.isImmuneTo(effect.type))) {
-      const surSoi = effect.type === 'shield' || effect.type === 'teleportBehind' || effect.type === 'dash';
+      const surSoi = ['shield', 'teleportBehind', 'dash', 'summon'].includes(effect.type);
       if (!surSoi) return;
     }
     switch (effect.type) {
@@ -190,8 +192,11 @@ export class Fighter {
         if (target) target.frozenTimer = Math.max(target.frozenTimer, effect.durationMs ?? 3000);
         break;
       case 'trap':
-        // La coagulase cloue la cible sur place : plus aucune entrée n'est lue.
-        if (target) target.trappedTimer = Math.max(target.trappedTimer, effect.durationMs ?? 1000);
+        // Cloue la cible sur place : plus aucune entrée n'est lue.
+        if (target) {
+          target.trappedTimer = Math.max(target.trappedTimer, effect.durationMs ?? 1000);
+          target.trapStyle = effect.style ?? 'coagulase';
+        }
         break;
       case 'paralyse':
         // La neurotoxine botulique coupe la commande motrice sans immobiliser :
@@ -206,6 +211,12 @@ export class Fighter {
         // les dégâts encaissés. C'est l'exposition chronique, pas l'intoxication
         // aiguë, qui fait le danger réel de la B1.
         if (target) target.marks = Math.min(target.marks + 1, effect.maxStacks ?? 5);
+        break;
+      case 'summon':
+        // Les lactobacilles partent au lancement du coup, pas à la touche :
+        // c'est le principe même d'une invocation, elle ne dépend pas de
+        // toucher l'adversaire.
+        spawnAllies(self, effect.count ?? 1, effect.damage ?? 6);
         break;
       case 'dash':
         // La ruée flagellaire : on se propulse vers l'avant, sans traverser
@@ -312,9 +323,19 @@ export class Fighter {
     return 1 + this.marks * MARK_DAMAGE_BONUS;
   }
 
+  /** Encaisse un coup. Renvoie les dégâts réellement infligés (0 si le coup
+   * n'est pas passé), ce dont a besoin le vol de vie de C. Fraser. */
   takeHit(move, attackerFacing) {
-    if (this.ko || this.invincible || this.shielded) return;
-    const damage = Math.round(move.damage * this.damageFactor(move.damageType) * this.markFactor);
+    if (this.ko) return 0;
+    // `pierce` traverse ce qui protège d'ordinaire : les ciseaux CRISPR coupent
+    // la cible quel que soit ce qui l'enrobe, biofilm compris. C'est le seul
+    // moyen du jeu de toucher L. monocytogenes pendant son biofilm.
+    if (!move.pierce && (this.invincible || this.shielded)) return 0;
+    // `ignoreResistance` : le barème d'appertisation ne négocie pas. À 121 °C
+    // pendant 3 minutes, la thermorésistance des spores ne sert plus à rien,
+    // c'est tout l'objet du traitement.
+    const resistance = move.ignoreResistance ? 1 : this.damageFactor(move.damageType);
+    const damage = Math.round(move.damage * resistance * this.markFactor);
     this.health = Math.max(0, this.health - damage);
     this.hitstunTimer = HITSTUN_MS;
     this.state = 'hurt';
@@ -328,6 +349,7 @@ export class Fighter {
     } else {
       playSfx(this.character.sfx?.hurt);
     }
+    return damage;
   }
 
   update(dt, input, opponent) {
@@ -582,9 +604,19 @@ export class Fighter {
     if (rectsOverlap(box, hurt)) {
       // Un adversaire en esquive, protégé par un biofilm ou déjà K.O. n'encaisse
       // ni le coup ni son effet : on relit son état avant de trancher.
-      const connected = !opponent.ko && !opponent.invincible && !opponent.shielded;
-      opponent.takeHit(move, this.facing);
+      const protege = opponent.invincible || opponent.shielded;
+      const connected = !opponent.ko && (move.pierce || !protege);
+      const inflige = opponent.takeHit(move, this.facing);
       this.attackHasHit = true;
+
+      // Vol de vie : C. Fraser aspire l'ADN de l'adversaire et s'en nourrit.
+      // Proportionnel aux dégâts RÉELLEMENT infligés, donc nul sur un coup qui
+      // n'est pas passé et réduit quand la cible résiste — sans quoi elle se
+      // soignerait à plein tarif en tapant dans un mur.
+      if (inflige > 0 && move.effect?.type === 'drain') {
+        const rendu = Math.round(inflige * (move.effect.ratio ?? 0.5));
+        this.health = Math.min(MAX_HEALTH, this.health + rendu);
+      }
       if (connected && move.effect && move.effect.on !== 'use') {
         Fighter.applyEffect(move.effect, this, opponent);
       }
@@ -658,12 +690,13 @@ export class Fighter {
     // Le cube de plasma coagulé se dessine APRÈS le personnage et hors de son
     // repère mis à l'échelle : c'est une boîte en coordonnées du canvas, calée
     // sur la hurtbox, pas un élément du sprite.
-    if (this.trapped) this._drawCoagulationCube(ctx);
+    if (this.trapped) this._drawTrapCube(ctx);
   }
 
-  _drawCoagulationCube(ctx) {
+  _drawTrapCube(ctx) {
+    const style = TRAP_CUBES[this.trapStyle] ?? TRAP_CUBES.coagulase;
     const hb = this.getHurtbox();
-    const p = COAGULATION_CUBE.padding;
+    const p = style.padding;
     const x = Math.round(hb.x - p);
     const y = Math.round(hb.y - p);
     const w = Math.round(hb.w + p * 2);
@@ -671,7 +704,7 @@ export class Fighter {
     const d = Math.round(p * 1.2); // profondeur de la face du dessus, pour le relief
 
     ctx.save();
-    ctx.fillStyle = COAGULATION_CUBE.fill;
+    ctx.fillStyle = style.fill;
     ctx.fillRect(x, y, w, h);
     // Face supérieure en biais : suffit à faire lire un volume plutôt qu'un carré.
     ctx.beginPath();
@@ -689,7 +722,7 @@ export class Fighter {
     ctx.closePath();
     ctx.fill();
 
-    ctx.strokeStyle = COAGULATION_CUBE.edge;
+    ctx.strokeStyle = style.edge;
     ctx.lineWidth = 1;
     ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
     ctx.beginPath();

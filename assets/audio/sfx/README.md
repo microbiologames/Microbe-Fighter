@@ -31,6 +31,23 @@ Tous les extraits proviennent de banques **CC0 (domaine public)** d'OpenGameArt.
 | [16 Monster Growls](https://opengameart.org/content/16-monster-growls) — StarNinjas | L. monocytogenes | CC0 |
 | [10 Slime / Water Monster](https://opengameart.org/content/10-slimewater-monsterwater) — StarNinjas | L. monocytogenes (saut, esquive) | CC0 |
 | [Hurt Sound Effects](https://opengameart.org/content/hurt-sound-effects) | Doc Gram (douleur, esquive) | CC0 |
+| [Male Grunt / Yelling sounds](https://opengameart.org/content/male-gruntyelling-sounds) | Les cinq microbiologistes masculins | CC0 |
+
+Ce dernier pack a été ajouté pour une raison précise : il contient **quatre voix
+d'homme différentes**, là où tous les autres n'en offraient qu'une, déjà prise
+par Doc Gram. Les neuf microbiologistes historiques comptent cinq hommes, qui
+seraient sinon tous sortis avec le même timbre à des hauteurs différentes.
+
+Les vocalistes se reconnaissent au préfixe du fichier : `yell*`, `1yell*`,
+`2yell*`, `3yell*` et `3grunt*`. Ils sont attribués un par personnage ; seuls
+N. Appert et É. Metchnikoff partagent le vocaliste 3, faute d'un cinquième — et
+encore, l'un prend ses cris et l'autre ses grognements.
+
+**Attention à la durée avec ce pack :** ce sont des cris, souvent longs. Neuf
+extraits sur quarante-cinq dépassaient la seconde sur des coups qui se répètent
+avant d'être réattribués. Les durées après transposition sont à surveiller,
+d'autant qu'une transposition vers le GRAVE allonge le son — quatre demi-tons
+plus bas, c'est 26 % de plus.
 
 **Les dix personnages sortent de ces cinq packs seulement.** Ce qui les
 distingue n'est pas la source mais la TRANSPOSITION : le même grognement descendu

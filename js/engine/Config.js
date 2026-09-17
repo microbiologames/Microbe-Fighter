@@ -49,12 +49,24 @@ export const STATUS_TINTS = {
   shielded: { color: '#7ee3b8', alpha: 0.35 },
 };
 
-// Cube de plasma coagulé dans lequel la coagulase de S. aureus enferme sa cible :
-// un adversaire pris dedans ne peut plus ni bouger ni attaquer le temps de l'effet.
-export const COAGULATION_CUBE = {
-  fill: 'rgba(232, 200, 74, 0.28)',
-  edge: 'rgba(255, 233, 130, 0.85)',
-  padding: 6, // débord du cube autour de la hurtbox, en pixels du canvas
+// Les cubes dans lesquels un coup `trap` enferme sa cible : elle ne peut plus ni
+// bouger ni attaquer le temps de l'effet. `effect.style` choisit lequel ; sans
+// style déclaré, c'est la coagulase.
+//
+// Deux pièges, deux matières. Le plasma coagulé de S. aureus est jaune vif et
+// vitreux, la gélose de L. Pasteur est ambrée et plus dense. Un cube unique pour
+// les deux aurait laissé croire au même effet alors que rien ne les rapproche.
+export const TRAP_CUBES = {
+  coagulase: {
+    fill: 'rgba(232, 200, 74, 0.28)',
+    edge: 'rgba(255, 233, 130, 0.85)',
+    padding: 6, // débord du cube autour de la hurtbox, en pixels du canvas
+  },
+  agar: {
+    fill: 'rgba(190, 132, 58, 0.34)',
+    edge: 'rgba(236, 186, 110, 0.85)',
+    padding: 7,
+  },
 };
 
 // Fenêtre pendant laquelle une attaque simple qui vient de partir peut encore

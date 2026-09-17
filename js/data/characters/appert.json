@@ -1,0 +1,156 @@
+{
+  "id": "appert",
+  "displayName": "N. Appert",
+  "color": "#8a6a4f",
+  "scale": 0.98,
+  "groundY": 132,
+  "moveSpeed": 1.6,
+  "jumpVelocity": 6.6,
+  "portrait": "assets/sprites/appert/portrait/portrait.png",
+  "hurtbox": {
+    "width": 34,
+    "heightStand": 100,
+    "heightCrouch": 68
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/appert/punch.wav",
+    "kick": "assets/audio/sfx/appert/kick.wav",
+    "hurt": "assets/audio/sfx/appert/hurt.wav",
+    "ko": "assets/audio/sfx/appert/ko.wav",
+    "victory": "assets/audio/sfx/appert/victory.wav",
+    "jump": "assets/audio/sfx/appert/jump.wav",
+    "esquive": "assets/audio/sfx/appert/esquive.wav",
+    "nargue": "assets/audio/sfx/appert/nargue.wav",
+    "superattack": "assets/audio/sfx/appert/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/appert/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 132
+    },
+    "walk": {
+      "folder": "assets/sprites/appert/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 132
+    },
+    "jump": {
+      "folder": "assets/sprites/appert/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 132
+    },
+    "crouch": {
+      "folder": "assets/sprites/appert/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 132
+    },
+    "punch": {
+      "folder": "assets/sprites/appert/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 132
+    },
+    "kick": {
+      "folder": "assets/sprites/appert/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 132
+    },
+    "hurt": {
+      "folder": "assets/sprites/appert/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 132
+    },
+    "ko": {
+      "folder": "assets/sprites/appert/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 132
+    },
+    "taunt": {
+      "folder": "assets/sprites/appert/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 132
+    },
+    "victory": {
+      "folder": "assets/sprites/appert/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 132
+    },
+    "superattack": {
+      "folder": "assets/sprites/appert/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 132
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de bocal",
+      "animation": "punch",
+      "damage": 13,
+      "damageType": "physique",
+      "knockback": 6,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 32,
+        "offsetY": 30,
+        "width": 32,
+        "height": 14
+      }
+    },
+    "kick": {
+      "label": "Choc thermique",
+      "animation": "kick",
+      "damage": 16,
+      "damageType": "chaleur",
+      "knockback": 6,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 42,
+        "offsetY": 30,
+        "width": 42,
+        "height": 14
+      },
+      "effect": {
+        "type": "burn",
+        "durationMs": 1500
+      }
+    },
+    "superattack": {
+      "label": "Autoclave 121 °C — ignore toute thermorésistance",
+      "animation": "superattack",
+      "damage": 25,
+      "damageType": "chaleur",
+      "knockback": 9,
+      "ignoreResistance": true,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 48,
+        "offsetY": 30,
+        "width": 52,
+        "height": 24
+      },
+      "effect": {
+        "type": "burn",
+        "durationMs": 2000
+      }
+    }
+  }
+}

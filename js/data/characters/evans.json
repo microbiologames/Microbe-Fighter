@@ -1,0 +1,155 @@
+{
+  "id": "evans",
+  "displayName": "A. Evans",
+  "color": "#d4b25f",
+  "scale": 1.021,
+  "groundY": 129,
+  "moveSpeed": 2.2,
+  "jumpVelocity": 7.6,
+  "portrait": "assets/sprites/evans/portrait/portrait.png",
+  "hurtbox": {
+    "width": 30,
+    "heightStand": 98,
+    "heightCrouch": 66
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/evans/punch.wav",
+    "kick": "assets/audio/sfx/evans/kick.wav",
+    "hurt": "assets/audio/sfx/evans/hurt.wav",
+    "ko": "assets/audio/sfx/evans/ko.wav",
+    "victory": "assets/audio/sfx/evans/victory.wav",
+    "jump": "assets/audio/sfx/evans/jump.wav",
+    "esquive": "assets/audio/sfx/evans/esquive.wav",
+    "nargue": "assets/audio/sfx/evans/nargue.wav",
+    "superattack": "assets/audio/sfx/evans/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/evans/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 129
+    },
+    "walk": {
+      "folder": "assets/sprites/evans/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 129
+    },
+    "jump": {
+      "folder": "assets/sprites/evans/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "crouch": {
+      "folder": "assets/sprites/evans/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 129
+    },
+    "punch": {
+      "folder": "assets/sprites/evans/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 129
+    },
+    "kick": {
+      "folder": "assets/sprites/evans/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 129
+    },
+    "hurt": {
+      "folder": "assets/sprites/evans/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 129
+    },
+    "ko": {
+      "folder": "assets/sprites/evans/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 129
+    },
+    "taunt": {
+      "folder": "assets/sprites/evans/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 129
+    },
+    "victory": {
+      "folder": "assets/sprites/evans/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "superattack": {
+      "folder": "assets/sprites/evans/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 129
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de bidon",
+      "animation": "punch",
+      "damage": 13,
+      "damageType": "physique",
+      "knockback": 5,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 34,
+        "offsetY": 30,
+        "width": 34,
+        "height": 13
+      }
+    },
+    "kick": {
+      "label": "Choc thermique",
+      "animation": "kick",
+      "damage": 15,
+      "damageType": "chaleur",
+      "knockback": 6,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 44,
+        "offsetY": 30,
+        "width": 44,
+        "height": 14
+      },
+      "effect": {
+        "type": "burn",
+        "durationMs": 1500
+      }
+    },
+    "superattack": {
+      "label": "Autoclave — choc thermique intense",
+      "animation": "superattack",
+      "damage": 23,
+      "damageType": "chaleur",
+      "knockback": 8,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 48,
+        "offsetY": 30,
+        "width": 48,
+        "height": 22
+      },
+      "effect": {
+        "type": "burn",
+        "durationMs": 2000
+      }
+    }
+  }
+}

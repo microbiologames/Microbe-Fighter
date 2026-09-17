@@ -7,7 +7,11 @@
   "moveSpeed": 2.6,
   "jumpVelocity": 8.6,
   "portrait": "assets/sprites/listeria/portrait/portrait.png",
-  "hurtbox": { "width": 32, "heightStand": 91, "heightCrouch": 62 },
+  "hurtbox": {
+    "width": 32,
+    "heightStand": 91,
+    "heightCrouch": 62
+  },
   "sfx": {
     "punch": "assets/audio/sfx/listeria/punch.wav",
     "kick": "assets/audio/sfx/listeria/kick.wav",
@@ -20,27 +24,101 @@
     "superattack": "assets/audio/sfx/listeria/superattack.wav"
   },
   "animations": {
-    "idle":        { "folder": "assets/sprites/listeria/idle",        "frameCount": 5, "frameDuration": 180,    "loop": true, "groundY": 143 },
-    "walk":        { "folder": "assets/sprites/listeria/walk",        "frameCount": 5, "frameDuration": 90,    "loop": true, "groundY": 143 },
-    "jump":        { "folder": "assets/sprites/listeria/jump",        "frameCount": 5, "frameDuration": 110,    "loop": true, "groundY": 143 },
-    "crouch":      { "folder": "assets/sprites/listeria/crouch",      "frameCount": 5, "frameDuration": 120,    "loop": false, "groundY": 143 },
-    "punch":       { "folder": "assets/sprites/listeria/punch",       "frameCount": 5, "frameDuration": 55,     "loop": false, "groundY": 143 },
-    "kick":        { "folder": "assets/sprites/listeria/kick",        "frameCount": 5, "frameDuration": 60,     "loop": false, "groundY": 143 },
-    "hurt":        { "folder": "assets/sprites/listeria/hurt",        "frameCount": 5, "frameDuration": 70,    "loop": false, "groundY": 143 },
-    "ko":          { "folder": "assets/sprites/listeria/ko",          "frameCount": 5, "frameDuration": 130,    "loop": false, "groundY": 143 },
-    "taunt":       { "folder": "assets/sprites/listeria/taunt",       "frameCount": 5, "frameDuration": 80,    "loop": false, "groundY": 143 },
-    "victory":     { "folder": "assets/sprites/listeria/victory",     "frameCount": 5, "frameDuration": 110,    "loop": true, "groundY": 143 },
-    "superattack": { "folder": "assets/sprites/listeria/superattack", "frameCount": 5, "frameDuration": 65,     "loop": false, "groundY": 143 }
+    "idle": {
+      "folder": "assets/sprites/listeria/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true,
+      "groundY": 143
+    },
+    "walk": {
+      "folder": "assets/sprites/listeria/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true,
+      "groundY": 143
+    },
+    "jump": {
+      "folder": "assets/sprites/listeria/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true,
+      "groundY": 143
+    },
+    "crouch": {
+      "folder": "assets/sprites/listeria/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false,
+      "groundY": 143
+    },
+    "punch": {
+      "folder": "assets/sprites/listeria/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false,
+      "groundY": 143
+    },
+    "kick": {
+      "folder": "assets/sprites/listeria/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false,
+      "groundY": 143
+    },
+    "hurt": {
+      "folder": "assets/sprites/listeria/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false,
+      "groundY": 143
+    },
+    "ko": {
+      "folder": "assets/sprites/listeria/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false,
+      "groundY": 143
+    },
+    "taunt": {
+      "folder": "assets/sprites/listeria/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false,
+      "groundY": 143
+    },
+    "victory": {
+      "folder": "assets/sprites/listeria/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true,
+      "groundY": 143
+    },
+    "superattack": {
+      "folder": "assets/sprites/listeria/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false,
+      "groundY": 143
+    }
   },
   "moves": {
     "punch": {
       "label": "Coup direct",
       "animation": "punch",
-      "damage": 13,
+      "damage": 14,
       "damageType": "physique",
       "knockback": 5,
-      "activeFrames": [2, 3],
-      "hitbox": { "offsetX": 28, "offsetY": 28, "width": 26, "height": 12 }
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 28,
+        "offsetY": 28,
+        "width": 26,
+        "height": 12
+      }
     },
     "kick": {
       "label": "Biofilm — invulnérable 1 s, mais ralentie",
@@ -48,19 +126,43 @@
       "damage": 0,
       "damageType": "physique",
       "knockback": 0,
-      "activeFrames": [2, 3],
-      "hitbox": { "offsetX": 0, "offsetY": 0, "width": 0, "height": 0 },
-      "effect": {"type": "shield", "on": "use", "durationMs": 1000, "selfSlowMs": 1600}
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "width": 0,
+        "height": 0
+      },
+      "effect": {
+        "type": "shield",
+        "on": "use",
+        "durationMs": 1000,
+        "selfSlowMs": 1600
+      }
     },
     "superattack": {
       "label": "Gel — ralentit l'adversaire 3 s",
       "animation": "superattack",
-      "damage": 16,
+      "damage": 18,
       "damageType": "froid",
       "knockback": 6,
-      "activeFrames": [2, 3],
-      "hitbox": { "offsetX": 40, "offsetY": 30, "width": 40, "height": 20 },
-      "effect": {"type": "freeze", "durationMs": 3000}
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 40,
+        "offsetY": 30,
+        "width": 40,
+        "height": 20
+      },
+      "effect": {
+        "type": "freeze",
+        "durationMs": 3000
+      }
     }
   }
 }

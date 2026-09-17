@@ -1,0 +1,147 @@
+{
+  "id": "mullis",
+  "displayName": "K. Mullis",
+  "color": "#d98a3c",
+  "scale": 0.98,
+  "groundY": 129,
+  "moveSpeed": 2.6,
+  "jumpVelocity": 8.4,
+  "portrait": "assets/sprites/mullis/portrait/portrait.png",
+  "hurtbox": {
+    "width": 28,
+    "heightStand": 96,
+    "heightCrouch": 64
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/mullis/punch.wav",
+    "kick": "assets/audio/sfx/mullis/kick.wav",
+    "hurt": "assets/audio/sfx/mullis/hurt.wav",
+    "ko": "assets/audio/sfx/mullis/ko.wav",
+    "victory": "assets/audio/sfx/mullis/victory.wav",
+    "jump": "assets/audio/sfx/mullis/jump.wav",
+    "esquive": "assets/audio/sfx/mullis/esquive.wav",
+    "nargue": "assets/audio/sfx/mullis/nargue.wav",
+    "superattack": "assets/audio/sfx/mullis/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/mullis/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 129
+    },
+    "walk": {
+      "folder": "assets/sprites/mullis/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 129
+    },
+    "jump": {
+      "folder": "assets/sprites/mullis/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "crouch": {
+      "folder": "assets/sprites/mullis/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 129
+    },
+    "punch": {
+      "folder": "assets/sprites/mullis/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 129
+    },
+    "kick": {
+      "folder": "assets/sprites/mullis/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 129
+    },
+    "hurt": {
+      "folder": "assets/sprites/mullis/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 129
+    },
+    "ko": {
+      "folder": "assets/sprites/mullis/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 129
+    },
+    "taunt": {
+      "folder": "assets/sprites/mullis/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 129
+    },
+    "victory": {
+      "folder": "assets/sprites/mullis/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "superattack": {
+      "folder": "assets/sprites/mullis/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 129
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de micropipette",
+      "animation": "punch",
+      "damage": 11,
+      "damageType": "physique",
+      "knockback": 4,
+      "activeFrames": [
+        1,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 34,
+        "offsetY": 30,
+        "width": 32,
+        "height": 12
+      }
+    },
+    "kick": {
+      "label": "Jet d’amplicon",
+      "animation": "kick",
+      "damage": 13,
+      "damageType": "genetique",
+      "knockback": 4,
+      "activeFrames": [
+        1,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 46,
+        "offsetY": 30,
+        "width": 46,
+        "height": 14
+      }
+    },
+    "superattack": {
+      "label": "Tornade d’amplicons",
+      "animation": "superattack",
+      "damage": 26,
+      "damageType": "genetique",
+      "knockback": 7,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 48,
+        "offsetY": 30,
+        "width": 50,
+        "height": 22
+      }
+    }
+  }
+}

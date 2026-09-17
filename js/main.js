@@ -5,6 +5,7 @@ import { loadStage, drawStage, updateStage } from './engine/Stage.js';
 import { Camera } from './engine/Camera.js';
 import { drawHUD } from './engine/HUD.js';
 import { updateHitEffects, drawHitEffects, clearHitEffects, getScreenShakeOffset } from './engine/Effects.js';
+import { updateAllies, drawAllies, clearAllies } from './engine/Allies.js';
 import { playSfx } from './engine/Audio.js';
 import { startMusic } from './engine/Music.js';
 import {
@@ -111,29 +112,23 @@ function renderTitleRoster() {
 
 async function boot() {
   try {
-    const [[gramChar, petriChar, cereusChar, listeriaChar, staphChar,
-           salmonellaChar, botulinumChar, pseudomonasChar, shewanellaChar, aspergillusChar,
-           ...loadedStages]] = await Promise.all([
-      Promise.all([
-        loadCharacter('js/data/characters/gram.json'),
-        loadCharacter('js/data/characters/petri.json'),
-        loadCharacter('js/data/characters/cereus.json'),
-        loadCharacter('js/data/characters/listeria.json'),
-        loadCharacter('js/data/characters/staph.json'),
-        loadCharacter('js/data/characters/salmonella.json'),
-        loadCharacter('js/data/characters/botulinum.json'),
-        loadCharacter('js/data/characters/pseudomonas.json'),
-        loadCharacter('js/data/characters/shewanella.json'),
-        loadCharacter('js/data/characters/aspergillus.json'),
-        ...STAGE_FILES.map((f) => loadStage(`js/data/stages/${f}.json`)),
-      ]),
+    // L'ordre de cette liste est celui du sélecteur et de l'écran titre :
+    // les deux microbiologistes « maison », puis les micro-organismes, puis les
+    // microbiologistes historiques.
+    const ROSTER_IDS = [
+      'gram', 'petri',
+      'cereus', 'listeria', 'staph', 'salmonella', 'botulinum',
+      'pseudomonas', 'shewanella', 'aspergillus',
+      'mullis', 'franklin', 'baranyi', 'charpentier', 'fraser',
+      'evans', 'appert', 'pasteur', 'metchnikoff',
+    ];
+
+    const [loadedCharacters, loadedStages] = await Promise.all([
+      Promise.all(ROSTER_IDS.map((id) => loadCharacter(`js/data/characters/${id}.json`))),
+      Promise.all(STAGE_FILES.map((f) => loadStage(`js/data/stages/${f}.json`))),
       document.fonts.load('16px "Press Start 2P"'),
     ]);
-    roster = [
-      gramChar, petriChar,
-      cereusChar, listeriaChar, staphChar, salmonellaChar, botulinumChar,
-      pseudomonasChar, shewanellaChar, aspergillusChar,
-    ];
+    roster = loadedCharacters;
     stages = loadedStages;
     pickRandomStage();
     renderTitleRoster();
@@ -232,6 +227,7 @@ function startFight(char1, char2, chosenStage) {
   overlayStageSelect.classList.add('hidden');
   overlayResult.classList.add('hidden');
   clearHitEffects();
+  clearAllies();
 }
 
 function endRound(winner) {
@@ -330,6 +326,7 @@ function update(dt) {
     fighter2.update(dt, input, fighter1);
     camera.update(fighter1, fighter2, dt);
     updateHitEffects(dt);
+    updateAllies(dt, [fighter1, fighter2]);
 
     timeLeft -= dt / 1000;
 
@@ -375,6 +372,7 @@ function draw() {
     // ordre de dessin simple : le perso le plus en arrière (y le plus petit à l'écran) d'abord
     const order = fighter1.x <= fighter2.x ? [fighter1, fighter2] : [fighter2, fighter1];
     for (const f of order) f.draw(ctx);
+    drawAllies(ctx);
     drawHitEffects(ctx);
     ctx.restore();
   }

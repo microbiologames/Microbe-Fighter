@@ -1,0 +1,147 @@
+{
+  "id": "franklin",
+  "displayName": "R. Franklin",
+  "color": "#4f7fd4",
+  "scale": 0.96,
+  "groundY": 132,
+  "moveSpeed": 1.9,
+  "jumpVelocity": 7.2,
+  "portrait": "assets/sprites/franklin/portrait/portrait.png",
+  "hurtbox": {
+    "width": 28,
+    "heightStand": 96,
+    "heightCrouch": 64
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/franklin/punch.wav",
+    "kick": "assets/audio/sfx/franklin/kick.wav",
+    "hurt": "assets/audio/sfx/franklin/hurt.wav",
+    "ko": "assets/audio/sfx/franklin/ko.wav",
+    "victory": "assets/audio/sfx/franklin/victory.wav",
+    "jump": "assets/audio/sfx/franklin/jump.wav",
+    "esquive": "assets/audio/sfx/franklin/esquive.wav",
+    "nargue": "assets/audio/sfx/franklin/nargue.wav",
+    "superattack": "assets/audio/sfx/franklin/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/franklin/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 132
+    },
+    "walk": {
+      "folder": "assets/sprites/franklin/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 132
+    },
+    "jump": {
+      "folder": "assets/sprites/franklin/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 132
+    },
+    "crouch": {
+      "folder": "assets/sprites/franklin/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 132
+    },
+    "punch": {
+      "folder": "assets/sprites/franklin/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 132
+    },
+    "kick": {
+      "folder": "assets/sprites/franklin/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 132
+    },
+    "hurt": {
+      "folder": "assets/sprites/franklin/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 132
+    },
+    "ko": {
+      "folder": "assets/sprites/franklin/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 132
+    },
+    "taunt": {
+      "folder": "assets/sprites/franklin/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 132
+    },
+    "victory": {
+      "folder": "assets/sprites/franklin/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 132
+    },
+    "superattack": {
+      "folder": "assets/sprites/franklin/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 132
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup droit",
+      "animation": "punch",
+      "damage": 15,
+      "damageType": "physique",
+      "knockback": 6,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 34,
+        "offsetY": 30,
+        "width": 32,
+        "height": 13
+      }
+    },
+    "kick": {
+      "label": "Jet d’amplicon",
+      "animation": "kick",
+      "damage": 19,
+      "damageType": "genetique",
+      "knockback": 6,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 52,
+        "offsetY": 30,
+        "width": 54,
+        "height": 14
+      }
+    },
+    "superattack": {
+      "label": "Tornade d’amplicons",
+      "animation": "superattack",
+      "damage": 33,
+      "damageType": "genetique",
+      "knockback": 9,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 48,
+        "offsetY": 30,
+        "width": 48,
+        "height": 22
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "id": "charpentier",
+  "displayName": "E. Charpentier",
+  "color": "#9b5fd4",
+  "scale": 0.96,
+  "groundY": 129,
+  "moveSpeed": 2.2,
+  "jumpVelocity": 7.8,
+  "portrait": "assets/sprites/charpentier/portrait/portrait.png",
+  "hurtbox": {
+    "width": 28,
+    "heightStand": 96,
+    "heightCrouch": 64
+  },
+  "sfx": {
+    "punch": "assets/audio/sfx/charpentier/punch.wav",
+    "kick": "assets/audio/sfx/charpentier/kick.wav",
+    "hurt": "assets/audio/sfx/charpentier/hurt.wav",
+    "ko": "assets/audio/sfx/charpentier/ko.wav",
+    "victory": "assets/audio/sfx/charpentier/victory.wav",
+    "jump": "assets/audio/sfx/charpentier/jump.wav",
+    "esquive": "assets/audio/sfx/charpentier/esquive.wav",
+    "nargue": "assets/audio/sfx/charpentier/nargue.wav",
+    "superattack": "assets/audio/sfx/charpentier/superattack.wav"
+  },
+  "animations": {
+    "idle": {
+      "folder": "assets/sprites/charpentier/idle",
+      "frameCount": 5,
+      "frameDuration": 180,
+      "loop": true, "groundY": 129
+    },
+    "walk": {
+      "folder": "assets/sprites/charpentier/walk",
+      "frameCount": 5,
+      "frameDuration": 90,
+      "loop": true, "groundY": 129
+    },
+    "jump": {
+      "folder": "assets/sprites/charpentier/jump",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "crouch": {
+      "folder": "assets/sprites/charpentier/crouch",
+      "frameCount": 5,
+      "frameDuration": 120,
+      "loop": false, "groundY": 129
+    },
+    "punch": {
+      "folder": "assets/sprites/charpentier/punch",
+      "frameCount": 5,
+      "frameDuration": 55,
+      "loop": false, "groundY": 129
+    },
+    "kick": {
+      "folder": "assets/sprites/charpentier/kick",
+      "frameCount": 5,
+      "frameDuration": 60,
+      "loop": false, "groundY": 129
+    },
+    "hurt": {
+      "folder": "assets/sprites/charpentier/hurt",
+      "frameCount": 5,
+      "frameDuration": 70,
+      "loop": false, "groundY": 129
+    },
+    "ko": {
+      "folder": "assets/sprites/charpentier/ko",
+      "frameCount": 5,
+      "frameDuration": 130,
+      "loop": false, "groundY": 129
+    },
+    "taunt": {
+      "folder": "assets/sprites/charpentier/taunt",
+      "frameCount": 5,
+      "frameDuration": 80,
+      "loop": false, "groundY": 129
+    },
+    "victory": {
+      "folder": "assets/sprites/charpentier/victory",
+      "frameCount": 5,
+      "frameDuration": 110,
+      "loop": true, "groundY": 129
+    },
+    "superattack": {
+      "folder": "assets/sprites/charpentier/superattack",
+      "frameCount": 5,
+      "frameDuration": 65,
+      "loop": false, "groundY": 129
+    }
+  },
+  "moves": {
+    "punch": {
+      "label": "Coup de ciseaux",
+      "animation": "punch",
+      "damage": 13,
+      "damageType": "physique",
+      "knockback": 5,
+      "activeFrames": [
+        2,
+        3
+      ],
+      "hitbox": {
+        "offsetX": 34,
+        "offsetY": 30,
+        "width": 32,
+        "height": 13
+      }
+    },
+    "kick": {
+      "label": "Attaque CRISPR — coupe à travers les défenses",
+      "animation": "kick",
+      "damage": 16,
+      "damageType": "genetique",
+      "knockback": 5,
+      "pierce": true,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 48,
+        "offsetY": 30,
+        "width": 48,
+        "height": 14
+      }
+    },
+    "superattack": {
+      "label": "Tornade de ciseaux — ignore biofilm et esquive",
+      "animation": "superattack",
+      "damage": 29,
+      "damageType": "genetique",
+      "knockback": 8,
+      "pierce": true,
+      "activeFrames": [
+        2,
+        4
+      ],
+      "hitbox": {
+        "offsetX": 50,
+        "offsetY": 30,
+        "width": 52,
+        "height": 24
+      }
+    }
+  }
+}
