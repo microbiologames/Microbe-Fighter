@@ -1,6 +1,6 @@
 {
   "id": "pasteur",
-  "displayName": "L. Pasteur",
+  "displayName": "Louis Pasteur",
   "color": "#c0562f",
   "scale": 0.971,
   "groundY": 132,
@@ -9,8 +9,8 @@
   "portrait": "assets/sprites/pasteur/portrait/portrait.png",
   "hurtbox": {
     "width": 30,
-    "heightStand": 100,
-    "heightCrouch": 68
+    "heightStand": 110,
+    "heightCrouch": 74
   },
   "sfx": {
     "punch": "assets/audio/sfx/pasteur/punch.wav",
@@ -28,67 +28,78 @@
       "folder": "assets/sprites/pasteur/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "walk": {
       "folder": "assets/sprites/pasteur/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "jump": {
       "folder": "assets/sprites/pasteur/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "crouch": {
       "folder": "assets/sprites/pasteur/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "punch": {
       "folder": "assets/sprites/pasteur/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "kick": {
       "folder": "assets/sprites/pasteur/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "hurt": {
       "folder": "assets/sprites/pasteur/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "ko": {
       "folder": "assets/sprites/pasteur/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "taunt": {
       "folder": "assets/sprites/pasteur/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "victory": {
       "folder": "assets/sprites/pasteur/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "superattack": {
       "folder": "assets/sprites/pasteur/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     }
   },
   "moves": {

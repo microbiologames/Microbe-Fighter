@@ -1,6 +1,6 @@
 {
   "id": "baranyi",
-  "displayName": "J. Baranyi",
+  "displayName": "József Baranyi",
   "color": "#5fb3a1",
   "scale": 1,
   "groundY": 132,
@@ -9,8 +9,8 @@
   "portrait": "assets/sprites/baranyi/portrait/portrait.png",
   "hurtbox": {
     "width": 30,
-    "heightStand": 98,
-    "heightCrouch": 66
+    "heightStand": 110,
+    "heightCrouch": 74
   },
   "sfx": {
     "punch": "assets/audio/sfx/baranyi/punch.wav",
@@ -28,67 +28,78 @@
       "folder": "assets/sprites/baranyi/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "walk": {
       "folder": "assets/sprites/baranyi/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "jump": {
       "folder": "assets/sprites/baranyi/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "crouch": {
       "folder": "assets/sprites/baranyi/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "punch": {
       "folder": "assets/sprites/baranyi/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "kick": {
       "folder": "assets/sprites/baranyi/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "hurt": {
       "folder": "assets/sprites/baranyi/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "ko": {
       "folder": "assets/sprites/baranyi/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "taunt": {
       "folder": "assets/sprites/baranyi/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     },
     "victory": {
       "folder": "assets/sprites/baranyi/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 132
+      "loop": true,
+      "groundY": 132
     },
     "superattack": {
       "folder": "assets/sprites/baranyi/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 132
+      "loop": false,
+      "groundY": 132
     }
   },
   "moves": {

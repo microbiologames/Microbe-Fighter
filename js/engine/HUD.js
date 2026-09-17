@@ -93,9 +93,28 @@ function sansAccents(texte) {
   return texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
+// Les noms sont affiches EN ENTIER, prenom compris. « EMMANUELLE CHARPENTIER »
+// fait 22 caracteres, soit 154 px a la taille nominale de 7 px, pour une barre
+// de vie qui en fait 140 : il deborderait sur celle d'en face.
+//
+// Plutot que d'abreger, la taille descend jusqu'a ce que le nom tienne. Press
+// Start 2P est une police bitmap dessinee sur une grille de 8 px, donc on ne
+// descend que par pas d'un pixel entier : a 6,5 px elle devient floue, a 6 px
+// elle reste nette. En dessous de 5 px c'est illisible, et le nom est alors
+// coupe plutot que reduit davantage.
+const NAME_SIZE_MAX = 7;
+const NAME_SIZE_MIN = 5;
+
 function drawName(ctx, name, x, y, align) {
+  const texte = sansAccents(name).toUpperCase();
   ctx.fillStyle = '#ffd23f';
-  ctx.font = '7px "Press Start 2P", monospace';
   ctx.textAlign = align;
-  ctx.fillText(sansAccents(name).toUpperCase(), x, y);
+
+  let taille = NAME_SIZE_MAX;
+  ctx.font = `${taille}px "Press Start 2P", monospace`;
+  while (taille > NAME_SIZE_MIN && ctx.measureText(texte).width > BAR_WIDTH) {
+    taille -= 1;
+    ctx.font = `${taille}px "Press Start 2P", monospace`;
+  }
+  ctx.fillText(texte, x, y);
 }

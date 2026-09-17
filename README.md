@@ -68,8 +68,6 @@ pastilles au-dessus des barres de vie.
 
 | Perso | `id` | Voix | Profil |
 |---|---|---|---|
-| **Doc Gram** — microbiologiste | `gram` | Homme | Grand, élancé, allonge maximale, un peu lent. Poing = micropipette, super = chalumeau Bunsen. |
-| **Doc Pétri** — microbiologiste | `petri` | Femme | Plus vive, un peu moins d'allonge. Poing = portoir à tubes, super = vapeur d'autoclave. |
 | **B. cereus** — *Bacillus cereus* | `cereus` | Créature | Le plus grand et le plus large, lent, saut bas, encaisse. Le cogneur. Son **spore abdominal** s'embrase sur la super attaque. |
 | **L. monocytogenes** — *Listeria monocytogenes* | `listeria` | Créature | Mince et rapide, saut haut, peu de hurtbox. Griffes et ruée. Le « hit and run ». |
 | **S. aureus** — *Staphylococcus aureus* | `staph` | Grappe de petites voix | Une grappe de coques dorées, chacune avec sa tête. Vitesse moyenne. **Quasi insensible aux biocides, mais fragile face à la chaleur.** |
@@ -86,15 +84,15 @@ personnage**. Aucun n'est un reskin d'un autre.
 
 | Perso | `id` | Ce qu'il/elle a fait | Ce que ça donne en jeu |
 |---|---|---|---|
-| **K. Mullis** | `mullis` | Inventeur de la **PCR** | Le plus rapide du roster. Dégâts faibles, cadence élevée. |
-| **R. Franklin** | `franklin` | Découvreuse de la **structure de l'ADN** | La précision : lente, longue portée, les plus gros dégâts par coup. |
-| **J. Baranyi** | `baranyi` | Pionnier de la **microbiologie prévisionnelle** | Le contrôle : ses attaques **ralentissent la croissance** de l'adversaire. |
-| **E. Charpentier** | `charpentier` | Découvreuse de **CRISPR-Cas9** | Ses ciseaux **traversent les défenses** — la seule à toucher Listeria sous biofilm. |
-| **C. Fraser** | `fraser` | Pionnière du **séquençage de génome complet** | **Aspire l'ADN** : la seule du jeu à se soigner en frappant. |
-| **A. Evans** | `evans` | Pionnière de la **pasteurisation** | Chaleur rapide — mais **sans effet sur les spores**. |
-| **N. Appert** | `appert` | Inventeur de la **conserve** | Lent et lourd, mais son **autoclave ignore toute thermorésistance**. |
-| **L. Pasteur** | `pasteur` | Pionnier de la **microbiologie culturale** | Bec bunsen, et un **piège en gélose** qui cloue l'adversaire 1,8 s. |
-| **É. Metchnikoff** | `metchnikoff` | Pionnier des **ferments lactiques et probiotiques** | Le seul à **invoquer des alliés** : ses lactobacilles combattent tout seuls. |
+| **Kary Mullis** | `mullis` | Inventeur de la **PCR** | Le plus rapide du roster. Dégâts faibles, cadence élevée. |
+| **Rosalind Franklin** | `franklin` | Découvreuse de la **structure de l'ADN** | La précision : lente, longue portée, les plus gros dégâts par coup. |
+| **József Baranyi** | `baranyi` | Pionnier de la **microbiologie prévisionnelle** | Le contrôle : ses attaques **ralentissent la croissance** de l'adversaire. |
+| **Emmanuelle Charpentier** | `charpentier` | Découvreuse de **CRISPR-Cas9** | Ses ciseaux **traversent les défenses** — la seule à toucher Listeria sous biofilm. |
+| **Claire Fraser** | `fraser` | Pionnière du **séquençage de génome complet** | **Aspire l'ADN** : la seule du jeu à se soigner en frappant. |
+| **Alice Evans** | `evans` | Pionnière de la **pasteurisation** | Chaleur rapide — mais **sans effet sur les spores**. |
+| **Nicolas Appert** | `appert` | Inventeur de la **conserve** | Lent et lourd, mais son **autoclave ignore toute thermorésistance**. |
+| **Louis Pasteur** | `pasteur` | Pionnier de la **microbiologie culturale** | Bec bunsen, et un **piège en gélose** qui cloue l'adversaire 1,8 s. |
+| **Élie Metchnikoff** | `metchnikoff` | Pionnier des **ferments lactiques et probiotiques** | Le seul à **invoquer des alliés** : ses lactobacilles combattent tout seuls. |
 
 #### Deux paires, et pourquoi elles ne sont pas des doublons
 
@@ -115,7 +113,7 @@ d'elle** — tandis que celle d'Appert porte `ignoreResistance` et passe outre.
 Appert est le seul personnage du roster capable de tuer un sporulé à la chaleur,
 et c'est exactement ce que fait un barème 121 °C / 3 min.
 
-**Dix-neuf personnages : onze microbiologistes contre huit micro-organismes.** Cinq
+**Dix-sept personnages : neuf microbiologistes contre huit micro-organismes.** Cinq
 pathogènes alimentaires (*B. cereus*, *L. monocytogenes*, *S. aureus*,
 *Salmonella*, *C. botulinum*), deux flores d'altération (*P. fluorescens*,
 *S. putrefaciens*) et une moisissure toxinogène (*A. flavus*). Le registre colle
@@ -132,8 +130,6 @@ code en dur aucun personnage.
 
 | Perso | Poing (F / K) | Pied (G / L) | Spéciale (Poing + Pied, jauge pleine) |
 |---|---|---|---|
-| **Doc Gram** | Coup direct — 14 | Jet de biocide — 18, longue portée | **Bec Bunsen** — 18 puis **brûlure 3 s** (7 dégâts/s) |
-| **Doc Pétri** | Coup direct — 14 | Jet de biocide — 18, longue portée | **Bec Bunsen** — 18 puis **brûlure 3 s** |
 | **B. cereus** | Coup direct — 16 | **Spore** — 8, et **téléporte derrière l'adversaire** | **Jet de céréulide** — 34, le plus gros coup du jeu |
 | **L. monocytogenes** | Coup direct — 13 | **Biofilm** — 0 dégât, **invulnérable 1 s** mais ralentie 1,6 s | **Gel** — 16 et **adversaire ralenti 3 s**, teinté bleu |
 | **S. aureus** | Coup direct — 15 | **Coagulase** — 6, et **fige l'adversaire 1 s** dans un cube de plasma | **Toxine staphylococcique** — 34, à égalité avec la céréulide |
@@ -142,15 +138,15 @@ code en dur aucun personnage.
 | **P. fluorescens** | Coup direct — 13 | **Jet de pyoverdine** — 16, longue portée | **Protéases thermostables** — 30 |
 | **S. putrefaciens** | Coup de patte — 14 | **Jet d'H₂S** — 10 et **empoisonne 3,5 s** | **Putréfaction** — 26 et **empoisonne 5 s** |
 | **A. flavus** | Coup de mycélium — 14 | **Nuage de conidies** — 8, la plus large zone du jeu | **Aflatoxine B1** — 20 et **marque à vie** (voir plus bas) |
-| **K. Mullis** | Coup de micropipette — 11 | **Jet d'amplicon** — 13, sort très vite | **Tornade d'amplicons** — 26 |
-| **R. Franklin** | Coup droit — 15 | **Jet d'amplicon** — 19, la plus longue portée | **Tornade d'amplicons** — 33, le plus gros coup unique du jeu |
-| **J. Baranyi** | Coup de règle — 13 | **Attaque mathématique** — 12 et **ralentit 2 s** | **Tornade de mathématiques** — 25 et **ralentit 4 s** |
-| **E. Charpentier** | Coup de ciseaux — 13 | **Attaque CRISPR** — 16, **traverse les défenses** | **Tornade de ciseaux** — 29, **traverse les défenses** |
-| **C. Fraser** | Coup droit — 12 | **Aspiration de l'ADN** — 12, **rend la moitié en vie** | **Aspiration intense** — 24, **rend 60 % en vie** |
-| **A. Evans** | Coup de bidon — 13 | **Choc thermique** — 17 + brûlure 2 s | **Autoclave** — 27 + brûlure 3 s |
-| **N. Appert** | Coup de bocal — 15 | **Choc thermique** — 16 + brûlure 2,5 s | **Autoclave 121 °C** — 30, **ignore toute thermorésistance** |
-| **L. Pasteur** | Coup de ballon — 14 | **Bec bunsen** — 17 + brûlure 3 s | **Piège agar** — 10 et **fige 1,8 s** dans un cube de gélose |
-| **É. Metchnikoff** | Coup de bol — 12 | **Lactobacille** — lâche **un allié** autonome | **Équipe de lactobacilles** — en lâche **quatre** |
+| **Kary Mullis** | Coup de micropipette — 11 | **Jet d'amplicon** — 13, sort très vite | **Tornade d'amplicons** — 26 |
+| **Rosalind Franklin** | Coup droit — 15 | **Jet d'amplicon** — 19, la plus longue portée | **Tornade d'amplicons** — 33, le plus gros coup unique du jeu |
+| **József Baranyi** | Coup de règle — 13 | **Attaque mathématique** — 12 et **ralentit 2 s** | **Tornade de mathématiques** — 25 et **ralentit 4 s** |
+| **Emmanuelle Charpentier** | Coup de ciseaux — 13 | **Attaque CRISPR** — 16, **traverse les défenses** | **Tornade de ciseaux** — 29, **traverse les défenses** |
+| **Claire Fraser** | Coup droit — 12 | **Aspiration de l'ADN** — 12, **rend la moitié en vie** | **Aspiration intense** — 24, **rend 60 % en vie** |
+| **Alice Evans** | Coup de bidon — 13 | **Choc thermique** — 17 + brûlure 2 s | **Autoclave** — 27 + brûlure 3 s |
+| **Nicolas Appert** | Coup de bocal — 15 | **Choc thermique** — 16 + brûlure 2,5 s | **Autoclave 121 °C** — 30, **ignore toute thermorésistance** |
+| **Louis Pasteur** | Coup de ballon — 14 | **Bec bunsen** — 17 + brûlure 3 s | **Piège agar** — 10 et **fige 1,8 s** dans un cube de gélose |
+| **Élie Metchnikoff** | Coup de bol — 12 | **Lactobacille** — lâche **un allié** autonome | **Équipe de lactobacilles** — en lâche **quatre** |
 
 Les effets disponibles (`effect.type`) : `burn`, `poison`, `freeze`, `shield`,
 `teleportBehind`, `dash`, `trap`, `paralyse`, `mark`, `drain`, `summon`.
@@ -301,6 +297,14 @@ Ajouter un perso = un JSON dans `js/data/characters/`, une entrée dans
 `scripts/characters.js`, et un appel `loadCharacter(...)` dans `boot()` de
 `js/main.js`. Il apparaît alors tout seul dans le sélecteur et sur l'écran titre.
 
+### Ce qui a été retiré
+
+Doc Gram et Doc Pétri, les deux microbiologistes « maison » du départ, ont été
+retirés du roster : Louis Pasteur couvre la microbiologie culturale et les neuf
+scientifiques historiques les remplacent avantageusement. Leurs images de
+référence restent dans `references/personnages/`, l'historique git conserve le
+reste.
+
 ## Les décors
 
 **Deux décors**, tous deux panoramiques et issus de la même vue du laboratoire
@@ -449,8 +453,6 @@ manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 
 | Personnage | Voix |
 |---|---|
-| **Doc Gram** | Homme |
-| **Doc Pétri** | Femme |
 | **B. cereus** | Grognements de créature |
 | **L. monocytogenes** | Grognements et bruits visqueux |
 | **S. aureus** | Une grappe de petites voix empilées |
@@ -459,15 +461,15 @@ manifeste puis relance `measure-sprites.js --write` : le `scale` suit.
 | **P. fluorescens** | Éthérée et liquide |
 | **S. putrefaciens** | Bête à quatre pattes |
 | **A. flavus** | Bruissement sec de spores |
-| **K. Mullis** | Homme vif |
-| **R. Franklin** | Femme mesurée |
-| **J. Baranyi** | Homme posé |
-| **E. Charpentier** | Femme tranchante |
-| **C. Fraser** | Femme assurée |
-| **A. Evans** | Femme âgée, sévère |
-| **N. Appert** | Homme massif |
-| **L. Pasteur** | Homme grave |
-| **É. Metchnikoff** | Homme âgé, chaleureux |
+| **Kary Mullis** | Homme vif |
+| **Rosalind Franklin** | Femme mesurée |
+| **József Baranyi** | Homme posé |
+| **Emmanuelle Charpentier** | Femme tranchante |
+| **Claire Fraser** | Femme assurée |
+| **Alice Evans** | Femme âgée, sévère |
+| **Nicolas Appert** | Homme massif |
+| **Louis Pasteur** | Homme grave |
+| **Élie Metchnikoff** | Homme âgé, chaleureux |
 
 Elles proviennent de banques **CC0** d'OpenGameArt, et sont importées et
 normalisées par `node scripts/import-voices.js`. La correspondance

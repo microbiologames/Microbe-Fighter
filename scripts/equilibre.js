@@ -13,9 +13,12 @@
 // Usage : node scripts/equilibre.js
 import fs from 'fs';
 const lire = (id) => JSON.parse(fs.readFileSync(`js/data/characters/${id}.json`, 'utf8'));
-const IDS = ['gram','petri','cereus','listeria','staph','salmonella','botulinum','pseudomonas',
-             'shewanella','aspergillus','mullis','franklin','baranyi','charpentier','fraser',
-             'evans','appert','pasteur','metchnikoff'];
+// La liste est lue dans le dossier plutôt qu'écrite en dur : elle ne peut pas
+// périmer quand un personnage est ajouté ou retiré.
+const IDS = fs.readdirSync('js/data/characters')
+  .filter((f) => f.endsWith('.json'))
+  .map((f) => f.replace(/\.json$/, ''))
+  .sort();
 const P = Object.fromEntries(IDS.map((id) => [id, lire(id)]));
 
 const BURN = 7, POISON = 5;

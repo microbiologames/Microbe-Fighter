@@ -13,6 +13,7 @@
 //   node scripts/create-character.js gram --no-reference   (génération depuis la seule description)
 //   node scripts/create-character.js gram --poses-only     (re-télécharge idle + portrait)
 //   node scripts/create-character.js shewanella --template cat  (quadrupède)
+//   node scripts/create-character.js pasteur --size 128          (canevas réduit)
 //
 // Persos : gram, petri, cereus, listeria
 
@@ -139,9 +140,44 @@ async function main() {
     process.exit(1);
   }
 
+  // TAILLE DU CANEVAS : 168, le maximum que l'API accepte en ENTRÉE.
+  //
+  // On générait en 128, et la ressemblance aux photos de référence en pâtissait
+  // — à cette taille un visage occupe une dizaine de pixels, ce qui ne suffit
+  // pas à distinguer deux personnes.
+  //
+  // Attention au piège de la documentation : elle annonce un canevas « pouvant
+  // aller jusqu'à 256 px », mais c'est le canevas PERSISTÉ, qui grandit tout
+  // seul pour loger le personnage. Demander 192 est refusé avec un 422 :
+  // `image_size` est plafonné à 168. C'est ainsi que les sprites de Family
+  // Fight font 256 px alors que personne n'a jamais demandé cette taille.
+  //
+  // Le personnage est ensuite réduit à l'affichage par le `scale` du manifeste,
+  // que measure-sprites.js calcule tout seul.
+  const TAILLE_MAX = 168;
+  const sizeIndex = args.indexOf('--size');
+  const size = sizeIndex !== -1 ? Number(args[sizeIndex + 1]) : TAILLE_MAX;
+  if (!(size >= 64 && size <= TAILLE_MAX)) {
+    console.error(`Taille invalide : ${size} (attendu entre 64 et ${TAILLE_MAX})`);
+    process.exit(1);
+  }
+
+  // PROPORTIONS. Sans cette consigne, le generateur sort des silhouettes a
+  // quatre ou cinq tetes de haut — grosse tete, jambes courtes — alors que les
+  // images de reference sont a sept ou huit. C'est ce qui donnait l'impression
+  // « trop cartoon », et ni la taille du canevas ni la description du visage ne
+  // le corrigeaient : c'est le style par defaut du template mannequin.
+  //
+  // `style_description` se superpose a la description sans la remplacer, donc
+  // les traits du visage restent pilotes par `description`.
+  const PROPORTIONS =
+    'realistic adult human body proportions, small head, long legs, tall and slender, ' +
+    'the head about one seventh of the total height, not chibi, not a big-headed cartoon';
+
   const body = {
     description,
-    image_size: { width: 128, height: 128 },
+    style_description: PROPORTIONS,
+    image_size: { width: size, height: size },
     template_id: template,
     view: 'side',
   };
@@ -167,7 +203,7 @@ async function main() {
     console.log(`[${charKey}] sans référence, génération depuis la description seule`);
   }
 
-  console.log(`[${charKey}] ${spec.label}`);
+  console.log(`[${charKey}] ${spec.label} — canevas ${size}x${size}`);
   console.log(`[${charKey}] création sur Pixellab...`);
   const resp = await api('POST', '/create-character-pro', body);
   const charId = resp.character_id;
@@ -182,7 +218,10 @@ async function main() {
   await savePoses(charKey, charId, job);
 
   console.log('\nPersonnage créé.');
-  console.log(`Étape suivante : node scripts/generate-sprites.js ${charKey}`);
+  console.log('Étape suivante : VÉRIFIER LA RESSEMBLANCE avant de dépenser dix');
+  console.log('animations sur un personnage raté :');
+  console.log('  node scripts/comparer-poses.js ' + charKey);
+  console.log(`Puis, si la pose convient : node scripts/generate-sprites.js ${charKey}`);
 }
 
 main().catch((err) => {

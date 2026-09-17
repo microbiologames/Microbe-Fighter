@@ -34,6 +34,54 @@ node scripts/measure-sprites.js --write   # cale groundY et scale sur les vrais 
 node scripts/check-assets.js              # contrôle final
 ```
 
+## La taille du canevas décide de la ressemblance
+
+`create-character.js` demande **168 x 168**, le maximum accepté en entrée.
+
+On a longtemps généré en 128, et la ressemblance aux photos en pâtissait : à
+cette taille un visage occupe une dizaine de pixels, ce qui ne suffit pas à
+distinguer deux personnes. Le même prompt en 168 change tout — sur E.
+Charpentier, le 128 sortait un garçon brun en tunique bleue, le 168 une femme
+aux cheveux bouclés volumineux en blouse blanche.
+
+**Piège de la documentation :** elle annonce un canevas « pouvant aller jusqu'à
+256 px », mais c'est le canevas **persisté**, qui grandit tout seul pour loger le
+personnage. Demander 192 est refusé avec un 422, `image_size` étant plafonné à
+168. C'est ainsi que les sprites de Family Fight font 256 px alors que personne
+n'a jamais demandé cette taille.
+
+## Décrire un visage, pas une fonction
+
+L'autre moitié de la ressemblance est dans la description. « an elderly male
+scientist in a white lab coat » laisse le générateur inventer un visage. Il faut
+nommer ce qui distingue **cette** personne :
+
+- l'âge, en années, pas « elderly » ;
+- la **ligne de cheveux** : dégarni sur le dessus, cheveux aux tempes, raie de
+  côté, volume autour du visage ;
+- la **forme de la barbe** — « a full bushy grey beard and moustache covering
+  his jaw and upper lip » plutôt que « bearded » ;
+- les **lunettes**, leur monture ;
+- le vêtement distinctif, qui est souvent ce qui se lit le mieux à cette taille :
+  la chemise à carreaux orange de K. Mullis, le col haut bleu de N. Appert, le
+  collier de perles d'A. Evans.
+
+## Valider la pose avant d'animer
+
+Dix animations coûtent dix jobs. Les lancer sur un personnage qui ne ressemble
+pas, c'est dix jobs perdus.
+
+```bash
+node scripts/create-character.js pasteur     # crée + récupère la pose de face
+node scripts/comparer-poses.js pasteur       # la met À CÔTÉ de la référence
+# on regarde, et seulement si ça convient :
+node scripts/generate-sprites.js pasteur
+```
+
+`comparer-poses.js` écrit une planche avec la photo de référence à gauche et la
+pose générée à droite, personnage par personnage. C'est la seule étape du
+pipeline qui demande un œil humain — tout le reste se vérifie par un script.
+
 ## L'idle est une animation, pas une pose
 
 `create-character.js` dépose une **pose fixe** dans `assets/sprites/<perso>/idle/000.png`,

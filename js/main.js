@@ -113,10 +113,8 @@ function renderTitleRoster() {
 async function boot() {
   try {
     // L'ordre de cette liste est celui du sélecteur et de l'écran titre :
-    // les deux microbiologistes « maison », puis les micro-organismes, puis les
-    // microbiologistes historiques.
+    // les micro-organismes, puis les microbiologistes.
     const ROSTER_IDS = [
-      'gram', 'petri',
       'cereus', 'listeria', 'staph', 'salmonella', 'botulinum',
       'pseudomonas', 'shewanella', 'aspergillus',
       'mullis', 'franklin', 'baranyi', 'charpentier', 'fraser',

@@ -87,33 +87,9 @@ const VOICES = {
   // Les deux cris d'attaque les plus courts servent aux coups simples, le plus
   // long à la super. Overwhelmed et Semiwhelmed, les deux répliques de 2 s du
   // pack, sont écartées au profit de réactions brèves.
-  gram: {
-    voix: 'homme',
-    punch:       ['steampunk', 'Hero_Attack_002_0.wav'],
-    kick:        ['steampunk', 'Hero_Attack_003_0.wav'],
-    superattack: ['steampunk', 'Hero_Attack_001_0.wav'],
-    hurt:        ['douleurCourte', 'hurt_02.mp3'],
-    ko:          ['steampunk', 'Hero_Die_001_0.wav'],
-    victory:     ['steampunk', 'Hero_Kill_001_0.wav'],
-    jump:        ['steampunk', 'Hero_Bomb_001_0.wav'],
-    esquive:     ['douleurCourte', 'hurt_04.mp3'],
-    nargue:      ['steampunk', 'Hero_Taunt_001_0.wav'],
-  },
 
   // --- Doc Pétri : voix de femme classique ---------------------------------
   // Les fichiers sont déjà nommés par action, la correspondance est directe.
-  petri: {
-    voix: 'femme',
-    punch:       ['femaleRpg', 'attack1.wav'],
-    kick:        ['femaleRpg', 'attack2.wav'],
-    superattack: ['femaleRpg', 'attack3.wav'],
-    hurt:        ['femaleRpg', 'damaged1.wav'],
-    ko:          ['femaleRpg', 'damaged3.wav'],
-    victory:     ['femaleRpg', 'healed1.wav'],
-    jump:        ['femaleRpg', 'jump1.wav'],
-    esquive:     ['femaleRpg', 'jump2.wav'],
-    nargue:      ['femaleRpg', 'curse.wav'],
-  },
 
   // --- B. cereus : le « mob » ----------------------------------------------
   // Le « Minion » du pack steampunk : grognements gutturaux de sbire, exactement
