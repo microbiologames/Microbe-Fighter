@@ -33,6 +33,29 @@
 //    its mouth » : un projectile concret) et ce qui a echoue (« huge flame jet
 //    blasting forward, glowing energy aura » : un halo bleu autour du perso).
 //
+// 3 bis. POUR LA CREATION D'UN PERSONNAGE, LA DESCRIPTION COURTE GAGNE.
+//    C'est l'inverse de la regle 2, qui vaut pour les ANIMATIONS, et la nuance
+//    est importante. En creation, l'image de reference est deja la : elle dicte
+//    la silhouette bien mieux qu'une phrase. Empiler les contraintes de texte
+//    par-dessus la CONTREDIT.
+//
+//    Mesure faite sur R. Franklin, quatre versions du meme personnage a partir
+//    de la meme image :
+//
+//      « ...portrait from head to feet... mature adult face, defined cheekbones
+//        and faint lines around her eyes, dark brown hair cut short and worn
+//        close to her head, NOT voluminous and NOT bushy, her head small in
+//        proportion to her body, tall and slim with long legs, about seven
+//        heads tall... »                               -> silhouette trapue
+//
+//      « a 45-year-old woman scientist with short dark hair, a white lab coat,
+//        dark trousers »                               -> la meilleure des quatre
+//
+//    Dire l'age, deux ou trois traits distinctifs et le vetement suffit. Le
+//    detail du visage sert l'IDENTITE, mais il nuit a la SILHOUETTE des qu'il
+//    s'accumule. Les descriptions d'ACTIONS, elles, doivent rester riches :
+//    la, il n'y a plus d'image de reference pour tenir le personnage.
+//
 // 4. NOMMER UN OBJET QUE N'IMPORTE QUI SAURAIT DESSINER. C'est la regle qui a
 //    manque a la premiere fournee de microbiologistes, et elle a coute cher.
 //    Un generateur ne sait pas dessiner un CONCEPT : il rend une forme molle.
@@ -299,10 +322,7 @@ const CHARACTERS = {
     reference: 'Rosalind Franklin',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 35-year-old woman, tall and slim with realistic adult proportions and a small head, ' +
-      'short dark brown curly hair with volume around her face, fair skin, a calm serious oval ' +
-      'face, dark eyes, wearing a plain buttoned white lab coat with nothing on it, blue jeans ' +
-      'and brown shoes',
+      'a 45-year-old woman scientist with short dark hair, a white lab coat, dark trousers',
     anims: {
       idle: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, standing very still in a composed fighting stance, breathing slowly and evenly, her chest rising and falling, the hem of her lab coat barely moving, eyes steady and measuring',
       walk: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, walking forward with a steady deliberate stride, lab coat swaying',

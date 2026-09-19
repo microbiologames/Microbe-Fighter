@@ -180,8 +180,15 @@ async function main() {
     'the head about one seventh of the total height, not chibi, not a big-headed cartoon';
   const style = spec.style ?? PROPORTIONS;
 
+  // La graine rend une generation reproductible. Utile quand plusieurs essais
+  // donnent des silhouettes tres differentes a description egale : on garde
+  // celle qui marche au lieu de relancer en esperant.
+  const seedIndex = args.indexOf('--seed');
+  const seed = seedIndex !== -1 ? Number(args[seedIndex + 1]) : undefined;
+
   const body = {
     description,
+    ...(seed !== undefined ? { seed } : {}),
     style_description: style,
     image_size: { width: size, height: size },
     template_id: template,

@@ -98,7 +98,7 @@ export const ROUND_RESULT_DISPLAY_MS = 2500;
 //
 // A CHANGER A CHAQUE FOIS QUE LES ASSETS CHANGENT. C'est le seul geste manuel,
 // et l'oublier fait reapparaitre exactement le bug qu'on vient de corriger.
-export const ASSET_VERSION = '2026-09-19';
+export const ASSET_VERSION = '2026-09-19b';
 
 export function versionne(url) {
   if (!url) return url;
