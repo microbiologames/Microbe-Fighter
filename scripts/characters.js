@@ -342,9 +342,8 @@ const CHARACTERS = {
     reference: 'József Baranyi',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 70-year-old man, bald on top with grey hair at the sides, clean-shaven, round ' +
-      'wire-rimmed glasses, a lined thoughtful face, wearing a long open white lab coat over a ' +
-      'dark grey sweater, olive green trousers and brown shoes',
+      'a 70-year-old bald man with round glasses, a LONG open white lab coat reaching below his ' +
+      'knees over a dark grey sweater, olive trousers and brown shoes',
     anims: {
       idle: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, standing still in a calm fighting stance, breathing slowly, adjusting his glasses with one finger, the hem of his long lab coat swaying gently, watching and calculating',
       walk: 'an elderly bald bespectacled scientist in a long white lab coat over a dark sweater, walking forward at an unhurried measured pace, long lab coat swaying',
@@ -407,9 +406,9 @@ const CHARACTERS = {
     reference: 'Alice Evans',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 70-year-old woman with white hair pinned up in a bun, a lined stern face, a pearl ' +
-      'necklace at her throat, wearing a long open white lab coat over a dark high-necked ' +
-      'ankle-length dress and dark shoes',
+      'a 70-year-old woman, tall and slim, with white hair in a small tight bun close to her ' +
+      'head, a LONG open white lab coat reaching below her knees over a dark ankle-length dress, ' +
+      'a pearl necklace and dark shoes',
     anims: {
       idle: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, standing very upright and still in a dignified fighting stance, breathing steadily, the hem of her long lab coat swaying gently, her pearl necklace catching the light, unflinching',
       walk: 'an elderly female scientist with white pinned-up hair in a long white lab coat over a dark dress, walking forward with a firm determined stride, long lab coat swaying',
@@ -450,9 +449,8 @@ const CHARACTERS = {
     reference: 'Louis Pasteur',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 60-year-old man with a broad high forehead, receding grey hair swept back, a full bushy ' +
-      'grey beard and moustache covering his jaw and upper lip, deep-set serious dark eyes, ' +
-      'heavy brow, wearing a white lab coat open over a dark waistcoat and a black bow tie',
+      'a 60-year-old man with a full grey beard and moustache, a LONG white lab coat reaching ' +
+      'below his knees over a dark waistcoat and a black bow tie, dark trousers',
     anims: {
       idle: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, standing still in a grave upright fighting stance, breathing slowly, his beard shifting with each breath, the hem of his lab coat swaying gently, watchful and severe',
       walk: 'an elderly grey-bearded scientist in a white lab coat over a dark waistcoat and black bow tie, walking forward with a slow authoritative stride, lab coat swaying',
