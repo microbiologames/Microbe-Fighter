@@ -2,8 +2,8 @@
   "id": "appert",
   "displayName": "Nicolas Appert",
   "color": "#8a6a4f",
-  "scale": 1.1,
-  "groundY": 138,
+  "scale": 1.038,
+  "groundY": 143,
   "moveSpeed": 1.6,
   "jumpVelocity": 6.6,
   "portrait": "assets/sprites/appert/portrait/portrait.png",
@@ -28,67 +28,67 @@
       "folder": "assets/sprites/appert/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 138
+      "loop": true, "groundY": 143
     },
     "walk": {
       "folder": "assets/sprites/appert/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 138
+      "loop": true, "groundY": 143
     },
     "jump": {
       "folder": "assets/sprites/appert/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 138
+      "loop": true, "groundY": 143
     },
     "crouch": {
       "folder": "assets/sprites/appert/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     },
     "punch": {
       "folder": "assets/sprites/appert/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     },
     "kick": {
       "folder": "assets/sprites/appert/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     },
     "hurt": {
       "folder": "assets/sprites/appert/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     },
     "ko": {
       "folder": "assets/sprites/appert/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     },
     "taunt": {
       "folder": "assets/sprites/appert/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     },
     "victory": {
       "folder": "assets/sprites/appert/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 138
+      "loop": true, "groundY": 143
     },
     "superattack": {
       "folder": "assets/sprites/appert/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 138
+      "loop": false, "groundY": 143
     }
   },
   "moves": {

@@ -364,9 +364,9 @@ const CHARACTERS = {
     reference: 'Emmanuelle Charpentier',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 50-year-old woman with a large volume of dark brown curly hair framing her face and ' +
-      'falling to her shoulders, a thin delicate face with fine features, wearing an open white ' +
-      'lab coat over dark clothes, a lanyard around her neck, dark trousers and black boots',
+      'a 50-year-old woman scientist, tall and slim, with dark curly hair pulled back away from ' +
+      'her face, a LONG open white lab coat reaching below her knees, dark clothes and black ' +
+      'boots',
     anims: {
       idle: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing still in a poised fighting stance, breathing calmly, her lanyard swinging slightly, fingers opening and closing like scissor blades, eyes fixed on her target',
       walk: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, walking forward with a brisk purposeful stride, lab coat flapping',
@@ -386,20 +386,18 @@ const CHARACTERS = {
     reference: 'Claire Fraser',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a full-body standing portrait from head to feet of a 50-year-old woman, her whole body ' +
-      'visible including her legs and shoes, long dark chestnut brown hair parted to one side, ' +
-      'an oval face with a confident expression, wearing a plain buttoned white lab coat with no ' +
-      'badge and no logo, grey trousers and dark shoes',
+      'a 50-year-old woman scientist with shoulder-length brown hair, a LONG buttoned white lab ' +
+      'coat reaching below her knees, dark trousers and dark shoes',
     anims: {
       idle: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing still in an alert fighting stance, breathing calmly, her hair shifting slightly, one hand slowly opening and closing as if drawing something toward her',
       walk: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, walking forward with a confident stride, lab coat swaying',
       jump: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, in mid-air after a jump, lab coat flaring, arms out for balance',
       crouch: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, crouching low into a defensive stance, one knee bent, subtle breathing bob',
       punch: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, driving a straight punch forward to the RIGHT at full arm extension, dramatic street fighter style, determined expression',
-      kick: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, one hand outstretched toward the RIGHT and pulling, ONE green glowing a DNA DOUBLE HELIX — two strands twisted around each other with short rungs between them, like a twisted rope ladder, stretching from the RIGHT edge of the frame back INTO her open palm, flowing right to left through the empty right half of the frame, side view',
+      kick: 'a female scientist with shoulder-length brown hair in a long white lab coat, standing in the LEFT half of the frame, her right arm stretched out toward the RIGHT, ONE green glowing DNA double helix floating in the RIGHT half of the frame in front of her open hand, a thin green stream of light running from that helix back to her palm as if she were drinking it, side view',
       taunt: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, taunting the opponent with a knowing smile and a slow beckoning curl of her fingers, as if drawing something out of them',
       victory: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, celebrating a win, arms raised with a broad confident smile, glowing green threads dissolving around her hands',
-      superattack: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, both hands outstretched toward the RIGHT and pulling hard, ONE THICK green glowing DNA DOUBLE HELIX — two strands twisted around each other with clear rungs between them — stretching from the RIGHT edge of the frame back INTO her open palms, flowing right to left through the empty right half of the frame, side view',
+      superattack: 'a female scientist with shoulder-length brown hair in a long white lab coat, standing in the LEFT half of the frame, both arms stretched out toward the RIGHT, ONE BIG green glowing DNA double helix floating in the RIGHT half of the frame in front of her open hands, several thick green streams of light running from that helix back to her palms as if she were draining it, side view',
       ...COMMON,
     },
   },
@@ -431,9 +429,8 @@ const CHARACTERS = {
     reference: 'Nicolas Appert',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 55-year-old man from the early nineteenth century, bald on top with dark hair at the ' +
-      'sides, clean-shaven with a strong jaw, wearing an open white lab coat over a dark blue ' +
-      'high-collared waistcoat and a white period shirt, dark trousers and buckled shoes',
+      'a 55-year-old bald man with a dark blue high-collared waistcoat under a LONG open white ' +
+      'lab coat reaching below his knees, dark trousers and dark shoes',
     anims: {
       idle: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing still and solid in a heavy fighting stance, breathing slowly and deeply, his broad chest rising and falling, the hem of his lab coat swaying, patient and immovable',
       walk: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, walking forward with a slow heavy deliberate stride, lab coat swaying',

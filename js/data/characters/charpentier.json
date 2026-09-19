@@ -2,8 +2,8 @@
   "id": "charpentier",
   "displayName": "Emmanuelle Charpentier",
   "color": "#9b5fd4",
-  "scale": 1.028,
-  "groundY": 139,
+  "scale": 1.019,
+  "groundY": 141,
   "moveSpeed": 2.2,
   "jumpVelocity": 7.8,
   "portrait": "assets/sprites/charpentier/portrait/portrait.png",
@@ -28,67 +28,67 @@
       "folder": "assets/sprites/charpentier/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 139
+      "loop": true, "groundY": 141
     },
     "walk": {
       "folder": "assets/sprites/charpentier/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 139
+      "loop": true, "groundY": 141
     },
     "jump": {
       "folder": "assets/sprites/charpentier/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 139
+      "loop": true, "groundY": 141
     },
     "crouch": {
       "folder": "assets/sprites/charpentier/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     },
     "punch": {
       "folder": "assets/sprites/charpentier/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     },
     "kick": {
       "folder": "assets/sprites/charpentier/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     },
     "hurt": {
       "folder": "assets/sprites/charpentier/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     },
     "ko": {
       "folder": "assets/sprites/charpentier/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     },
     "taunt": {
       "folder": "assets/sprites/charpentier/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     },
     "victory": {
       "folder": "assets/sprites/charpentier/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 139
+      "loop": true, "groundY": 141
     },
     "superattack": {
       "folder": "assets/sprites/charpentier/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 139
+      "loop": false, "groundY": 141
     }
   },
   "moves": {
