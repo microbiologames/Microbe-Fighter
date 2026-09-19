@@ -170,13 +170,19 @@ async function main() {
   //
   // `style_description` se superpose a la description sans la remplacer, donc
   // les traits du visage restent pilotes par `description`.
+  // La consigne par defaut vise les personnages HUMAINS. Une creature peut la
+  // refuser via un champ `style` dans characters.js : imposer « petite tete et
+  // corps elance » a une grappe de coques, qui n'a pas de tete distincte, ou a
+  // un bacille dont tout l'interet est le ventre gonfle, detruirait ce qui fait
+  // le personnage.
   const PROPORTIONS =
     'realistic adult human body proportions, small head, long legs, tall and slender, ' +
     'the head about one seventh of the total height, not chibi, not a big-headed cartoon';
+  const style = spec.style ?? PROPORTIONS;
 
   const body = {
     description,
-    style_description: PROPORTIONS,
+    style_description: style,
     image_size: { width: size, height: size },
     template_id: template,
     view: 'side',

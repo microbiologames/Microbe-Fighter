@@ -125,6 +125,7 @@ const CHARACTERS = {
   // coque plus grosse fait le torse. C'est ce qui le distingue d'un blob dore
   // quelconque, et c'est ce qui justifie sa voix composee de plusieurs voix.
   staph: {
+    style: 'tall adult body proportions with long legs, not chibi and not a big-headed cartoon, but keeping its bulky grape-like cluster shape',
     label: 'S. aureus — Staphylococcus aureus',
     reference: 'Staphylococcus aureus',
     // Décrit d'après l'image de référence fournie.
@@ -167,12 +168,13 @@ const CHARACTERS = {
       kick: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, lunging forward to the RIGHT propelled by its six metallic tentacles pushing off the ground behind it, body streamlined and leaning into the charge, tentacles trailing back, a burst of speed lines behind it',
       taunt: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, taunting the opponent, its metallic tentacles rising and waving lazily above it, smirking with half-lidded arrogant eyes',
       victory: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, celebrating a win, all six metallic tentacles raised high and spread in a triumphant fan, grinning widely',
-      superattack: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, standing in the LEFT half of the frame with its whole pink body clearly visible, holding one metallic tentacle out straight to the RIGHT at chest height with a SMALL syringe needle at its tip, a single thin jet of pale fluid squirting from the needle toward the RIGHT through the empty right half of the frame, the jet no thicker than the needle and never touching its body, side view, braced stance',
+      superattack: 'a pink rod-shaped bacterium humanoid with a dark core in its chest, standing in the LEFT half of the frame with its whole pink body clearly visible, holding ONE LARGE metallic syringe with a long sharp needle, the syringe as long as its own body, gripped by a metallic tentacle and pointed horizontally toward the RIGHT at chest height across the empty right half of the frame, the syringe clearly visible and completely clear of its body, side view, braced stance',
       ...COMMON,
     },
   },
 
   botulinum: {
+    style: 'tall adult body proportions with long legs, not chibi and not a big-headed cartoon, but keeping its hugely swollen distended belly',
     label: 'C. botulinum — Clostridium botulinum',
     reference: 'Clostridium botulinum',
     // Décrit d'après l'image de référence fournie.
@@ -190,7 +192,7 @@ const CHARACTERS = {
       kick: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, its swollen body suddenly distending and bursting outward with a short puff of pale gas around its waist, shoving forward to the RIGHT with both limp arms, cracked skin splitting',
       taunt: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, taunting the opponent with a slow lazy shrug, both hands hanging slack, eyelids drooping, utterly unbothered',
       victory: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, celebrating a win with a slow heavy raise of both limp arms, the pearly sphere gleaming, a faint satisfied sag to its face',
-      superattack: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, standing in the LEFT half of the frame with its whole grey body clearly visible, both palms open and pushing toward the RIGHT, three or four THIN translucent nerve-like threads stretching horizontally from its palms to the RIGHT through the empty right half of the frame, the threads limp and drooping like cut puppet strings, nothing glowing around its body, side view',
+      superattack: 'a greyish-white rod-shaped bacterium humanoid with a huge pearly sphere bulging from its belly, standing in the LEFT half of the frame with its whole grey body clearly visible, one palm open and pushing toward the RIGHT, ONE THICK limp translucent cord drooping from its palm and hanging toward the RIGHT across the empty right half of the frame, sagging in the middle like a cut puppet string, nothing else around its body, side view',
       ...COMMON,
     },
   },
