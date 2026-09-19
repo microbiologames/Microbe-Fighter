@@ -1,0 +1,57 @@
+# Publication du jeu sur GitHub Pages.
+#
+# Ce fichier remplace le workflow IMPLICITE que GitHub génère tout seul quand la
+# source des Pages est « GitHub Actions ». Le déploiement du 19 septembre a
+# échoué sur « Ensure GITHUB_TOKEN has permission id-token: write » alors que
+# les trois précédents étaient passés, et un workflow qu'on ne voit pas est un
+# workflow qu'on ne peut pas corriger. Les permissions sont donc déclarées ici,
+# noir sur blanc.
+#
+# `id-token: write` est celle qui manquait : actions/deploy-pages s'authentifie
+# auprès du service de déploiement par un jeton OIDC, qu'il ne peut pas demander
+# sans elle.
+#
+# Le site est du HTML et du JavaScript statiques : aucune étape de construction,
+# on publie le dépôt tel quel.
+
+name: Publier sur GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Permet de relancer la publication à la main depuis l'onglet Actions, sans
+  # avoir à pousser un commit pour rien.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Une seule publication à la fois, et on ne coupe pas celle qui est en cours :
+# interrompre un déploiement à mi-chemin laisserait le site incohérent.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Préparer Pages
+        uses: actions/configure-pages@v5
+
+      - name: Empaqueter le site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Déployer
+        id: deployment
+        uses: actions/deploy-pages@v4
