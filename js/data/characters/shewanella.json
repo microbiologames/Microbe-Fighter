@@ -2,8 +2,8 @@
   "id": "shewanella",
   "displayName": "S. putrefaciens",
   "color": "#9c6b4f",
-  "scale": 0.673,
-  "groundY": 141,
+  "scale": 0.786,
+  "groundY": 184,
   "moveSpeed": 2.3,
   "jumpVelocity": 7.4,
   "portrait": "assets/sprites/shewanella/portrait/portrait.png",
@@ -32,78 +32,67 @@
       "folder": "assets/sprites/shewanella/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true,
-      "groundY": 141
+      "loop": true, "groundY": 184
     },
     "walk": {
       "folder": "assets/sprites/shewanella/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true,
-      "groundY": 141
+      "loop": true, "groundY": 184
     },
     "jump": {
       "folder": "assets/sprites/shewanella/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true,
-      "groundY": 141
+      "loop": true, "groundY": 184
     },
     "crouch": {
       "folder": "assets/sprites/shewanella/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     },
     "punch": {
       "folder": "assets/sprites/shewanella/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     },
     "kick": {
       "folder": "assets/sprites/shewanella/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     },
     "hurt": {
       "folder": "assets/sprites/shewanella/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     },
     "ko": {
       "folder": "assets/sprites/shewanella/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     },
     "taunt": {
       "folder": "assets/sprites/shewanella/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     },
     "victory": {
       "folder": "assets/sprites/shewanella/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true,
-      "groundY": 141
+      "loop": true, "groundY": 184
     },
     "superattack": {
       "folder": "assets/sprites/shewanella/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false,
-      "groundY": 141
+      "loop": false, "groundY": 184
     }
   },
   "moves": {

@@ -2,8 +2,8 @@
   "id": "mullis",
   "displayName": "Kary Mullis",
   "color": "#d98a3c",
-  "scale": 0.98,
-  "groundY": 129,
+  "scale": 0.948,
+  "groundY": 152,
   "moveSpeed": 2.6,
   "jumpVelocity": 8.4,
   "portrait": "assets/sprites/mullis/portrait/portrait.png",
@@ -28,78 +28,67 @@
       "folder": "assets/sprites/mullis/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true,
-      "groundY": 129
+      "loop": true, "groundY": 152
     },
     "walk": {
       "folder": "assets/sprites/mullis/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true,
-      "groundY": 129
+      "loop": true, "groundY": 152
     },
     "jump": {
       "folder": "assets/sprites/mullis/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true,
-      "groundY": 129
+      "loop": true, "groundY": 152
     },
     "crouch": {
       "folder": "assets/sprites/mullis/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     },
     "punch": {
       "folder": "assets/sprites/mullis/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     },
     "kick": {
       "folder": "assets/sprites/mullis/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     },
     "hurt": {
       "folder": "assets/sprites/mullis/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     },
     "ko": {
       "folder": "assets/sprites/mullis/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     },
     "taunt": {
       "folder": "assets/sprites/mullis/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     },
     "victory": {
       "folder": "assets/sprites/mullis/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true,
-      "groundY": 129
+      "loop": true, "groundY": 152
     },
     "superattack": {
       "folder": "assets/sprites/mullis/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false,
-      "groundY": 129
+      "loop": false, "groundY": 152
     }
   },
   "moves": {

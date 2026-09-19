@@ -54,8 +54,15 @@
 //    texte : un chiffre isole et gros survit a la reduction, un mot non. Ils
 //    doivent rester peu nombreux et grands.
 //
-//    Corollaire : mieux vaut SIMPLE ET JUSTE que riche et approximatif. Trois
-//    helices lisibles valent mieux qu'une tornade indistincte.
+//    Corollaire : mieux vaut SIMPLE ET JUSTE que riche et approximatif.
+//
+//    Et surtout : LE GENERATEUR NE COMPTE PAS. « THREE small helices flying one
+//    behind the other » a donne trois vaguelettes informes flottant pres de la
+//    tete du personnage. UN SEUL objet, decrit en detail et dit plus gros, sort
+//    net. Sur la meme planche, le pied de K. Mullis — une seule helice — etait
+//    parfait pendant que sa super attaque, qui en demandait trois, etait
+//    illisible. A chaque fois qu'on est tente d'ecrire « trois » ou « quatre »,
+//    ecrire « ONE LARGE » a la place.
 
 // Deux actions se jouent pareil pour tout le monde.
 const COMMON = {
@@ -276,11 +283,11 @@ const CHARACTERS = {
       walk: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, striding forward quickly and eagerly, lab coat flapping behind him',
       jump: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, in mid-air after a jump, lab coat flaring open, arms out for balance',
       crouch: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, crouching low into a defensive stance, one knee bent, subtle breathing bob',
-      punch: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, thrusting a micropipette forward to the RIGHT like a rapier at full arm extension, ejecting a tiny drop of clear liquid, dramatic street fighter style, sharp focused expression',
+      punch: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, thrusting a micropipette forward to the RIGHT like a rapier at full arm extension, nothing coming out of it, dramatic street fighter style, sharp focused expression',
       kick: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, standing in the LEFT half of the frame with his whole body clearly visible, hurling ONE SMALL blue glowing a DNA DOUBLE HELIX — two strands twisted around each other with short rungs between them, like a twisted rope ladder, no longer than his forearm, flying alone through the empty right half of the frame toward the RIGHT at chest height, side view',
       taunt: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, taunting the opponent with a cocky grin, spinning a micropipette between his fingers, beckoning with his free hand',
       victory: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, celebrating a win, both arms thrown up in triumph, a huge delighted grin, a micropipette raised overhead',
-      superattack: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, standing in the LEFT half of the frame with his whole body clearly visible, both hands pushed toward the RIGHT, THREE small blue glowing DNA double helices — each one two strands twisted together with short rungs between them — flying one behind the other in a horizontal line toward the RIGHT at chest height through the empty right half of the frame, clear of his body, side view, braced stance',
+      superattack: 'an elderly bald scientist in an open white lab coat over an orange plaid shirt, standing in the LEFT half of the frame with his whole body clearly visible, both hands pushed toward the RIGHT, ONE LARGE blue glowing DNA DOUBLE HELIX — two strands twisted around each other with clear rungs between them, like a twisted rope ladder — flying horizontally toward the RIGHT at chest height across the empty right half of the frame and reaching the right edge, clearly separate from his body, side view',
       ...COMMON,
     },
   },
@@ -347,7 +354,7 @@ const CHARACTERS = {
       kick: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing in the LEFT half of the frame with her whole body clearly visible, hurling a SMALL pair of glowing violet scissors, no bigger than her hand, spinning away toward the RIGHT at chest height through the empty right half of the frame, the little scissors flying alone with a short violet trail, side view',
       taunt: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, taunting the opponent by snipping a pair of scissors twice in the air with a confident smirk',
       victory: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, celebrating a win, holding a pair of scissors up high, a bright triumphant smile',
-      superattack: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing in the LEFT half of the frame with her whole body clearly visible, both hands flung toward the RIGHT, a NARROW horizontal swarm of small glowing violet scissors, the swarm no thicker than her own arm, spinning away toward the RIGHT at chest height through the empty right half of the frame, the swarm starting clear of her body, side view, braced stance',
+      superattack: 'a female scientist with dark curly shoulder-length hair in an open white lab coat over dark clothes, standing in the LEFT half of the frame with her whole body clearly visible, one hand flung toward the RIGHT, ONE LARGE pair of glowing violet scissors, as long as her arm, spinning away horizontally toward the RIGHT at chest height through the empty right half of the frame and reaching the right edge, the scissors completely clear of her body, side view',
       ...COMMON,
     },
   },
@@ -357,9 +364,10 @@ const CHARACTERS = {
     reference: 'Claire Fraser',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 50-year-old woman with long dark chestnut brown hair falling well below her shoulders, ' +
-      'parted to one side, an oval face with a confident expression, wearing a plain buttoned ' +
-      'white lab coat with no badge, no logo and no pocket patch, grey trousers and dark shoes',
+      'a full-body standing portrait from head to feet of a 50-year-old woman, her whole body ' +
+      'visible including her legs and shoes, long dark chestnut brown hair parted to one side, ' +
+      'an oval face with a confident expression, wearing a plain buttoned white lab coat with no ' +
+      'badge and no logo, grey trousers and dark shoes',
     anims: {
       idle: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing still in an alert fighting stance, breathing calmly, her hair shifting slightly, one hand slowly opening and closing as if drawing something toward her',
       walk: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, walking forward with a confident stride, lab coat swaying',
@@ -369,7 +377,7 @@ const CHARACTERS = {
       kick: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, one hand outstretched toward the RIGHT and pulling, ONE green glowing a DNA DOUBLE HELIX — two strands twisted around each other with short rungs between them, like a twisted rope ladder, stretching from the RIGHT edge of the frame back INTO her open palm, flowing right to left through the empty right half of the frame, side view',
       taunt: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, taunting the opponent with a knowing smile and a slow beckoning curl of her fingers, as if drawing something out of them',
       victory: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, celebrating a win, arms raised with a broad confident smile, glowing green threads dissolving around her hands',
-      superattack: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, both hands outstretched toward the RIGHT and pulling hard, THREE green glowing DNA double helices — each two strands twisted together with rungs between them — streaming from the RIGHT edge of the frame back INTO her open palms, flowing right to left through the empty right half of the frame and never covering her body, side view, braced stance',
+      superattack: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing in the LEFT half of the frame with her whole body clearly visible, both hands outstretched toward the RIGHT and pulling hard, ONE THICK green glowing DNA DOUBLE HELIX — two strands twisted around each other with clear rungs between them — stretching from the RIGHT edge of the frame back INTO her open palms, flowing right to left through the empty right half of the frame, side view',
       ...COMMON,
     },
   },
@@ -413,7 +421,7 @@ const CHARACTERS = {
       kick: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, hurling a SMALL burst of white-hot steam, no bigger than his head, from a thick glass preserving jar toward the RIGHT at chest height, the compact steam burst flying alone through the empty right half of the frame, side view',
       taunt: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, taunting the opponent by calmly sealing a glass preserving jar and tapping its lid, utterly unimpressed',
       victory: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, celebrating a win, holding a sealed glass preserving jar overhead in both hands, a broad satisfied grin',
-      superattack: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, both hands pushing a heavy riveted iron pressure vessel toward the RIGHT, a THICK horizontal blast of white-hot pressurised steam roaring from its open valve toward the RIGHT at chest height through the empty right half of the frame, the blast starting clear of his body and never covering it, side view, braced stance',
+      superattack: 'a bald nineteenth-century scientist in a white lab coat over a dark blue high-collared waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, both palms thrust toward the RIGHT, ONE THICK horizontal blast of white-hot steam roaring away toward the RIGHT at chest height across the empty right half of the frame and reaching the right edge, the steam starting clear of his hands and never covering his body, nothing else in his hands, side view, braced stance',
       ...COMMON,
     },
   },
@@ -457,7 +465,7 @@ const CHARACTERS = {
       kick: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, opening a ceramic bowl from which ONE small white CAPSULE-SHAPED creature with two round eyes and a tiny smile, shaped like a grain of rice, leaps out toward the RIGHT at chest height, flying alone through the empty right half of the frame, side view',
       taunt: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, taunting the opponent by calmly stirring a bowl of yoghurt and smiling kindly, utterly unbothered',
       victory: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, celebrating a win, raising a ceramic bowl overhead, a warm delighted smile, tiny creamy-white rod-shaped creatures dancing around him',
-      superattack: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, tipping a ceramic bowl toward the RIGHT from which FOUR small white CAPSULE-SHAPED creatures, each shaped like a grain of rice with two round eyes and a tiny smile, charge away in a line toward the RIGHT at chest height through the empty right half of the frame, clear of his body, side view, braced stance',
+      superattack: 'an elderly white-bearded scientist with round spectacles in a white lab coat over a dark waistcoat, standing in the LEFT half of the frame with his whole body clearly visible, tipping a ceramic bowl toward the RIGHT from which ONE BIG white CAPSULE-SHAPED creature, shaped like a grain of rice with two round eyes and a wide smile, charges away toward the RIGHT at chest height through the empty right half of the frame, side view',
       ...COMMON,
     },
   },

@@ -65,9 +65,22 @@ async function submitBatch(charId, charKey, batch) {
     job.jobId = resp.background_job_ids[0];
     console.log(`[${job.anim}] job ${job.jobId}`);
   }
+  // Une animation qui echoue ne doit PAS emporter les autres. Pixellab renvoie
+  // de vrais 500 transitoires (« Cannot connect to host <worker> ») : laisser
+  // l'exception remonter abandonnait le personnage entier, et surtout laissait
+  // ses autres jobs tourner cote serveur, ce qui saturait la file des huit et
+  // faisait echouer TOUS les personnages suivants en cascade.
+  //
+  // On attend donc chaque job jusqu'au bout, echec compris, et on ne signale
+  // les ratés qu'a la fin.
   for (const job of batch) {
-    job.result = await pollJob(job.jobId, job.anim);
-    console.log(`[${job.anim}] terminé`);
+    try {
+      job.result = await pollJob(job.jobId, job.anim);
+      console.log(`[${job.anim}] terminé`);
+    } catch (err) {
+      job.error = err.message;
+      console.error(`[${job.anim}] ÉCHEC : ${err.message.slice(0, 160)}`);
+    }
   }
 }
 
@@ -122,6 +135,9 @@ async function main() {
   const adjusted = [];
 
   for (const job of jobs) {
+    // Un job en échec laisse les anciennes frames en place : mieux vaut une
+    // animation périmée qu'un dossier à moitié écrit.
+    if (job.error) { missing.push(job.anim); continue; }
     // Les frames sont livrées en base64 dans la réponse du job : pas besoin du
     // CDN de Pixellab, qui est un domaine distinct et parfois inaccessible.
     const images = job.result?.last_response?.images || [];

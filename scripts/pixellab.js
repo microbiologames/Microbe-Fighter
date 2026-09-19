@@ -15,6 +15,10 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const API = 'https://api.pixellab.ai/v2';
 
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
 function loadApiKey() {
   if (process.env.PIXELLAB_API_KEY) return process.env.PIXELLAB_API_KEY.trim();
 
@@ -39,19 +43,37 @@ function apiKey() {
   return cachedKey;
 }
 
+// Le compte est limite a HUIT jobs simultanes (palier Tier 1). Depasser cette
+// limite renvoie un 429, et ce n'est PAS une erreur fatale : c'est une file
+// d'attente qui dit « reviens plus tard ». Il suffit d'attendre qu'un job se
+// termine.
+//
+// Sans cette attente, un seul job reste en vie cote serveur apres l'abandon
+// d'un script et tous les personnages suivants se font refuser en cascade —
+// c'est exactement ce qui a fait echouer huit personnages sur neuf.
+const ATTENTE_429_MS = 20000;
+const ESSAIS_429 = 30; // soit dix minutes, largement de quoi vider une file
+
 async function api(method, urlPath, body) {
-  const res = await fetch(API + urlPath, {
-    method,
-    headers: { Authorization: `Bearer ${apiKey()}`, 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  if (!res.ok) throw new Error(`${method} ${urlPath} -> ${res.status}: ${await res.text()}`);
-  return res.json();
+  for (let essai = 0; ; essai++) {
+    const res = await fetch(API + urlPath, {
+      method,
+      headers: { Authorization: `Bearer ${apiKey()}`, 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (res.ok) return res.json();
+
+    const texte = await res.text();
+    if (res.status === 429 && essai < ESSAIS_429) {
+      console.warn(`  file pleine (429), nouvelle tentative dans ${ATTENTE_429_MS / 1000} s…`);
+      await sleep(ATTENTE_429_MS);
+      continue;
+    }
+    throw new Error(`${method} ${urlPath} -> ${res.status}: ${texte}`);
+  }
 }
 
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
+
 
 // Le service a régulièrement des erreurs transitoires (502, coupure réseau) sur
 // des sondages qui durent plusieurs minutes. On les encaisse et on continue :

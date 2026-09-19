@@ -2,8 +2,8 @@
   "id": "franklin",
   "displayName": "Rosalind Franklin",
   "color": "#4f7fd4",
-  "scale": 0.96,
-  "groundY": 132,
+  "scale": 1.058,
+  "groundY": 137,
   "moveSpeed": 1.9,
   "jumpVelocity": 7.2,
   "portrait": "assets/sprites/franklin/portrait/portrait.png",
@@ -28,78 +28,67 @@
       "folder": "assets/sprites/franklin/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true,
-      "groundY": 132
+      "loop": true, "groundY": 137
     },
     "walk": {
       "folder": "assets/sprites/franklin/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true,
-      "groundY": 132
+      "loop": true, "groundY": 137
     },
     "jump": {
       "folder": "assets/sprites/franklin/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true,
-      "groundY": 132
+      "loop": true, "groundY": 137
     },
     "crouch": {
       "folder": "assets/sprites/franklin/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     },
     "punch": {
       "folder": "assets/sprites/franklin/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     },
     "kick": {
       "folder": "assets/sprites/franklin/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     },
     "hurt": {
       "folder": "assets/sprites/franklin/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     },
     "ko": {
       "folder": "assets/sprites/franklin/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     },
     "taunt": {
       "folder": "assets/sprites/franklin/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     },
     "victory": {
       "folder": "assets/sprites/franklin/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true,
-      "groundY": 132
+      "loop": true, "groundY": 137
     },
     "superattack": {
       "folder": "assets/sprites/franklin/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false,
-      "groundY": 132
+      "loop": false, "groundY": 137
     }
   },
   "moves": {

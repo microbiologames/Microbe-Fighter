@@ -18,11 +18,17 @@ export function spawnHitEffect(x, y, big = false, theme = null) {
 
 // Une bouffée de gaz lâchée devant l'attaquant.
 //
-// Elle est dessinée par le moteur et non par le sprite, faute de mieux : le
-// squelette quadrupède de Pixellab ajuste chaque frame au corps de la bête et
-// refuse d'y ajouter un effet qui déborde largement, deux tentatives de
-// regénération l'ont confirmé. Le gaz de S. putrefaciens serait donc resté
-// invisible alors que c'est toute son identité.
+// Elle est dessinée par le moteur plutôt que par le sprite, et l'histoire vaut
+// d'être connue : S. putrefaciens était d'abord un QUADRUPÈDE, et le squelette
+// quadrupède de Pixellab ajuste si étroitement chaque frame au corps de la bête
+// qu'il refuse d'y ajouter un effet qui déborde — deux regénérations l'ont
+// confirmé, le gaz restait invisible alors que c'est toute son identité.
+//
+// Le personnage est depuis repassé en bipède, et le sprite montre désormais son
+// gaz sans difficulté. La nappe du moteur reste utile pour autant : elle
+// s'étale au sol après le coup, bien au-delà des cinq frames de l'animation,
+// et elle est le seul lien visuel entre l'attaque et la teinte verte que prend
+// la cible empoisonnée.
 //
 // Rien ici ne nomme le personnage : n'importe quel coup portant un effet
 // `poison` déclenche la nappe, donc un futur perso gazeux l'aura sans ligne de
