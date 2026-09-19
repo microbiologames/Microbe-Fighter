@@ -56,7 +56,15 @@ export class Fighter {
     this.vy = 0;
     this.facing = facing; // 1 = vers la droite, -1 = vers la gauche
 
-    this.health = MAX_HEALTH;
+    // Trois réglages que le mode Arène fait varier d'un ennemi à l'autre, et
+    // que le mode 1 contre 1 laisse à leur valeur neutre. Ils sont portés par
+    // le COMBATTANT, pas par le personnage : deux B. cereus de la même vague
+    // peuvent avoir des tailles et des points de vie différents.
+    this.maxHealth = MAX_HEALTH;
+    this.sizeFactor = 1;   // multiplie l'échelle de dessin ET les boîtes
+    this.attackFactor = 1; // multiplie les dégâts que ce combattant inflige
+
+    this.health = this.maxHealth;
     this.state = 'idle';
     this.animName = 'idle';
     this.frameIndex = 0;
@@ -65,6 +73,11 @@ export class Fighter {
     this.hitstunTimer = 0;
     this.attackName = null;
     this.attackHasHit = false;
+    // En mode Arène un coup peut traverser plusieurs ennemis d'un coup. On
+    // retient donc QUI a déjà été touché par le coup en cours, au lieu du
+    // simple booléen qui suffisait à un contre un — sans quoi frapper dans une
+    // vague de six bactéries n'en toucherait jamais qu'une.
+    this.hitTargets = new Set();
     this.gasSpawned = false;
     this.attackElapsed = 0; // depuis le début du coup en cours, pour la fenêtre de super
     this.ko = false;
@@ -267,6 +280,7 @@ export class Fighter {
     this.state = moveName;
     this.attackName = moveName;
     this.attackHasHit = false;
+    this.hitTargets.clear();
     this.gasSpawned = false;
     this.setAnimation(move.animation);
     this.attackElapsed = 0;
@@ -325,7 +339,7 @@ export class Fighter {
 
   /** Encaisse un coup. Renvoie les dégâts réellement infligés (0 si le coup
    * n'est pas passé), ce dont a besoin le vol de vie de C. Fraser. */
-  takeHit(move, attackerFacing) {
+  takeHit(move, attackerFacing, attackFactor = 1) {
     if (this.ko) return 0;
     // `pierce` traverse ce qui protège d'ordinaire : les ciseaux CRISPR coupent
     // la cible quel que soit ce qui l'enrobe, biofilm compris. C'est le seul
@@ -335,7 +349,7 @@ export class Fighter {
     // pendant 3 minutes, la thermorésistance des spores ne sert plus à rien,
     // c'est tout l'objet du traitement.
     const resistance = move.ignoreResistance ? 1 : this.damageFactor(move.damageType);
-    const damage = Math.round(move.damage * resistance * this.markFactor);
+    const damage = Math.round(move.damage * resistance * this.markFactor * attackFactor);
     this.health = Math.max(0, this.health - damage);
     this.hitstunTimer = HITSTUN_MS;
     this.state = 'hurt';
@@ -352,7 +366,7 @@ export class Fighter {
     return damage;
   }
 
-  update(dt, input, opponent) {
+  update(dt, input, opponent, autresCibles = null) {
     if (!this.ko) {
       this.energy = Math.min(ENERGY_MAX, this.energy + (ENERGY_REGEN_PER_SEC * dt) / 1000);
       this._tickStatuses(dt);
@@ -406,7 +420,7 @@ export class Fighter {
           return;
         }
       }
-      this._resolveAttackHit(opponent);
+      this._resolveAttackHit(opponent, autresCibles);
       const finished = this._advanceAnimation(dt, false);
       this._applyGravity();
       this._clampToArena(opponent);
@@ -537,7 +551,7 @@ export class Fighter {
   }
 
   _bodyWidth() {
-    return this.character.hurtbox?.width ?? DEFAULT_BODY_WIDTH;
+    return (this.character.hurtbox?.width ?? DEFAULT_BODY_WIDTH) * this.sizeFactor;
   }
 
   _clampToArena(opponent) {
@@ -583,8 +597,7 @@ export class Fighter {
     return false;
   }
 
-  _resolveAttackHit(opponent) {
-    if (this.attackHasHit) return;
+  _resolveAttackHit(opponent, autresCibles = null) {
     const move = this.character.moves[this.attackName];
     // Un coup sans hitbox est purement défensif (le biofilm de Listeria) :
     // il ne cherche jamais à toucher, son seul effet est posé au lancement.
@@ -593,7 +606,6 @@ export class Fighter {
     if (this.frameIndex < start || this.frameIndex > end) return;
 
     const box = this.getHitbox(move);
-    const hurt = opponent.getHurtbox();
 
     // La nappe part dès la frame active, qu'on touche ou non : un jet de gaz
     // qui ne sortirait qu'en cas de contact n'aurait aucun sens.
@@ -601,44 +613,63 @@ export class Fighter {
       this.gasSpawned = true;
       spawnGasCloud(box.x + box.w / 2, box.y + box.h / 2, this.facing);
     }
-    if (rectsOverlap(box, hurt)) {
-      // Un adversaire en esquive, protégé par un biofilm ou déjà K.O. n'encaisse
-      // ni le coup ni son effet : on relit son état avant de trancher.
-      const protege = opponent.invincible || opponent.shielded;
-      const connected = !opponent.ko && (move.pierce || !protege);
-      const inflige = opponent.takeHit(move, this.facing);
-      this.attackHasHit = true;
 
-      // Vol de vie : C. Fraser aspire l'ADN de l'adversaire et s'en nourrit.
-      // Proportionnel aux dégâts RÉELLEMENT infligés, donc nul sur un coup qui
-      // n'est pas passé et réduit quand la cible résiste — sans quoi elle se
-      // soignerait à plein tarif en tapant dans un mur.
-      if (inflige > 0 && move.effect?.type === 'drain') {
-        const rendu = Math.round(inflige * (move.effect.ratio ?? 0.5));
-        this.health = Math.min(MAX_HEALTH, this.health + rendu);
-      }
-      if (connected && move.effect && move.effect.on !== 'use') {
-        Fighter.applyEffect(move.effect, this, opponent);
-      }
-      const cx = (Math.max(box.x, hurt.x) + Math.min(box.x + box.w, hurt.x + hurt.w)) / 2;
-      const cy = (Math.max(box.y, hurt.y) + Math.min(box.y + box.h, hurt.y + hurt.h)) / 2;
-      spawnHitEffect(cx, cy, move.damage >= 15, this.character.hitEffectTheme);
+    const cibles = autresCibles && autresCibles.length
+      ? [opponent, ...autresCibles]
+      : [opponent];
+    for (const cible of cibles) {
+      if (!cible || cible === this || this.hitTargets.has(cible)) continue;
+      this._tenterDeToucher(move, box, cible);
     }
+  }
+
+  /** Confronte la hitbox du coup en cours à UNE cible et applique tout ce qui
+   * en découle. Extrait de _resolveAttackHit pour que le même code serve à un
+   * adversaire unique comme à une vague entière. */
+  _tenterDeToucher(move, box, opponent) {
+    const hurt = opponent.getHurtbox();
+    if (!rectsOverlap(box, hurt)) return;
+    // Un adversaire en esquive, protégé par un biofilm ou déjà K.O. n'encaisse
+    // ni le coup ni son effet : on relit son état avant de trancher.
+    const protege = opponent.invincible || opponent.shielded;
+    const connected = !opponent.ko && (move.pierce || !protege);
+    const inflige = opponent.takeHit(move, this.facing, this.attackFactor);
+    this.attackHasHit = true;
+    this.hitTargets.add(opponent);
+
+    // Vol de vie : C. Fraser aspire l'ADN de l'adversaire et s'en nourrit.
+    // Proportionnel aux dégâts RÉELLEMENT infligés, donc nul sur un coup qui
+    // n'est pas passé et réduit quand la cible résiste — sans quoi elle se
+    // soignerait à plein tarif en tapant dans un mur.
+    if (inflige > 0 && move.effect?.type === 'drain') {
+      const rendu = Math.round(inflige * (move.effect.ratio ?? 0.5));
+      this.health = Math.min(this.maxHealth, this.health + rendu);
+    }
+    if (connected && move.effect && move.effect.on !== 'use') {
+      Fighter.applyEffect(move.effect, this, opponent);
+    }
+    const cx = (Math.max(box.x, hurt.x) + Math.min(box.x + box.w, hurt.x + hurt.w)) / 2;
+    const cy = (Math.max(box.y, hurt.y) + Math.min(box.y + box.h, hurt.y + hurt.h)) / 2;
+    spawnHitEffect(cx, cy, move.damage >= 15, this.character.hitEffectTheme);
   }
 
   getHitbox(move) {
     const hb = move.hitbox;
-    const cx = this.x + this.facing * hb.offsetX;
-    const cy = FLOOR_Y - this.y - hb.offsetY;
-    return { x: cx - hb.width / 2, y: cy - hb.height / 2, w: hb.width, h: hb.height };
+    const k = this.sizeFactor;
+    const cx = this.x + this.facing * hb.offsetX * k;
+    const cy = FLOOR_Y - this.y - hb.offsetY * k;
+    const w = hb.width * k;
+    const h = hb.height * k;
+    return { x: cx - w / 2, y: cy - h / 2, w, h };
   }
 
   getHurtbox() {
     const hb = this.character.hurtbox;
-    const w = hb?.width ?? DEFAULT_BODY_WIDTH;
-    const h = this.state === 'crouch'
+    const k = this.sizeFactor;
+    const w = (hb?.width ?? DEFAULT_BODY_WIDTH) * k;
+    const h = (this.state === 'crouch'
       ? hb?.heightCrouch ?? DEFAULT_BODY_HEIGHT_CROUCH
-      : hb?.heightStand ?? DEFAULT_BODY_HEIGHT_STAND;
+      : hb?.heightStand ?? DEFAULT_BODY_HEIGHT_STAND) * k;
     const cy = FLOOR_Y - this.y - h / 2;
     return { x: this.x - w / 2, y: cy - h / 2, w, h };
   }
@@ -646,7 +677,7 @@ export class Fighter {
   draw(ctx) {
     const anim = this.character.animations[this.animName];
     const frame = anim?.frames?.[this.frameIndex];
-    const scale = this.character.scale;
+    const scale = this.character.scale * this.sizeFactor;
     const drawY = FLOOR_Y - this.y;
 
     ctx.save();

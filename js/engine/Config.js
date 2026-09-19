@@ -98,7 +98,10 @@ export const ROUND_RESULT_DISPLAY_MS = 2500;
 //
 // A CHANGER A CHAQUE FOIS QUE LES ASSETS CHANGENT. C'est le seul geste manuel,
 // et l'oublier fait reapparaitre exactement le bug qu'on vient de corriger.
-export const ASSET_VERSION = '2026-09-19d';
+// Une seule URL d'asset échappe à versionne() : l'affiche des menus, appelée
+// depuis css/style.css. Son ?v= y est écrit en dur — pense à le changer ici ET
+// là-bas si tu remplaces l'image.
+export const ASSET_VERSION = '2026-09-20a';
 
 export function versionne(url) {
   if (!url) return url;

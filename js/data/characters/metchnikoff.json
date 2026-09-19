@@ -1,6 +1,8 @@
 {
   "id": "metchnikoff",
   "displayName": "Élie Metchnikoff",
+  "faction": "microbiologiste",
+  "tagline": "Pionnier des ferments lactiques",
   "color": "#e0d5b8",
   "scale": 0.965,
   "groundY": 152,
@@ -28,67 +30,78 @@
       "folder": "assets/sprites/metchnikoff/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 152
+      "loop": true,
+      "groundY": 152
     },
     "walk": {
       "folder": "assets/sprites/metchnikoff/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 152
+      "loop": true,
+      "groundY": 152
     },
     "jump": {
       "folder": "assets/sprites/metchnikoff/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 152
+      "loop": true,
+      "groundY": 152
     },
     "crouch": {
       "folder": "assets/sprites/metchnikoff/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     },
     "punch": {
       "folder": "assets/sprites/metchnikoff/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     },
     "kick": {
       "folder": "assets/sprites/metchnikoff/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     },
     "hurt": {
       "folder": "assets/sprites/metchnikoff/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     },
     "ko": {
       "folder": "assets/sprites/metchnikoff/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     },
     "taunt": {
       "folder": "assets/sprites/metchnikoff/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     },
     "victory": {
       "folder": "assets/sprites/metchnikoff/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 152
+      "loop": true,
+      "groundY": 152
     },
     "superattack": {
       "folder": "assets/sprites/metchnikoff/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 152
+      "loop": false,
+      "groundY": 152
     }
   },
   "moves": {

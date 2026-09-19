@@ -3,13 +3,14 @@ import { loadCharacter } from './engine/SpriteLoader.js';
 import { Fighter } from './engine/Fighter.js';
 import { loadStage, drawStage, updateStage } from './engine/Stage.js';
 import { Camera } from './engine/Camera.js';
-import { drawHUD } from './engine/HUD.js';
+import { drawHUD, drawArenaHUD, drawArenaEnemyBars, sansAccents } from './engine/HUD.js';
 import { updateHitEffects, drawHitEffects, clearHitEffects, getScreenShakeOffset } from './engine/Effects.js';
 import { updateAllies, drawAllies, clearAllies } from './engine/Allies.js';
 import { playSfx } from './engine/Audio.js';
 import { startMusic } from './engine/Music.js';
+import { Arena } from './engine/Arena.js';
 import {
-  CANVAS_WIDTH, CANVAS_HEIGHT, ROUND_TIME_SECONDS, ARENA_LEFT, ARENA_RIGHT, MAX_HEALTH,
+  CANVAS_WIDTH, CANVAS_HEIGHT, ROUND_TIME_SECONDS,
   ROUNDS_TO_WIN, ROUND_RESULT_DISPLAY_MS, versionne } from './engine/Config.js';
 
 // Un décor différent est tiré au sort à chaque combat. Ajoute simplement le
@@ -26,6 +27,7 @@ const MUSIC = 'assets/audio/music/Flamme_pure.mp3';
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 const overlayTitle = document.getElementById('overlay-title');
+const overlayMode = document.getElementById('overlay-mode');
 const overlaySelect = document.getElementById('overlay-select');
 const overlayStageSelect = document.getElementById('overlay-stage-select');
 const overlayResult = document.getElementById('overlay-result');
@@ -34,39 +36,57 @@ const resultText = document.getElementById('result-text');
 const resultHint = document.getElementById('result-hint');
 const stageSelectPreview = document.getElementById('stage-select-preview');
 const stageSelectName = document.getElementById('stage-select-name');
-const titleRoster = document.getElementById('title-roster');
+const selectTitle = document.getElementById('select-title');
+const modeCards = [...document.querySelectorAll('#mode-row .mode-card')];
 
 const selectDom = {
   1: {
     root: document.getElementById('select-p1'),
     portrait: document.getElementById('select-p1-portrait'),
     name: document.getElementById('select-p1-name'),
+    tagline: document.getElementById('select-p1-tagline'),
+    moves: document.getElementById('select-p1-moves'),
   },
   2: {
     root: document.getElementById('select-p2'),
     portrait: document.getElementById('select-p2-portrait'),
     name: document.getElementById('select-p2-name'),
+    tagline: document.getElementById('select-p2-tagline'),
+    moves: document.getElementById('select-p2-moves'),
   },
 };
 
 const input = new Input();
 
 const GAME_STATE = {
-  LOADING: 'loading', ERROR: 'error', TITLE: 'title', SELECT: 'select', STAGE_SELECT: 'stage_select',
+  LOADING: 'loading', ERROR: 'error', TITLE: 'title', MODE_SELECT: 'mode_select',
+  SELECT: 'select', STAGE_SELECT: 'stage_select',
   FIGHT: 'fight', PAUSED: 'paused', ROUND_RESULT: 'round_result', RESULT: 'result',
+  ARENA: 'arena', ARENA_RESULT: 'arena_result',
 };
+// Les deux modes de jeu. DUEL est le jeu d'origine ; ARENE oppose un seul
+// microbiologiste à des vagues de micro-organismes pilotés par la machine.
+const MODE = { DUEL: 'duel', ARENE: 'arene' };
+
 let gameState = GAME_STATE.LOADING;
 let stateBeforePause = null;
 let loadError = null;
+let mode = MODE.DUEL;
+let modeIndex = 0;
 
-let roster, stages, stage;
+let roster, microbes, microbiologistes, stages, stage;
 const camera = new Camera();
 let fighter1, fighter2, timeLeft;
+let arena = null;
 let roundWins = { 1: 0, 2: 0 };
 let roundResultTimer = 0;
+
+// Chaque côté du sélecteur est VERROUILLÉ sur un camp : microbiologistes à
+// gauche, micro-organismes à droite. `liste` est donc renseignée au démarrage
+// et l'index ne se promène que dans ce camp-là.
 const selection = {
-  1: { index: 0, ready: false },
-  2: { index: 1, ready: false },
+  1: { index: 0, ready: false, liste: [] },
+  2: { index: 0, ready: false, liste: [] },
 };
 const stageSelection = { index: 0 };
 
@@ -96,22 +116,23 @@ function pickRandomStage() {
   stage = stages[Math.floor(Math.random() * stages.length)];
 }
 
-function renderTitleRoster() {
-  titleRoster.innerHTML = '';
-  for (const char of roster) {
-    const item = document.createElement('div');
-    item.className = 'title-roster-item';
-    const img = document.createElement('img');
-    img.alt = char.displayName;
-    item.appendChild(img);
-    applyPreview(img, char.portrait?.src, char.color);
-    titleRoster.appendChild(item);
+/** Décor suivant de la rotation. En arène le joueur ne choisit pas : le décor
+ * change tout seul à chaque vague. */
+function stageSuivant() {
+  const i = stages.indexOf(stage);
+  stage = stages[(i + 1) % stages.length];
+  camera.setStage(stage);
+}
+
+function cacherTousLesMenus() {
+  for (const el of [overlayTitle, overlayMode, overlaySelect, overlayStageSelect, overlayResult, overlayPause]) {
+    el.classList.add('hidden');
   }
 }
 
 async function boot() {
   try {
-    // L'ordre de cette liste est celui du sélecteur et de l'écran titre :
+    // L'ordre de cette liste est celui du sélecteur :
     // les micro-organismes, puis les microbiologistes.
     const ROSTER_IDS = [
       'cereus', 'listeria', 'staph', 'salmonella', 'botulinum',
@@ -126,9 +147,12 @@ async function boot() {
       document.fonts.load('16px "Press Start 2P"'),
     ]);
     roster = loadedCharacters;
+    microbes = roster.filter((c) => c.faction === 'microbe');
+    microbiologistes = roster.filter((c) => c.faction === 'microbiologiste');
+    selection[1].liste = microbiologistes;
+    selection[2].liste = microbes;
     stages = loadedStages;
     pickRandomStage();
-    renderTitleRoster();
     gameState = GAME_STATE.TITLE;
     startMusic(MUSIC, { volume: 0.45 });
   } catch (err) {
@@ -138,51 +162,139 @@ async function boot() {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Menus
+// ---------------------------------------------------------------------------
+
+/** « Retour » : Échap, ou le bouton Esquive pour une borne sans clavier. */
+function retourDemande() {
+  return input.justPressedRaw('Escape') || input.justPressed(1, 'dodge') || input.justPressed(2, 'dodge');
+}
+
+function validationDemandee() {
+  return ['punch', 'start'].some((a) => input.justPressed(1, a) || input.justPressed(2, a));
+}
+
+function enterTitle() {
+  gameState = GAME_STATE.TITLE;
+  cacherTousLesMenus();
+  overlayTitle.classList.remove('hidden');
+}
+
+function enterModeSelect() {
+  gameState = GAME_STATE.MODE_SELECT;
+  cacherTousLesMenus();
+  overlayMode.classList.remove('hidden');
+  renderModeUI();
+}
+
+function renderModeUI() {
+  modeCards.forEach((card, i) => card.classList.toggle('selected', i === modeIndex));
+}
+
+function updateModeSelect() {
+  if (retourDemande()) { enterTitle(); return; }
+  if (input.justPressed(1, 'left') || input.justPressed(2, 'left')) {
+    modeIndex = (modeIndex - 1 + modeCards.length) % modeCards.length;
+  }
+  if (input.justPressed(1, 'right') || input.justPressed(2, 'right')) {
+    modeIndex = (modeIndex + 1) % modeCards.length;
+  }
+  renderModeUI();
+  if (validationDemandee()) {
+    mode = modeCards[modeIndex].dataset.mode === 'arene' ? MODE.ARENE : MODE.DUEL;
+    enterSelect();
+  }
+}
+
 function enterSelect() {
   selection[1].ready = false;
   selection[2].ready = false;
   roundWins = { 1: 0, 2: 0 };
   gameState = GAME_STATE.SELECT;
-  overlayTitle.classList.add('hidden');
-  overlayResult.classList.add('hidden');
-  overlayStageSelect.classList.add('hidden');
+  cacherTousLesMenus();
   overlaySelect.classList.remove('hidden');
+  // En arène, le joueur ne choisit QUE son microbiologiste : la colonne de
+  // droite disparaît, les bactéries étant tirées au sort par les vagues.
+  const arene = mode === MODE.ARENE;
+  selectDom[2].root.hidden = arene;
+  selectTitle.textContent = arene ? 'Choisis ton microbiologiste' : 'Choisis ton perso';
   renderSelectUI();
 }
 
+/** Les deux coups à montrer sur la fiche : secondaire (pied) et spéciale. */
+function ficheDesCoups(char) {
+  const lignes = [];
+  const ajoute = (kind, move) => {
+    if (!move) return;
+    lignes.push({ kind, label: move.label ?? kind, damage: move.damage });
+  };
+  ajoute('Secondaire', char.moves.kick);
+  ajoute('Spéciale', char.moves.superattack);
+  return lignes;
+}
+
+function renderFiche(dom, char) {
+  dom.tagline.textContent = char.tagline || '';
+  dom.moves.innerHTML = '';
+  for (const l of ficheDesCoups(char)) {
+    const li = document.createElement('li');
+    const kind = document.createElement('span');
+    kind.className = 'move-kind';
+    kind.textContent = l.kind;
+    li.appendChild(kind);
+    li.appendChild(document.createTextNode(l.label));
+    if (l.damage) {
+      const dmg = document.createElement('span');
+      dmg.className = 'move-damage';
+      dmg.textContent = ` — ${l.damage} dégâts`;
+      li.appendChild(dmg);
+    }
+    dom.moves.appendChild(li);
+  }
+}
+
 function renderSelectUI() {
-  for (const p of [1, 2]) {
+  const joueurs = mode === MODE.ARENE ? [1] : [1, 2];
+  for (const p of joueurs) {
     const sel = selection[p];
-    const char = roster[sel.index];
+    const char = sel.liste[sel.index];
     const dom = selectDom[p];
     applyPreview(dom.portrait, char.portrait?.src, char.color);
     dom.name.textContent = char.displayName;
+    renderFiche(dom, char);
     dom.root.classList.toggle('ready', sel.ready);
   }
 }
 
 function updateSelect() {
-  for (const p of [1, 2]) {
+  if (retourDemande()) { enterModeSelect(); return; }
+
+  const joueurs = mode === MODE.ARENE ? [1] : [1, 2];
+  for (const p of joueurs) {
     const sel = selection[p];
     if (sel.ready) {
       if (input.justPressed(p, 'kick')) sel.ready = false;
       continue;
     }
-    if (input.justPressed(p, 'left')) sel.index = (sel.index - 1 + roster.length) % roster.length;
-    if (input.justPressed(p, 'right')) sel.index = (sel.index + 1) % roster.length;
+    if (input.justPressed(p, 'left')) sel.index = (sel.index - 1 + sel.liste.length) % sel.liste.length;
+    if (input.justPressed(p, 'right')) sel.index = (sel.index + 1) % sel.liste.length;
     if (input.justPressed(p, 'punch') || input.justPressed(p, 'start')) sel.ready = true;
   }
   renderSelectUI();
 
-  if (selection[1].ready && selection[2].ready) {
-    enterStageSelect();
-  }
+  const tousPrets = joueurs.every((p) => selection[p].ready);
+  if (!tousPrets) return;
+
+  // En arène, le décor change tout seul à chaque vague : pas de sélecteur.
+  if (mode === MODE.ARENE) startArena(selection[1].liste[selection[1].index]);
+  else enterStageSelect();
 }
 
 function enterStageSelect() {
   stageSelection.index = Math.max(0, stages.indexOf(stage));
   gameState = GAME_STATE.STAGE_SELECT;
-  overlaySelect.classList.add('hidden');
+  cacherTousLesMenus();
   overlayStageSelect.classList.remove('hidden');
   renderStageSelectUI();
 }
@@ -194,6 +306,7 @@ function renderStageSelectUI() {
 }
 
 function updateStageSelect() {
+  if (retourDemande()) { enterSelect(); return; }
   if (input.justPressed(1, 'left') || input.justPressed(2, 'left')) {
     stageSelection.index = (stageSelection.index - 1 + stages.length) % stages.length;
   }
@@ -202,11 +315,18 @@ function updateStageSelect() {
   }
   renderStageSelectUI();
 
-  const confirmed = ['punch', 'start'].some((a) => input.justPressed(1, a) || input.justPressed(2, a));
-  if (confirmed) {
-    startFight(roster[selection[1].index], roster[selection[2].index], stages[stageSelection.index]);
+  if (validationDemandee()) {
+    startFight(
+      selection[1].liste[selection[1].index],
+      selection[2].liste[selection[2].index],
+      stages[stageSelection.index],
+    );
   }
 }
+
+// ---------------------------------------------------------------------------
+// Mode 1 contre 1
+// ---------------------------------------------------------------------------
 
 function startFight(char1, char2, chosenStage) {
   stage = chosenStage;
@@ -220,11 +340,18 @@ function startFight(char1, char2, chosenStage) {
   fighter2.camera = camera;
   camera.snapTo(fighter1, fighter2);
   timeLeft = ROUND_TIME_SECONDS;
+  arena = null;
   gameState = GAME_STATE.FIGHT;
-  overlayStageSelect.classList.add('hidden');
-  overlayResult.classList.add('hidden');
+  cacherTousLesMenus();
   clearHitEffects();
   clearAllies();
+}
+
+// L'écran de résultat est en Press Start 2P, qui n'a pas de capitales
+// accentuées : « ÉLIE METCHNIKOFF » y perdrait son É. Même traitement que le
+// HUD du canvas, d'où la fonction partagée.
+function nomEnCapitales(fighter) {
+  return sansAccents(fighter.character.displayName).toUpperCase();
 }
 
 function endRound(winner) {
@@ -240,12 +367,12 @@ function endRound(winner) {
   overlayResult.classList.remove('hidden');
 
   if (matchWinner) {
-    resultText.textContent = `${matchWinner.character.displayName.toUpperCase()} GAGNE LE MATCH ! (${score})`;
-    resultHint.textContent = 'Appuyez sur ENTRÉE pour rejouer';
+    resultText.textContent = `${nomEnCapitales(matchWinner)} GAGNE LE MATCH ! (${score})`;
+    resultHint.textContent = 'Appuyez sur Entrée pour rejouer';
     gameState = GAME_STATE.RESULT;
   } else {
     resultText.textContent = winner
-      ? `${winner.character.displayName.toUpperCase()} REMPORTE LA MANCHE (${score})`
+      ? `${nomEnCapitales(winner)} REMPORTE LA MANCHE (${score})`
       : 'MANCHE NULLE !';
     resultHint.textContent = 'Manche suivante...';
     gameState = GAME_STATE.ROUND_RESULT;
@@ -256,6 +383,55 @@ function endRound(winner) {
 function startNextRound() {
   startFight(fighter1.character, fighter2.character, stage);
 }
+
+// ---------------------------------------------------------------------------
+// Mode Arène
+// ---------------------------------------------------------------------------
+
+function startArena(char) {
+  camera.setStage(stage);
+  const centre = camera.x + CANVAS_WIDTH / 2;
+  fighter1 = new Fighter(char, 1, centre, 1);
+  fighter1.camera = camera;
+  fighter2 = null;
+  arena = new Arena(fighter1, microbes, camera);
+  timeLeft = null;
+  gameState = GAME_STATE.ARENA;
+  cacherTousLesMenus();
+  clearHitEffects();
+  clearAllies();
+}
+
+function updateArena(dt) {
+  const evenement = arena.update(dt, input);
+  // Le décor défile de lui-même : une vague, un décor. Le joueur ne le choisit
+  // pas en arène, c'est le mode qui impose le lieu.
+  if (evenement === 'vague-suivante') stageSuivant();
+
+  const cible = arena.cibleDuJoueur();
+  camera.update(fighter1, cible ?? fighter1, dt);
+  updateHitEffects(dt);
+  // Les lactobacilles visent le premier combattant de la liste qui n'est pas
+  // leur invocateur : on ne leur présente donc que les ennemis DEBOUT.
+  updateAllies(dt, [fighter1, ...arena.ennemis.filter((e) => !e.ko)]);
+
+  if (arena.perdu || arena.termine) endArena();
+}
+
+function endArena() {
+  const gagne = arena.termine && !arena.perdu;
+  if (gagne) fighter1.playVictory();
+  resultText.textContent = gagne
+    ? `VAGUES NETTOYEES ! SCORE ${arena.score}`
+    : `SUBMERGE VAGUE ${arena.numeroVague} — SCORE ${arena.score}`;
+  resultHint.textContent = 'Appuyez sur Entrée pour rejouer';
+  overlayResult.classList.remove('hidden');
+  gameState = GAME_STATE.ARENA_RESULT;
+}
+
+// ---------------------------------------------------------------------------
+// Pause
+// ---------------------------------------------------------------------------
 
 function pauseFight() {
   stateBeforePause = gameState;
@@ -271,13 +447,19 @@ function resumeFight() {
 
 function quitFromPause() {
   overlayPause.classList.add('hidden');
-  enterSelect();
+  enterModeSelect();
 }
+
+// ---------------------------------------------------------------------------
+// Boucle
+// ---------------------------------------------------------------------------
 
 function update(dt) {
   if (stage) updateStage(stage, dt);
 
-  if ((gameState === GAME_STATE.FIGHT || gameState === GAME_STATE.ROUND_RESULT) && input.justPressedRaw('Escape')) {
+  const enCombat = gameState === GAME_STATE.FIGHT || gameState === GAME_STATE.ROUND_RESULT ||
+    gameState === GAME_STATE.ARENA;
+  if (enCombat && input.justPressedRaw('Escape')) {
     pauseFight();
     return;
   }
@@ -289,19 +471,13 @@ function update(dt) {
   }
 
   if (gameState === GAME_STATE.TITLE) {
-    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterSelect();
+    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterModeSelect();
     return;
   }
 
-  if (gameState === GAME_STATE.SELECT) {
-    updateSelect();
-    return;
-  }
-
-  if (gameState === GAME_STATE.STAGE_SELECT) {
-    updateStageSelect();
-    return;
-  }
+  if (gameState === GAME_STATE.MODE_SELECT) { updateModeSelect(); return; }
+  if (gameState === GAME_STATE.SELECT) { updateSelect(); return; }
+  if (gameState === GAME_STATE.STAGE_SELECT) { updateStageSelect(); return; }
 
   if (gameState === GAME_STATE.ROUND_RESULT) {
     fighter1.tickAnimationOnly(dt);
@@ -314,9 +490,17 @@ function update(dt) {
   if (gameState === GAME_STATE.RESULT) {
     fighter1.tickAnimationOnly(dt);
     fighter2.tickAnimationOnly(dt);
-    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterSelect();
+    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterModeSelect();
     return;
   }
+
+  if (gameState === GAME_STATE.ARENA_RESULT) {
+    fighter1.tickAnimationOnly(dt);
+    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterModeSelect();
+    return;
+  }
+
+  if (gameState === GAME_STATE.ARENA) { updateArena(dt); return; }
 
   if (gameState === GAME_STATE.FIGHT) {
     fighter1.update(dt, input, fighter2);
@@ -361,9 +545,19 @@ function draw() {
   ctx.translate(shake.x, shake.y);
   drawStage(ctx, stage, camera.x);
 
-  if (fighter1 && fighter2) {
+  const enArene = arena && (gameState === GAME_STATE.ARENA || gameState === GAME_STATE.ARENA_RESULT);
+
+  if (enArene) {
     // Les combattants et les étincelles vivent en coordonnées monde : on décale
     // le repère de la caméra avant de les dessiner. Le HUD, lui, reste fixe.
+    ctx.save();
+    ctx.translate(-Math.round(camera.x), 0);
+    arena.dessiner(ctx);
+    drawArenaEnemyBars(ctx, arena.ennemis);
+    drawAllies(ctx);
+    drawHitEffects(ctx);
+    ctx.restore();
+  } else if (fighter1 && fighter2) {
     ctx.save();
     ctx.translate(-Math.round(camera.x), 0);
     // ordre de dessin simple : le perso le plus en arrière (y le plus petit à l'écran) d'abord
@@ -375,7 +569,9 @@ function draw() {
   }
   ctx.restore();
 
-  if (fighter1 && fighter2) {
+  if (enArene) {
+    drawArenaHUD(ctx, fighter1, arena);
+  } else if (fighter1 && fighter2) {
     drawHUD(ctx, fighter1, fighter2, timeLeft ?? 0, roundWins);
   }
 }

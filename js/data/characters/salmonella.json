@@ -1,6 +1,8 @@
 {
   "id": "salmonella",
   "displayName": "Salmonella",
+  "faction": "microbe",
+  "tagline": "Bacille flagellé — rapide et mobile",
   "color": "#e8909b",
   "scale": 1.029,
   "groundY": 137,
@@ -31,67 +33,78 @@
       "folder": "assets/sprites/salmonella/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 137
+      "loop": true,
+      "groundY": 137
     },
     "walk": {
       "folder": "assets/sprites/salmonella/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 137
+      "loop": true,
+      "groundY": 137
     },
     "jump": {
       "folder": "assets/sprites/salmonella/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 137
+      "loop": true,
+      "groundY": 137
     },
     "crouch": {
       "folder": "assets/sprites/salmonella/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     },
     "punch": {
       "folder": "assets/sprites/salmonella/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     },
     "kick": {
       "folder": "assets/sprites/salmonella/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     },
     "hurt": {
       "folder": "assets/sprites/salmonella/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     },
     "ko": {
       "folder": "assets/sprites/salmonella/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     },
     "taunt": {
       "folder": "assets/sprites/salmonella/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     },
     "victory": {
       "folder": "assets/sprites/salmonella/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 137
+      "loop": true,
+      "groundY": 137
     },
     "superattack": {
       "folder": "assets/sprites/salmonella/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 137
+      "loop": false,
+      "groundY": 137
     }
   },
   "moves": {

@@ -1,6 +1,8 @@
 {
   "id": "aspergillus",
   "displayName": "A. flavus",
+  "faction": "microbe",
+  "tagline": "Moisissure toxinogène — aflatoxine",
   "color": "#b5a63c",
   "scale": 0.887,
   "groundY": 150,
@@ -33,67 +35,78 @@
       "folder": "assets/sprites/aspergillus/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 150
+      "loop": true,
+      "groundY": 150
     },
     "walk": {
       "folder": "assets/sprites/aspergillus/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 150
+      "loop": true,
+      "groundY": 150
     },
     "jump": {
       "folder": "assets/sprites/aspergillus/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 150
+      "loop": true,
+      "groundY": 150
     },
     "crouch": {
       "folder": "assets/sprites/aspergillus/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     },
     "punch": {
       "folder": "assets/sprites/aspergillus/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     },
     "kick": {
       "folder": "assets/sprites/aspergillus/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     },
     "hurt": {
       "folder": "assets/sprites/aspergillus/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     },
     "ko": {
       "folder": "assets/sprites/aspergillus/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     },
     "taunt": {
       "folder": "assets/sprites/aspergillus/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     },
     "victory": {
       "folder": "assets/sprites/aspergillus/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 150
+      "loop": true,
+      "groundY": 150
     },
     "superattack": {
       "folder": "assets/sprites/aspergillus/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 150
+      "loop": false,
+      "groundY": 150
     }
   },
   "moves": {

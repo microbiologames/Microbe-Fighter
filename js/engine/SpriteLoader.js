@@ -50,6 +50,12 @@ export async function loadCharacter(manifestPath) {
   return {
     id: data.id,
     displayName: data.displayName,
+    // Camp du personnage : « microbe » ou « microbiologiste ». Le sélecteur
+    // s'en sert pour verrouiller chaque côté de l'écran, et le mode Arène pour
+    // savoir qui peut être un ennemi.
+    faction: data.faction ?? 'microbe',
+    // Une ligne, affichée sous le portrait : qui est ce personnage.
+    tagline: data.tagline ?? '',
     color: data.color || '#888',
     scale: data.scale || 2,
     // Rangée (en pixels, dans l'image source) où les pieds touchent le sol.
@@ -62,6 +68,8 @@ export async function loadCharacter(manifestPath) {
     jumpVelocity: data.jumpVelocity ?? null,
     hitEffectTheme: data.hitEffectTheme ?? null,
     moves: data.moves || {},
+    resistances: data.resistances ?? null,
+    immunities: data.immunities ?? null,
     sfx: data.sfx || {},
     animations,
     portrait,

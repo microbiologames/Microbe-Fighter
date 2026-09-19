@@ -1,6 +1,8 @@
 {
   "id": "fraser",
   "displayName": "Claire Fraser",
+  "faction": "microbiologiste",
+  "tagline": "Pionnière du séquençage de génome complet",
   "color": "#4fae72",
   "scale": 0.982,
   "groundY": 142,
@@ -28,67 +30,78 @@
       "folder": "assets/sprites/fraser/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 142
+      "loop": true,
+      "groundY": 142
     },
     "walk": {
       "folder": "assets/sprites/fraser/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 142
+      "loop": true,
+      "groundY": 142
     },
     "jump": {
       "folder": "assets/sprites/fraser/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 142
+      "loop": true,
+      "groundY": 142
     },
     "crouch": {
       "folder": "assets/sprites/fraser/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     },
     "punch": {
       "folder": "assets/sprites/fraser/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     },
     "kick": {
       "folder": "assets/sprites/fraser/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     },
     "hurt": {
       "folder": "assets/sprites/fraser/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     },
     "ko": {
       "folder": "assets/sprites/fraser/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     },
     "taunt": {
       "folder": "assets/sprites/fraser/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     },
     "victory": {
       "folder": "assets/sprites/fraser/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 142
+      "loop": true,
+      "groundY": 142
     },
     "superattack": {
       "folder": "assets/sprites/fraser/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 142
+      "loop": false,
+      "groundY": 142
     }
   },
   "moves": {

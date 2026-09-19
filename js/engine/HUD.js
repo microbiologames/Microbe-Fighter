@@ -17,8 +17,8 @@ export function drawHUD(ctx, fighter1, fighter2, timeLeft, roundWins) {
   drawRoundPips(ctx, roundWins[1], p1X, MARGIN - PIP_SIZE - 2, false);
   drawRoundPips(ctx, roundWins[2], p2X + BAR_WIDTH, MARGIN - PIP_SIZE - 2, true);
 
-  drawHealthBar(ctx, p1X, MARGIN, fighter1.health, false);
-  drawHealthBar(ctx, p2X, MARGIN, fighter2.health, true);
+  drawHealthBar(ctx, p1X, MARGIN, fighter1.health, fighter1.maxHealth, false);
+  drawHealthBar(ctx, p2X, MARGIN, fighter2.health, fighter2.maxHealth, true);
 
   drawEnergyBar(ctx, p1X, energyY, fighter1.energy, false);
   drawEnergyBar(ctx, p2X, energyY, fighter2.energy, true);
@@ -32,22 +32,21 @@ export function drawHUD(ctx, fighter1, fighter2, timeLeft, roundWins) {
   ctx.fillText(String(Math.max(0, Math.ceil(timeLeft))), CANVAS_WIDTH / 2, MARGIN + BAR_HEIGHT);
 }
 
-function drawHealthBar(ctx, x, y, health, reversed) {
+// `maxHealth` est lu sur le combattant et non pris dans Config : en arène, un
+// boss a quatre fois plus de points de vie qu'un ennemi ordinaire et sa barre
+// doit quand même partir pleine.
+function drawHealthBar(ctx, x, y, health, maxHealth, reversed, largeur = BAR_WIDTH, hauteur = BAR_HEIGHT) {
   ctx.fillStyle = '#222';
-  ctx.fillRect(x, y, BAR_WIDTH, BAR_HEIGHT);
+  ctx.fillRect(x, y, largeur, hauteur);
 
-  const ratio = Math.max(0, health / MAX_HEALTH);
-  const w = BAR_WIDTH * ratio;
+  const ratio = Math.max(0, health / (maxHealth || MAX_HEALTH));
+  const w = largeur * ratio;
   ctx.fillStyle = ratio > 0.5 ? '#4caf50' : ratio > 0.2 ? '#ffb300' : '#e63946';
-  if (reversed) {
-    ctx.fillRect(x + BAR_WIDTH - w, y, w, BAR_HEIGHT);
-  } else {
-    ctx.fillRect(x, y, w, BAR_HEIGHT);
-  }
+  ctx.fillRect(reversed ? x + largeur - w : x, y, w, hauteur);
 
   ctx.strokeStyle = '#fff';
   ctx.lineWidth = 1;
-  ctx.strokeRect(x + 0.5, y + 0.5, BAR_WIDTH, BAR_HEIGHT);
+  ctx.strokeRect(x + 0.5, y + 0.5, largeur, hauteur);
 }
 
 function drawEnergyBar(ctx, x, y, energy, reversed) {
@@ -87,9 +86,12 @@ function drawRoundPips(ctx, wins, edgeX, y, alignRight) {
 // du tout pixel. On retire donc les diacritiques avant d'afficher — c'est la
 // solution des bornes d'arcade, et « E. METCHNIKOFF » se lit très bien.
 //
-// Uniquement à l'affichage du canvas : les écrans HTML (sélection, écran titre)
-// utilisent une autre police et gardent leurs accents.
-function sansAccents(texte) {
+// Les MINUSCULES accentuées, elles, existent bien dans la police : « Arène » et
+// « décor » s'affichent parfaitement. La règle est donc précise — jamais de
+// capitale accentuée dans un texte en Press Start 2P — et c'est pour ça que
+// cette fonction est exportée : les écrans HTML qui emploient la même police
+// (l'écran de résultat, qui met les noms en capitales) en ont besoin aussi.
+export function sansAccents(texte) {
   return texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
@@ -117,4 +119,78 @@ function drawName(ctx, name, x, y, align) {
     ctx.font = `${taille}px "Press Start 2P", monospace`;
   }
   ctx.fillText(texte, x, y);
+}
+
+// ---------------------------------------------------------------------------
+// Mode Arène
+// ---------------------------------------------------------------------------
+//
+// Le HUD à deux barres n'a plus de sens quand il y a six adversaires. Le joueur
+// garde sa barre pleine largeur à gauche ; chaque ennemi porte une petite barre
+// AU-DESSUS DE SA TÊTE, en coordonnées monde, parce que c'est la seule façon de
+// savoir lequel de six est presque tombé.
+
+const MINI_BAR_WIDTH = 26;
+const MINI_BAR_HEIGHT = 3;
+
+/** Barres des ennemis. À appeler DANS le repère de la caméra, avec les
+ * combattants, pas avec le HUD fixe. */
+export function drawArenaEnemyBars(ctx, ennemis) {
+  for (const e of ennemis) {
+    if (e.ko) continue;
+    const hurt = e.getHurtbox();
+    const largeur = e.estBoss ? MINI_BAR_WIDTH * 1.8 : MINI_BAR_WIDTH;
+    const x = Math.round(e.x - largeur / 2);
+    const y = Math.round(hurt.y - 7);
+    drawHealthBar(ctx, x, y, e.health, e.maxHealth, false, largeur, MINI_BAR_HEIGHT);
+    if (e.estBoss) {
+      ctx.font = '5px "Press Start 2P", monospace';
+      ctx.textAlign = 'center';
+      ctx.lineWidth = 2;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#000';
+      ctx.strokeText('BOSS', e.x, y - 3);
+      ctx.fillStyle = '#ffd23f';
+      ctx.fillText('BOSS', e.x, y - 3);
+    }
+  }
+}
+
+/** HUD fixe du mode Arène : vie et énergie du joueur, vague en cours, ennemis
+ * restants, score. */
+export function drawArenaHUD(ctx, joueur, arena) {
+  const x = MARGIN;
+  const energyY = MARGIN + BAR_HEIGHT + ENERGY_GAP;
+  const nameY = energyY + ENERGY_HEIGHT + 10;
+
+  drawHealthBar(ctx, x, MARGIN, joueur.health, joueur.maxHealth, false);
+  drawEnergyBar(ctx, x, energyY, joueur.energy, false);
+  drawName(ctx, joueur.character.displayName, x, nameY, 'left');
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '7px "Press Start 2P", monospace';
+  ctx.textAlign = 'right';
+  const droite = CANVAS_WIDTH - MARGIN;
+  ctx.fillText(`VAGUE ${arena.numeroVague}/${arena.totalVagues}`, droite, MARGIN + 7);
+  ctx.fillStyle = '#ffd23f';
+  ctx.fillText(`RESTANTS ${arena.restants}`, droite, MARGIN + 18);
+  ctx.fillStyle = '#9fd8ff';
+  ctx.fillText(`SCORE ${arena.score}`, droite, MARGIN + 29);
+
+  // Nom de la vague, en grand au centre, le temps de l'annonce. Il passe
+  // forcément devant des sprites : sans le liseré noir il devient illisible dès
+  // qu'une bactérie claire se trouve derrière.
+  if (arena.annonceTimer > 0 && arena.annonce) {
+    const texte = sansAccents(arena.annonce).toUpperCase();
+    ctx.globalAlpha = Math.min(1, arena.annonceTimer / 600);
+    ctx.font = '10px "Press Start 2P", monospace';
+    ctx.textAlign = 'center';
+    ctx.lineWidth = 3;
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#000';
+    ctx.strokeText(texte, CANVAS_WIDTH / 2, 62);
+    ctx.fillStyle = '#fff';
+    ctx.fillText(texte, CANVAS_WIDTH / 2, 62);
+    ctx.globalAlpha = 1;
+  }
 }

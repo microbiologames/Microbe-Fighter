@@ -1,6 +1,8 @@
 {
   "id": "listeria",
   "displayName": "L. monocytogenes",
+  "faction": "microbe",
+  "tagline": "Bacille psychrotrophe — hit and run",
   "color": "#a05ab0",
   "scale": 0.734,
   "groundY": 180,
@@ -28,67 +30,78 @@
       "folder": "assets/sprites/listeria/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "walk": {
       "folder": "assets/sprites/listeria/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "jump": {
       "folder": "assets/sprites/listeria/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "crouch": {
       "folder": "assets/sprites/listeria/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "punch": {
       "folder": "assets/sprites/listeria/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "kick": {
       "folder": "assets/sprites/listeria/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "hurt": {
       "folder": "assets/sprites/listeria/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "ko": {
       "folder": "assets/sprites/listeria/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "taunt": {
       "folder": "assets/sprites/listeria/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "victory": {
       "folder": "assets/sprites/listeria/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "superattack": {
       "folder": "assets/sprites/listeria/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     }
   },
   "moves": {

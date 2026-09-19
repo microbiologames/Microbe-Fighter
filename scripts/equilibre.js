@@ -47,7 +47,7 @@ const vals = scores.map((x) => x[1]);
 console.log(`\n  min ${Math.min(...vals)}  max ${Math.max(...vals)}  ecart x${(Math.max(...vals)/Math.min(...vals)).toFixed(2)}`);
 
 console.log('\n=== Le cas C. botulinum (spores, chaleur x0,25) ===');
-for (const id of ['evans','appert','pasteur','gram']) {
+for (const id of ['evans','appert','pasteur']) {
   const sup = P[id].moves.superattack;
   console.log(`  ${P[id].displayName.padEnd(16)} speciale ${String(sup.damage).padStart(2)} -> ${String(degats(sup, P.botulinum)).padStart(3)} sur C. botulinum` +
               (sup.ignoreResistance ? '   <- ignore la thermoresistance' : ''));

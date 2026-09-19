@@ -1,6 +1,8 @@
 {
   "id": "cereus",
   "displayName": "B. cereus",
+  "faction": "microbe",
+  "tagline": "Bacille sporulé — le cogneur",
   "color": "#6b9b4a",
   "scale": 0.781,
   "groundY": 184,
@@ -28,67 +30,78 @@
       "folder": "assets/sprites/cereus/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 184
+      "loop": true,
+      "groundY": 184
     },
     "walk": {
       "folder": "assets/sprites/cereus/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 184
+      "loop": true,
+      "groundY": 184
     },
     "jump": {
       "folder": "assets/sprites/cereus/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 184
+      "loop": true,
+      "groundY": 184
     },
     "crouch": {
       "folder": "assets/sprites/cereus/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     },
     "punch": {
       "folder": "assets/sprites/cereus/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     },
     "kick": {
       "folder": "assets/sprites/cereus/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     },
     "hurt": {
       "folder": "assets/sprites/cereus/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     },
     "ko": {
       "folder": "assets/sprites/cereus/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     },
     "taunt": {
       "folder": "assets/sprites/cereus/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     },
     "victory": {
       "folder": "assets/sprites/cereus/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 184
+      "loop": true,
+      "groundY": 184
     },
     "superattack": {
       "folder": "assets/sprites/cereus/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 184
+      "loop": false,
+      "groundY": 184
     }
   },
   "moves": {

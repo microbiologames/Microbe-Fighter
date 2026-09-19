@@ -1,6 +1,8 @@
 {
   "id": "evans",
   "displayName": "Alice Evans",
+  "faction": "microbiologiste",
+  "tagline": "Pionnière de la pasteurisation du lait",
   "color": "#d4b25f",
   "scale": 1.111,
   "groundY": 138,
@@ -28,67 +30,78 @@
       "folder": "assets/sprites/evans/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 138
+      "loop": true,
+      "groundY": 138
     },
     "walk": {
       "folder": "assets/sprites/evans/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 138
+      "loop": true,
+      "groundY": 138
     },
     "jump": {
       "folder": "assets/sprites/evans/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 138
+      "loop": true,
+      "groundY": 138
     },
     "crouch": {
       "folder": "assets/sprites/evans/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     },
     "punch": {
       "folder": "assets/sprites/evans/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     },
     "kick": {
       "folder": "assets/sprites/evans/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     },
     "hurt": {
       "folder": "assets/sprites/evans/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     },
     "ko": {
       "folder": "assets/sprites/evans/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     },
     "taunt": {
       "folder": "assets/sprites/evans/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     },
     "victory": {
       "folder": "assets/sprites/evans/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 138
+      "loop": true,
+      "groundY": 138
     },
     "superattack": {
       "folder": "assets/sprites/evans/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 138
+      "loop": false,
+      "groundY": 138
     }
   },
   "moves": {

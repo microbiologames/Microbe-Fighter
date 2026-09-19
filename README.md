@@ -47,9 +47,46 @@ ouverture du navigateur). Sans Node : `python -m http.server 8080`.
 | **Joueur 2** | Flèches | K | L | `;` | O |
 
 - **Entrée** : démarrer / valider / rejouer — **Échap** : pause
+- **Échap** (ou le bouton Esquive) dans un menu : **revenir à l'écran
+  précédent**. Toute la chaîne titre → mode → personnages → décor se remonte.
 - **Poing + Pied ensemble** = super attaque, si la jauge d'énergie est pleine
 - Manettes et encodeurs USB de borne d'arcade sont lus directement
   (Gamepad API, mapping standard), sans rien configurer.
+
+## Les deux modes de jeu
+
+Le mode se choisit au lancement, juste après l'écran titre.
+
+### 1 contre 1
+
+Le jeu d'origine. Deux joueurs, **3 manches gagnantes** de 60 s, décor au choix.
+
+### Arène
+
+**Un seul joueur**, qui ne choisit que son microbiologiste : les
+micro-organismes sont pilotés par la machine et arrivent par **neuf vagues**.
+Le décor n'est pas proposé — il **change tout seul à chaque vague**.
+
+La difficulté monte sur trois leviers à la fois, tous décrits dans `VAGUES` en
+tête de `js/engine/Arena.js` :
+
+| | Vague 1 | Vague 5 | Vague 9 |
+|---|---|---|---|
+| Ennemis dans la vague | 2 | 5 | 8 + boss |
+| Taille (× l'échelle normale) | 0,85 | 1,05 | 1,2 (boss : 2) |
+| Temps de réaction de l'IA | 620 ms | 400 ms | 190 ms |
+
+Quatre ennemis au maximum sont à l'écran en même temps ; les suivants attendent
+qu'une place se libère, ce qui garde une vague de huit lisible. Un **boss**,
+nettement plus gros et bien plus résistant, ferme les vagues **3, 6 et 9**.
+
+Deux conséquences sur le moteur, qui valent pour les deux modes :
+
+- **un coup touche tous les ennemis dans sa hitbox**, pas seulement la cible
+  visée — sans quoi frapper au milieu de six bactéries n'en toucherait qu'une ;
+- taille, points de vie et force de frappe sont désormais portés par le
+  **combattant** (`sizeFactor`, `maxHealth`, `attackFactor`) et non par le
+  personnage, ce qui permet à deux B. cereus de la même vague d'être différents.
 
 ### Jauge d'énergie
 
@@ -60,7 +97,35 @@ rend le taunt payant malgré le risque (immobile ~0,7 s).
 ### Manches
 
 Match en **3 manches gagnantes**, manches de 60 s, 100 PV. Le score s'affiche en
-pastilles au-dessus des barres de vie.
+pastilles au-dessus des barres de vie. (Mode 1 contre 1 uniquement : l'arène se
+joue d'une traite, sans manches ni chrono.)
+
+### L'écran des menus
+
+Les quatre écrans de menu sont posés sur **l'affiche du jeu**
+(`assets/ui/poster.jpg`), qui porte déjà le titre : **aucun `<h1>` ne le
+redouble**. Le contenu repose sur un bandeau flouté (`backdrop-filter`) **ancré
+en bas et dont la hauteur suit son contenu** — court sur l'écran titre, haut sur
+la sélection. C'est ce qui garde le titre de l'affiche net sans avoir à accorder
+une hauteur fixe à chaque écran.
+
+### Le choix des personnages est verrouillé par camp
+
+**Microbiologiste à gauche, micro-organisme à droite** : chaque côté ne fait
+défiler que son camp. Le camp est déclaré dans le manifeste
+(`"faction": "microbe" | "microbiologiste"`), pas déduit d'une liste en dur.
+
+Sous chaque portrait s'affichent **qui est le personnage** (champ `tagline`) et
+ses **deux coups notables** : l'attaque secondaire (pied) et la spéciale, avec
+leurs dégâts.
+
+> **Press Start 2P n'a pas de capitales accentuées.** Les minuscules
+> accentuées, si : « Arène » et « décor » s'affichent parfaitement, « ENTRÉE »
+> et « DÉCOR » non. La règle est donc précise — **jamais de capitale accentuée
+> dans un texte rendu en Press Start 2P**. C'est pour ça que `.menu-title` n'a
+> pas de `text-transform: uppercase`, et que `sansAccents()` est exporté de
+> `HUD.js` : l'écran de résultat, qui met les noms en capitales, en a besoin
+> aussi.
 
 ---
 
@@ -237,6 +302,16 @@ seconde). Face à lui, la super attaque n'est plus un luxe mais le seul vrai
 moyen de le sortir — ce qui est exactement le rapport de force réel : le
 staphylocoque résiste très bien aux désinfectants de surface et très mal à la
 chaleur.
+
+> **Ce système n'a rien fait pendant longtemps.** `SpriteLoader.loadCharacter()`
+> recopie le manifeste champ par champ dans l'objet personnage, et il **oubliait
+> `resistances` et `immunities`**. `damageFactor()` lisait donc toujours
+> `undefined` et renvoyait `1` : tout le monde encaissait tout à plein tarif,
+> pendant que le README et `scripts/equilibre.js` décrivaient un équilibre qui
+> n'existait pas en jeu. Le bug est réparé. La leçon est générale : **tout champ
+> ajouté à un manifeste doit être ajouté à l'objet renvoyé par
+> `loadCharacter()`**, sinon il est silencieusement ignoré — rien ne lève
+> d'erreur, la valeur est simplement absente.
 
 ### L'idle est animé
 

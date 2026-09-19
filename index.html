@@ -10,67 +10,111 @@
   <div id="game-container">
     <canvas id="game-canvas" width="384" height="216"></canvas>
 
-    <div id="overlay-title" class="overlay">
-      <div class="title-scene">
-        <div class="title-glow"></div>
-        <div class="title-grid"></div>
-        <div class="title-roster" id="title-roster"></div>
-      </div>
-      <h1>MICROBE FIGHTER</h1>
-      <p class="title-subtitle">Microbiologistes <span>vs</span> micro-organismes</p>
-      <p class="blink">Appuyez sur ENTRÉE ou START</p>
-      <div class="controls-hint">
-        <div>
-          <strong>Joueur 1</strong>
-          <p>Z Q S D pour bouger, F = Poing, G = Pied,<br />H = Esquive, T = Narguer</p>
+    <!-- Les quatre écrans de menu partagent la même affiche en fond. Le titre du
+         jeu est DANS l'image : aucun <h1> ne le redouble, et le bandeau flouté
+         qui porte le contenu est ancré en bas pour ne pas le recouvrir. -->
+
+    <div id="overlay-title" class="overlay poster-overlay">
+      <div class="poster-screen">
+        <div class="poster-band">
+          <div class="poster-band-blur"></div>
+          <div class="poster-band-content">
+            <p class="blink">Appuyez sur Entrée ou START</p>
+            <div class="controls-hint">
+              <div>
+                <strong>Joueur 1</strong>
+                <p>Z Q S D pour bouger, F = Poing, G = Pied,<br />H = Esquive, T = Narguer</p>
+              </div>
+              <div>
+                <strong>Joueur 2</strong>
+                <p>Flèches pour bouger, K = Poing, L = Pied,<br />; = Esquive, O = Narguer</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <strong>Joueur 2</strong>
-          <p>Flèches pour bouger, K = Poing, L = Pied,<br />; = Esquive, O = Narguer</p>
+      </div>
+    </div>
+
+    <div id="overlay-mode" class="overlay hidden poster-overlay">
+      <div class="poster-screen">
+        <div class="poster-band">
+          <div class="poster-band-blur"></div>
+          <div class="poster-band-content">
+            <h2 class="menu-title">Mode de jeu</h2>
+            <div class="mode-row" id="mode-row">
+              <button class="mode-card" data-mode="duel" type="button">
+                <span class="mode-name">1 contre 1</span>
+                <span class="mode-desc">Un microbiologiste contre un micro-organisme.<br />Deux joueurs, trois manches, décor au choix.</span>
+              </button>
+              <button class="mode-card" data-mode="arene" type="button">
+                <span class="mode-name">Arène</span>
+                <span class="mode-desc">Un microbiologiste seul contre neuf vagues.<br />Les micro-organismes sont pilotés par la machine.</span>
+              </button>
+            </div>
+            <p class="menu-hint">◀ ▶ pour choisir · Entrée ou Poing pour valider · Échap pour revenir</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-select" class="overlay hidden poster-overlay">
+      <div class="poster-screen">
+        <div class="poster-band">
+          <div class="poster-band-blur"></div>
+          <div class="poster-band-content">
+            <h2 class="menu-title" id="select-title">Choisis ton perso</h2>
+            <div class="select-row">
+              <div class="select-player" id="select-p1">
+                <div class="select-label">Joueur 1 — Microbiologistes</div>
+                <div class="select-portrait-frame">
+                  <img id="select-p1-portrait" src="" alt="" />
+                </div>
+                <div class="select-name" id="select-p1-name">—</div>
+                <div class="select-tagline" id="select-p1-tagline"></div>
+                <ul class="select-moves" id="select-p1-moves"></ul>
+                <div class="select-hint" id="select-p1-hint">◀ Q D ▶ puis F pour valider</div>
+              </div>
+              <div class="select-player" id="select-p2">
+                <div class="select-label">Joueur 2 — Micro-organismes</div>
+                <div class="select-portrait-frame">
+                  <img id="select-p2-portrait" src="" alt="" />
+                </div>
+                <div class="select-name" id="select-p2-name">—</div>
+                <div class="select-tagline" id="select-p2-tagline"></div>
+                <ul class="select-moves" id="select-p2-moves"></ul>
+                <div class="select-hint" id="select-p2-hint">◀ Flèches ▶ puis K pour valider</div>
+              </div>
+            </div>
+            <p class="menu-hint">Échap pour revenir au choix du mode</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-stage-select" class="overlay hidden poster-overlay">
+      <div class="poster-screen">
+        <div class="poster-band">
+          <div class="poster-band-blur"></div>
+          <div class="poster-band-content">
+            <h2 class="menu-title">Choisis le décor</h2>
+            <div class="stage-preview-frame">
+              <img id="stage-select-preview" src="" alt="" />
+            </div>
+            <div class="stage-select-name" id="stage-select-name">—</div>
+            <p class="menu-hint">◀ ▶ pour changer · Poing ou Entrée pour valider · Échap pour revenir</p>
+          </div>
         </div>
       </div>
     </div>
 
     <div id="overlay-pause" class="overlay hidden">
       <h1>PAUSE</h1>
-      <p class="blink">Échap pour reprendre</p>
-      <p class="blink">Entrée pour quitter le combat</p>
-    </div>
-
-    <div id="overlay-select" class="overlay hidden select-overlay">
-      <h1>CHOISIS TON PERSO</h1>
-      <div class="select-row">
-        <div class="select-player" id="select-p1">
-          <div class="select-label">Joueur 1</div>
-          <div class="select-portrait-frame">
-            <img id="select-p1-portrait" src="" alt="" />
-          </div>
-          <div class="select-name" id="select-p1-name">—</div>
-          <div class="select-hint" id="select-p1-hint">◀ D ▶ puis F pour valider</div>
-        </div>
-        <div class="select-player" id="select-p2">
-          <div class="select-label">Joueur 2</div>
-          <div class="select-portrait-frame">
-            <img id="select-p2-portrait" src="" alt="" />
-          </div>
-          <div class="select-name" id="select-p2-name">—</div>
-          <div class="select-hint" id="select-p2-hint">◀ Flèches ▶ puis K pour valider</div>
-        </div>
-      </div>
-    </div>
-
-    <div id="overlay-stage-select" class="overlay hidden stage-select-overlay">
-      <h1>CHOISIS LE DÉCOR</h1>
-      <div class="stage-preview-frame">
-        <img id="stage-select-preview" src="" alt="" />
-      </div>
-      <div class="stage-select-name" id="stage-select-name">—</div>
-      <p class="blink">◀ ▶ pour changer, Poing ou Entrée pour valider</p>
+      <p class="menu-hint">Échap pour reprendre · Entrée pour quitter le combat</p>
     </div>
 
     <div id="overlay-result" class="overlay hidden">
       <h1 id="result-text">K.O.</h1>
-      <p class="blink" id="result-hint">Appuyez sur ENTRÉE pour rejouer</p>
+      <p class="blink" id="result-hint">Appuyez sur Entrée pour rejouer</p>
     </div>
   </div>
 

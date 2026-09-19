@@ -1,6 +1,8 @@
 {
   "id": "staph",
   "displayName": "S. aureus",
+  "faction": "microbe",
+  "tagline": "Grappe de coques — résiste aux biocides",
   "color": "#d9a52e",
   "scale": 0.719,
   "groundY": 200,
@@ -32,67 +34,78 @@
       "folder": "assets/sprites/staph/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 200
+      "loop": true,
+      "groundY": 200
     },
     "walk": {
       "folder": "assets/sprites/staph/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 200
+      "loop": true,
+      "groundY": 200
     },
     "jump": {
       "folder": "assets/sprites/staph/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 200
+      "loop": true,
+      "groundY": 200
     },
     "crouch": {
       "folder": "assets/sprites/staph/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     },
     "punch": {
       "folder": "assets/sprites/staph/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     },
     "kick": {
       "folder": "assets/sprites/staph/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     },
     "hurt": {
       "folder": "assets/sprites/staph/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     },
     "ko": {
       "folder": "assets/sprites/staph/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     },
     "taunt": {
       "folder": "assets/sprites/staph/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     },
     "victory": {
       "folder": "assets/sprites/staph/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 200
+      "loop": true,
+      "groundY": 200
     },
     "superattack": {
       "folder": "assets/sprites/staph/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 200
+      "loop": false,
+      "groundY": 200
     }
   },
   "moves": {

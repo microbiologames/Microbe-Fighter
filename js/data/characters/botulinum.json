@@ -1,6 +1,8 @@
 {
   "id": "botulinum",
   "displayName": "C. botulinum",
+  "faction": "microbe",
+  "tagline": "Sporulé anaérobie — neurotoxine paralysante",
   "color": "#c9c6bd",
   "scale": 0.826,
   "groundY": 180,
@@ -32,67 +34,78 @@
       "folder": "assets/sprites/botulinum/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "walk": {
       "folder": "assets/sprites/botulinum/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "jump": {
       "folder": "assets/sprites/botulinum/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "crouch": {
       "folder": "assets/sprites/botulinum/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "punch": {
       "folder": "assets/sprites/botulinum/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "kick": {
       "folder": "assets/sprites/botulinum/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "hurt": {
       "folder": "assets/sprites/botulinum/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "ko": {
       "folder": "assets/sprites/botulinum/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "taunt": {
       "folder": "assets/sprites/botulinum/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     },
     "victory": {
       "folder": "assets/sprites/botulinum/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 180
+      "loop": true,
+      "groundY": 180
     },
     "superattack": {
       "folder": "assets/sprites/botulinum/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 180
+      "loop": false,
+      "groundY": 180
     }
   },
   "moves": {

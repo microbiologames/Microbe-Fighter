@@ -1,6 +1,8 @@
 {
   "id": "baranyi",
   "displayName": "József Baranyi",
+  "faction": "microbiologiste",
+  "tagline": "Pionnier de la microbiologie prévisionnelle",
   "color": "#5fb3a1",
   "scale": 1.068,
   "groundY": 141,
@@ -28,67 +30,78 @@
       "folder": "assets/sprites/baranyi/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "walk": {
       "folder": "assets/sprites/baranyi/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "jump": {
       "folder": "assets/sprites/baranyi/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "crouch": {
       "folder": "assets/sprites/baranyi/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "punch": {
       "folder": "assets/sprites/baranyi/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "kick": {
       "folder": "assets/sprites/baranyi/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "hurt": {
       "folder": "assets/sprites/baranyi/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "ko": {
       "folder": "assets/sprites/baranyi/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "taunt": {
       "folder": "assets/sprites/baranyi/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     },
     "victory": {
       "folder": "assets/sprites/baranyi/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 141
+      "loop": true,
+      "groundY": 141
     },
     "superattack": {
       "folder": "assets/sprites/baranyi/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 141
+      "loop": false,
+      "groundY": 141
     }
   },
   "moves": {
