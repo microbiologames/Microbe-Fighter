@@ -1,3 +1,4 @@
+import { versionne } from './Config.js';
 // Musique du jeu : une seule piste, en boucle, du lancement à la fermeture.
 //
 // Pas de phases, pas de fondu enchaîné, pas de bascule en basse vie — le jeu
@@ -35,7 +36,7 @@ function attempt() {
 /** Démarre la musique. Sans effet si elle tourne déjà. */
 export function startMusic(src, { volume = 0.5 } = {}) {
   if (!src || track) return;
-  track = new Audio(src);
+  track = new Audio(versionne(src));
   track.loop = true;
   track.volume = volume;
   // Si le fichier est absent ou illisible, on n'insiste pas : le jeu tourne en

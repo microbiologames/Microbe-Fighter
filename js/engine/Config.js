@@ -82,3 +82,25 @@ export const ENERGY_TAUNT_BONUS = 30; // narguer remplit +30% d'un coup
 
 export const ROUNDS_TO_WIN = 3;
 export const ROUND_RESULT_DISPLAY_MS = 2500;
+
+// --- Cache navigateur -------------------------------------------------------
+//
+// Les assets sont servis par GitHub Pages avec `cache-control: max-age=600`, et
+// un sprite regenere GARDE EXACTEMENT LE MEME NOM DE FICHIER. Le navigateur
+// ressert donc l'ancienne image depuis son cache sans redemander au serveur :
+// on regenere les dix-sept personnages, on publie, et le joueur voit toujours
+// les anciens. Un rechargement simple n'y change rien — il faut un Ctrl+Maj+R,
+// ce qu'un joueur ne fera jamais.
+//
+// `versionne()` ajoute une empreinte a l'URL. Le fichier servi est le meme,
+// mais une URL differente est une entree de cache differente : le navigateur
+// est oblige d'aller la chercher.
+//
+// A CHANGER A CHAQUE FOIS QUE LES ASSETS CHANGENT. C'est le seul geste manuel,
+// et l'oublier fait reapparaitre exactement le bug qu'on vient de corriger.
+export const ASSET_VERSION = '2026-09-19';
+
+export function versionne(url) {
+  if (!url) return url;
+  return `${url}${url.includes('?') ? '&' : '?'}v=${ASSET_VERSION}`;
+}

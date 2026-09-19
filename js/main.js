@@ -10,8 +10,7 @@ import { playSfx } from './engine/Audio.js';
 import { startMusic } from './engine/Music.js';
 import {
   CANVAS_WIDTH, CANVAS_HEIGHT, ROUND_TIME_SECONDS, ARENA_LEFT, ARENA_RIGHT, MAX_HEALTH,
-  ROUNDS_TO_WIN, ROUND_RESULT_DISPLAY_MS,
-} from './engine/Config.js';
+  ROUNDS_TO_WIN, ROUND_RESULT_DISPLAY_MS, versionne } from './engine/Config.js';
 
 // Un décor différent est tiré au sort à chaque combat. Ajoute simplement le
 // nom du fichier (sans .json) ici pour qu'un nouveau décor entre dans la
@@ -78,7 +77,7 @@ function applyPreview(imgEl, src, fallbackBackground) {
   const frame = imgEl.parentElement;
   if (src) {
     imgEl.hidden = false;
-    imgEl.src = src;
+    imgEl.src = versionne(src);
     if (frame) frame.style.background = '';
   } else {
     imgEl.hidden = true;

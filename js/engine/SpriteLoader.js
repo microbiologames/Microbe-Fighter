@@ -1,3 +1,5 @@
+import { versionne } from './Config.js';
+
 // Charge les animations d'un personnage à partir de son manifeste JSON.
 // Convention de fichiers attendue par dossier d'animation : 000.png, 001.png, 002.png, ...
 // (c'est le format d'export "frame par frame" de Pixellab)
@@ -10,12 +12,12 @@ function loadImage(src) {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null); // null => on utilisera un placeholder
-    img.src = src;
+    img.src = versionne(src);
   });
 }
 
 export async function loadCharacter(manifestPath) {
-  const res = await fetch(manifestPath);
+  const res = await fetch(versionne(manifestPath));
   if (!res.ok) throw new Error(`Impossible de charger ${manifestPath} (${res.status})`);
   const data = await res.json();
 

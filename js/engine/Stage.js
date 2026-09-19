@@ -1,16 +1,16 @@
-import { CANVAS_WIDTH, CANVAS_HEIGHT, FLOOR_Y } from './Config.js';
+import { CANVAS_WIDTH, CANVAS_HEIGHT, FLOOR_Y, versionne } from './Config.js';
 
 function loadImage(src) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
-    img.src = src;
+    img.src = versionne(src);
   });
 }
 
 export async function loadStage(manifestPath) {
-  const res = await fetch(manifestPath);
+  const res = await fetch(versionne(manifestPath));
   if (!res.ok) throw new Error(`Impossible de charger ${manifestPath} (${res.status})`);
   const data = await res.json();
 

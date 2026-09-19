@@ -305,6 +305,43 @@ scientifiques historiques les remplacent avantageusement. Leurs images de
 référence restent dans `references/personnages/`, l'historique git conserve le
 reste.
 
+### Quand le jeu affiche encore les anciens sprites
+
+Un sprite régénéré **garde exactement le même nom de fichier**, et GitHub Pages
+sert les assets avec `cache-control: max-age=600`. Le navigateur ressert donc
+l'ancienne image depuis son cache sans même redemander au serveur : on régénère
+les dix-sept personnages, on publie, et le joueur voit toujours les anciens.
+
+Chaque URL d'asset porte donc une empreinte de version, `?v=…`, ajoutée par
+`versionne()` dans `js/engine/Config.js`. Le fichier servi est le même, mais une
+URL différente est une entrée de cache différente : le navigateur est obligé
+d'aller la chercher.
+
+**À faire à chaque fois que les sprites, les voix ou les décors changent :**
+incrémenter `ASSET_VERSION` dans `js/engine/Config.js`. C'est le seul geste
+manuel, et l'oublier fait réapparaître exactement ce bug.
+
+### Quand la publication échoue
+
+Le site peut rester en retard sur le dépôt sans que rien ne le signale : le
+déploiement du 19 septembre a échoué sur `Ensure GITHUB_TOKEN has permission
+"id-token: write"` et le site a continué de servir le commit précédent.
+
+Le symptôme trompe, parce que tout paraît normal côté dépôt : le commit est là,
+les fichiers sont bons. La vérification qui tranche compare ce que **sert le
+site** à ce que **contient le dépôt** :
+
+```bash
+curl -s https://microbiologames.github.io/Microbe-Fighter/assets/sprites/cereus/idle/000.png | md5sum
+git show HEAD:assets/sprites/cereus/idle/000.png | md5sum
+```
+
+Le workflow de publication est déclaré dans
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) plutôt que laissé
+implicite — un workflow qu'on ne voit pas est un workflow qu'on ne peut pas
+corriger. Son `workflow_dispatch` permet de relancer une publication à la main
+depuis l'onglet Actions.
+
 ## Les décors
 
 **Deux décors**, tous deux panoramiques et issus de la même vue du laboratoire
