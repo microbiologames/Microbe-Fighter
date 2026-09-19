@@ -34,7 +34,7 @@ const PREPARED_DIR = path.join(REFERENCES_DIR, 'prepared');
 // reproduit la même arborescence sous prepared/.
 const KINDS = ['personnages', 'decors'];
 const MAX_SIZE = 1024;
-const SOURCE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
+const SOURCE_EXTENSIONS = ['.jpg', '.jpeg', '.jfif', '.png', '.webp']; // .jfif = JPEG (voir pixellab.js)
 
 // Seuil de détection du fond : un pixel est considéré comme du fond s'il est
 // presque blanc sur les trois canaux, ou complètement transparent.

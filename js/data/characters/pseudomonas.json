@@ -9,8 +9,8 @@
   "portrait": "assets/sprites/pseudomonas/portrait/portrait.png",
   "hurtbox": {
     "width": 30,
-    "heightStand": 96,
-    "heightCrouch": 64
+    "heightStand": 110,
+    "heightCrouch": 74
   },
   "resistances": {
     "froid": 0.2,
@@ -36,67 +36,78 @@
       "folder": "assets/sprites/pseudomonas/idle",
       "frameCount": 5,
       "frameDuration": 180,
-      "loop": true, "groundY": 139
+      "loop": true,
+      "groundY": 139
     },
     "walk": {
       "folder": "assets/sprites/pseudomonas/walk",
       "frameCount": 5,
       "frameDuration": 90,
-      "loop": true, "groundY": 139
+      "loop": true,
+      "groundY": 139
     },
     "jump": {
       "folder": "assets/sprites/pseudomonas/jump",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 139
+      "loop": true,
+      "groundY": 139
     },
     "crouch": {
       "folder": "assets/sprites/pseudomonas/crouch",
       "frameCount": 5,
       "frameDuration": 120,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     },
     "punch": {
       "folder": "assets/sprites/pseudomonas/punch",
       "frameCount": 5,
       "frameDuration": 55,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     },
     "kick": {
       "folder": "assets/sprites/pseudomonas/kick",
       "frameCount": 5,
       "frameDuration": 60,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     },
     "hurt": {
       "folder": "assets/sprites/pseudomonas/hurt",
       "frameCount": 5,
       "frameDuration": 70,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     },
     "ko": {
       "folder": "assets/sprites/pseudomonas/ko",
       "frameCount": 5,
       "frameDuration": 130,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     },
     "taunt": {
       "folder": "assets/sprites/pseudomonas/taunt",
       "frameCount": 5,
       "frameDuration": 80,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     },
     "victory": {
       "folder": "assets/sprites/pseudomonas/victory",
       "frameCount": 5,
       "frameDuration": 110,
-      "loop": true, "groundY": 139
+      "loop": true,
+      "groundY": 139
     },
     "superattack": {
       "folder": "assets/sprites/pseudomonas/superattack",
       "frameCount": 5,
       "frameDuration": 65,
-      "loop": false, "groundY": 139
+      "loop": false,
+      "groundY": 139
     }
   },
   "moves": {

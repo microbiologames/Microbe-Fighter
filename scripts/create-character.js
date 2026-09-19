@@ -195,7 +195,7 @@ async function main() {
     }
     const buffer = fs.readFileSync(reference);
     const ext = path.extname(reference).toLowerCase();
-    const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : 'jpeg';
+    const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : 'jpeg'; // .jpg, .jpeg et .jfif sont du JPEG
     body.method = 'create_from_concept';
     body.concept_image = { type: 'base64', base64: buffer.toString('base64'), format };
     console.log(`[${charKey}] référence : ${path.relative(ROOT, reference)} (${(buffer.length / 1024).toFixed(0)} Ko)`);

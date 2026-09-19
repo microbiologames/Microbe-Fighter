@@ -4,13 +4,13 @@
   "color": "#9c6b4f",
   "scale": 0.673,
   "groundY": 141,
-  "moveSpeed": 2.5,
-  "jumpVelocity": 6.2,
+  "moveSpeed": 2.3,
+  "jumpVelocity": 7.4,
   "portrait": "assets/sprites/shewanella/portrait/portrait.png",
   "hurtbox": {
-    "width": 48,
-    "heightStand": 72,
-    "heightCrouch": 52
+    "width": 34,
+    "heightStand": 110,
+    "heightCrouch": 74
   },
   "resistances": {
     "froid": 0.3,

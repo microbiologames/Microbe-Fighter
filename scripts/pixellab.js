@@ -127,7 +127,11 @@ async function downloadImage(url, destFile) {
 //   references/prepared/decors/<slug>.png
 // On préfère toujours la version préparée : l'API refuse les images de plus de
 // 1024x1024, et un cadrage serré donne un bien meilleur résultat.
-const REFERENCE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
+// `.jfif` est du JPEG : c'est l'extension que Windows donne parfois a une image
+// enregistree depuis un navigateur. Le contenu est identique — meme entete
+// ffd8, meme marqueur JFIF — seule l'extension change, et l'oublier faisait
+// passer le fichier pour inexistant.
+const REFERENCE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.jfif', '.webp'];
 
 // `names` peut contenir plusieurs noms : l'id du personnage, et le nom réel du
 // fichier déposé quand il diffère (« Staphylococcus aureus.jpg » pour `staph`).

@@ -198,15 +198,15 @@ const CHARACTERS = {
       'flagella sprouting from ONE end only at the back of its head and trailing behind like a ponytail, ' +
       'thick glistening slime dripping off its body, calm serene face with pale glowing eyes, graceful silhouette',
     anims: {
-      idle: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, standing still and hovering slightly, its slender body undulating gently, its inner glow pulsing slowly brighter and dimmer like a heartbeat, the tuft of long glowing flagella at the back of its head drifting slowly behind it, slime dripping from its body, serene and waiting',
-      walk: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, gliding forward smoothly, the tuft of long glowing flagella at the back of its head streaming behind it, slime dripping from its body, inner glow pulsing',
-      jump: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, suspended in mid-air, its tuft of long glowing flagella fanning out behind it, body arched gracefully, slime droplets floating around it',
-      crouch: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, folding down into a low crouch, its glowing flagella curling around it, inner glow dimming',
-      punch: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, striking forward to the RIGHT with one slender glowing arm at full extension, slime flicking off its fist, its inner glow flaring bright at the moment of impact, dramatic street fighter style',
-      kick: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, standing in the LEFT half of the frame with its whole glowing body clearly visible, flicking a SMALL compact ball of luminous yellow-green slime, no bigger than its own head, from its open hand toward the RIGHT at chest height, the little ball flying alone through the empty right half of the frame with a short dripping trail, side view',
-      taunt: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, taunting the opponent with a slow graceful beckoning gesture, its flagella swirling elegantly, inner glow brightening, serene superior expression',
-      victory: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, celebrating a win, arms spread wide and head tilted back, its inner glow blazing at full brightness, flagella fanned out behind it like a halo',
-      superattack: 'a glowing chartreuse translucent rod-shaped bacterium humanoid, standing in the LEFT half of the frame with its whole glowing body clearly visible and its colour unchanged, both hands thrust toward the RIGHT, a NARROW horizontal stream of thick luminous yellow-green enzyme fluid, no thicker than its own arm, shooting toward the RIGHT at chest height through the empty right half of the frame, the stream starting clear of its body, side view, braced stance',
+      idle: 'a glowing chartreuse translucent humanoid creature, standing still in a fighting stance, its slender glowing body swaying gently, its inner glow pulsing slowly brighter and dimmer like a heartbeat, the tuft of long glowing flagella at the back of its head drifting slowly behind it, slime dripping from its body, serene and waiting',
+      walk: 'a glowing chartreuse translucent humanoid creature, striding forward on two legs, the tuft of long glowing flagella at the back of its head streaming behind it, slime dripping from its body, inner glow pulsing',
+      jump: 'a glowing chartreuse translucent humanoid creature, suspended in mid-air, its tuft of long glowing flagella fanning out behind it, body arched gracefully, slime droplets floating around it',
+      crouch: 'a glowing chartreuse translucent humanoid creature, folding down into a low crouch, its glowing flagella curling around it, inner glow dimming',
+      punch: 'a glowing chartreuse translucent humanoid creature, striking forward to the RIGHT with one slender glowing arm at full extension, slime flicking off its fist, its inner glow flaring bright at the moment of impact, dramatic street fighter style',
+      kick: 'a glowing chartreuse translucent humanoid creature, standing in the LEFT half of the frame with its whole glowing body clearly visible, flicking a SMALL compact ball of luminous yellow-green slime, no bigger than its own head, from its open hand toward the RIGHT at chest height, the little ball flying alone through the empty right half of the frame with a short dripping trail, side view',
+      taunt: 'a glowing chartreuse translucent humanoid creature, taunting the opponent with a slow graceful beckoning gesture, its flagella swirling elegantly, inner glow brightening, serene superior expression',
+      victory: 'a glowing chartreuse translucent humanoid creature, celebrating a win, arms spread wide and head tilted back, its inner glow blazing at full brightness, flagella fanned out behind it like a halo',
+      superattack: 'a glowing chartreuse translucent humanoid creature, standing in the LEFT half of the frame with its whole glowing body clearly visible and its colour unchanged, both hands thrust toward the RIGHT, a NARROW horizontal stream of thick luminous yellow-green enzyme fluid, no thicker than its own arm, shooting toward the RIGHT at chest height through the empty right half of the frame, the stream starting clear of its body, side view, braced stance',
       ...COMMON,
     },
   },
@@ -214,24 +214,27 @@ const CHARACTERS = {
   shewanella: {
     label: 'S. putrefaciens — Shewanella putrefaciens',
     reference: 'Shewanella putrefasciens',
-    // Décrit d'après l'image de référence fournie : c'est un QUADRUPÈDE, d'où
-    // le template "cat" plutôt que "mannequin" (voir `template` ci-dessous).
-    template: 'cat',
+    // La première image de référence était un quadrupède, d'où un `template:
+    // 'cat'`. La seconde est bipède : on repasse sur `mannequin`, le template
+    // par défaut. C'est un changement qui ne se rattrape pas après coup —
+    // l'endpoint d'animation n'accepte pas de template, il hérite de celui du
+    // personnage — donc il fallait le faire AVANT de recréer le personnage.
     description:
-      'a cartoon four-legged creature walking on all fours, hunched arched back, rust-brown metallic skin ' +
-      'with oily iridescent green and violet sheen, its hands and feet blackened as if mineralised into ' +
-      'charcoal black, a single long thin whip-like tail curling behind it, a drooping heavy head with ' +
-      'sad half-lidded eyes hanging low between its shoulders, vents along its back leaking olive-green gas',
+      'a lean bipedal humanoid creature whose rust-brown metallic skin is covered all over in ' +
+      'large oily iridescent patches of green, teal and violet that catch the light, its hands ' +
+      'and feet blackened as if charred to charcoal, thin dark cables and tubes running along ' +
+      'its arms and legs, a long thin whip-like tail curling behind it, a smooth hairless head ' +
+      'with narrow eyes, standing in a low fighting crouch',
     anims: {
-      idle: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, standing still on all fours, its arched back rising and falling with slow heavy breathing, its long thin tail swaying lazily behind it, small puffs of olive-green gas escaping from the vents along its back, head hanging low, waiting',
-      walk: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, prowling forward on all fours with a low dragging gait, head hanging low, olive-green gas leaking from the vents along its back',
-      jump: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, pouncing through the air on all fours, legs tucked under its body, tail streaming behind, gas trailing from its back',
-      crouch: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, flattening itself low against the ground on all fours, shoulders hunched high, head pressed down, ready to pounce',
-      punch: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, rearing up slightly and swiping forward to the RIGHT with one blackened front paw at full extension, the other three limbs braced on the ground, snarling',
-      kick: 'a THICK JET OF OLIVE-GREEN GAS blasting horizontally to the RIGHT at knee height across the empty right half of the frame, sprayed from the back vents of a rust-brown four-legged creature with blackened hands and feet and a long thin tail, the creature standing on all fours in the LEFT half of the frame with its whole rust-brown body clearly visible and no gas on top of it, side view',
-      taunt: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, arching its back high on all fours and shaking itself, releasing a lazy puff of olive-green gas from its back vents, head turned to sneer at the opponent',
-      victory: 'a rust-brown four-legged creature with blackened hands and feet and a long thin tail, standing tall on all fours with its back arched and head raised for the first time, tail held high, gas billowing proudly from its back vents',
-      superattack: 'a DENSE ROLLING CLOUD OF DARK OLIVE-GREEN GAS billowing horizontally to the RIGHT along the ground, filling the empty right half of the frame and reaching the right edge, vomited from the open mouth of a rust-brown four-legged creature with blackened hands and feet and a long thin tail, the creature standing on all fours in the LEFT half of the frame with its head lowered toward the RIGHT and its whole rust-brown body clearly visible outside the cloud, the heavy gas sinking and spreading low instead of rising, side view',
+      idle: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, standing still in a low fighting crouch, breathing slowly and deeply, its long tail swaying lazily behind it, small puffs of olive-green gas escaping from vents on its back, shoulders hunched',
+      walk: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, stalking forward on two legs with a low prowling stride, shoulders rolling, tail sweeping behind it, wisps of olive-green gas trailing from its back',
+      jump: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, leaping through the air, legs tucked and arms spread for balance, tail streaming behind it, gas trailing from its back',
+      crouch: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, crouching low with one knee bent and both hands near the ground, tail flat behind it, coiled and ready to spring',
+      punch: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, driving a blackened clawed fist forward to the RIGHT at full arm extension, body twisting into the blow, tail whipping out behind for balance, snarling',
+      kick: 'a THICK JET OF OLIVE-GREEN GAS blasting horizontally to the RIGHT at waist height across the empty right half of the frame, sprayed from the open mouth of a rust-brown humanoid creature with blackened hands and feet and a long thin tail, the creature standing on two legs in the LEFT half of the frame with its whole rust-brown body clearly visible and no gas on top of it, side view',
+      taunt: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, arching its back and spreading its arms wide, releasing a lazy puff of olive-green gas from its back vents, head tilted to sneer at the opponent',
+      victory: 'a rust-brown humanoid creature with blackened hands and feet and a long thin tail, celebrating a win, both blackened fists raised high, head thrown back, tail held high, gas billowing proudly from its back vents',
+      superattack: 'a DENSE ROLLING CLOUD OF DARK OLIVE-GREEN GAS billowing horizontally to the RIGHT along the ground, filling the empty right half of the frame and reaching the right edge, vomited from the open mouth of a rust-brown humanoid creature with blackened hands and feet and a long thin tail, the creature standing on two legs in the LEFT half of the frame, leaning forward with its head lowered toward the RIGHT and its whole body clearly visible outside the cloud, the heavy gas sinking and spreading low instead of rising, side view',
       ...COMMON,
     },
   },
@@ -287,8 +290,9 @@ const CHARACTERS = {
     reference: 'Rosalind Franklin',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 35-year-old woman with short dark brown curly hair with volume around her face, fair ' +
-      'skin, a calm serious oval face, dark eyes, wearing a buttoned white lab coat, blue jeans ' +
+      'a 35-year-old woman, tall and slim with realistic adult proportions and a small head, ' +
+      'short dark brown curly hair with volume around her face, fair skin, a calm serious oval ' +
+      'face, dark eyes, wearing a plain buttoned white lab coat with nothing on it, blue jeans ' +
       'and brown shoes',
     anims: {
       idle: 'a female scientist with short dark curly hair in a white lab coat and blue jeans, standing very still in a composed fighting stance, breathing slowly and evenly, her chest rising and falling, the hem of her lab coat barely moving, eyes steady and measuring',
@@ -353,9 +357,9 @@ const CHARACTERS = {
     reference: 'Claire Fraser',
     // Décrit d'après l'image de référence fournie.
     description:
-      'a 50-year-old woman with shoulder-length chestnut auburn hair parted to one side, an oval ' +
-      'face with a confident expression, wearing a buttoned white lab coat, grey trousers and ' +
-      'dark shoes',
+      'a 50-year-old woman with long dark chestnut brown hair falling well below her shoulders, ' +
+      'parted to one side, an oval face with a confident expression, wearing a plain buttoned ' +
+      'white lab coat with no badge, no logo and no pocket patch, grey trousers and dark shoes',
     anims: {
       idle: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, standing still in an alert fighting stance, breathing calmly, her hair shifting slightly, one hand slowly opening and closing as if drawing something toward her',
       walk: 'a female scientist with shoulder-length auburn hair in a white lab coat and grey trousers, walking forward with a confident stride, lab coat swaying',

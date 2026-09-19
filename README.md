@@ -74,7 +74,7 @@ pastilles au-dessus des barres de vie.
 | **Salmonella** — *Salmonella enterica* | `salmonella` | Femme grave | Bacille rose à six flagelles métalliques façon Docteur Octopus. Rapide et mobile, mais la chaleur la tue. |
 | **C. botulinum** — *Clostridium botulinum* | `botulinum` | Créature énorme et lente | Difforme, déformé par sa spore. Le plus lent du jeu. **Ses spores encaissent la chaleur**, sa neurotoxine paralyse. |
 | **P. fluorescens** — *Pseudomonas fluorescens* | `pseudomonas` | Éthérée, liquide | Fine et luminescente. Rapide, fragile, et **totalement insensible au gel** : elle pousse à 4 °C. |
-| **S. putrefaciens** — *Shewanella putrefaciens* | `shewanella` | Bête à quatre pattes | **Le seul quadrupède** : bas sur pattes, large, très rapide, mais saute mal. Empoisonne au gaz. |
+| **S. putrefaciens** — *Shewanella putrefaciens* | `shewanella` | Bête à quatre pattes | Humanoïde décharné à la peau rouillée, mains et pieds noircis, longue queue. Empoisonne au gaz. |
 | **A. flavus** — *Aspergillus flavus* | `aspergillus` | Bruissement sec de spores | **Une moisissure, pas une bactérie.** Lent et résistant. Son aflatoxine marque l'adversaire à vie. |
 
 ### Les microbiologistes historiques

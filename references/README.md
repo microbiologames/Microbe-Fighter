@@ -123,10 +123,16 @@ pas de template : il hérite de celui du personnage. Un quadrupède créé en
 `mannequin` se redressera sur deux pattes à *chacune* des dix animations, et il
 faudra tout refaire depuis la création.
 
-*S. putrefaciens* est sorti en quadrupède du générateur d'images, à la surprise
-générale — d'où `cat`, choisi pour sa silhouette basse, son dos arqué et sa
-longue queue fine. Son manifeste s'en ressent : `heightStand` 72 au lieu d'une
-centaine, parce qu'un quadrupède est large et bas, pas haut.
+**Cette leçon a été apprise deux fois sur le même personnage.** *S.
+putrefaciens* est d'abord sorti en quadrupède du générateur d'images, d'où un
+`template: 'cat'` choisi pour sa silhouette basse et sa longue queue, et un
+`heightStand` de 72 au lieu d'une centaine. Une seconde image de référence,
+bipède celle-là, a tout inversé : retour à `mannequin` et à 110 px de haut.
+
+Le coût de l'erreur est asymétrique. Changer le template **avant** de recréer le
+personnage ne coûte qu'une création ; s'en apercevoir après coup, c'est une
+création plus onze animations à refaire. D'où la règle : **vérifier le nombre de
+pattes sur l'image de référence avant de lancer quoi que ce soit.**
 
 ## Le nom du fichier compte, l'extension non
 
