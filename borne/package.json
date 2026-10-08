@@ -1,0 +1,13 @@
+{
+  "name": "borne",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lanceur de la borne d'arcade : un menu, deux jeux, les memes boutons",
+  "scripts": {
+    "serveur": "node serveur.js 8080",
+    "banc": "node banc.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

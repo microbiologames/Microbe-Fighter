@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%2305080c'/><circle cx='8' cy='8' r='4' fill='%237dff9b'/></svg>" />
+<title>Borne Microbiologames</title>
+<style>
+  /* Tout est en vmin / vh : la borne n'a pas la meme dalle que le poste de
+     developpement, et une taille en pixels y devient illisible ou enorme.
+     Lisible a 1,5 m, la distance ou se tient un joueur debout. */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: #05080c; color: #e8f1ea;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    /* Pas de souris sur une borne : le pointeur n'a rien a faire a l'ecran.
+       Chromium en mode kiosque le laisse apparaitre au moindre soubresaut du
+       cable. */
+    cursor: none;
+    user-select: none;
+  }
+  #menu {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    padding: 4vmin 4vmin 3vmin;
+  }
+  #menu.parti { display: none; }
+  header { text-align: center; }
+  h1 { font-size: 5.2vmin; letter-spacing: .3em; margin: 0; color: #7dff9b; }
+  #evenement { font-size: 2.4vmin; letter-spacing: .24em; margin: 1.4vmin 0 0; color: #ffd479; }
+  #tuiles { display: flex; gap: 4vmin; align-items: stretch; justify-content: center; width: 100%; }
+  .tuile {
+    position: relative; flex: 1 1 0; max-width: 42vw;
+    border: .5vmin solid #1d3528; background: #0a1210;
+    display: flex; flex-direction: column; overflow: hidden;
+    transition: transform .12s, border-color .12s, box-shadow .12s;
+  }
+  /* Vignettes cadrees au centre, et prises en PAYSAGE : essayees en portrait,
+     la tuile large n'en gardait qu'une tranche ou le disque du microscope
+     etait coupe en deux. Une capture paysage donne une petite image du jeu
+     entier, HUD compris — c'est ce qu'un joueur reconnait de loin. */
+  .tuile .image { height: 34vh; background: #000 center/cover no-repeat; image-rendering: pixelated; }
+  .tuile .texte { padding: 2.2vmin 2.4vmin 2.6vmin; }
+  .tuile h2 { font-size: 3.4vmin; margin: 0; letter-spacing: .14em; }
+  .tuile .sous { font-size: 2vmin; margin: 1.2vmin 0 0; color: #9fc3ab; }
+  .tuile .commandes { font-size: 1.6vmin; margin: 1.8vmin 0 0; color: #5d7a68; letter-spacing: .08em; }
+  /* La tuile retenue : bordure chaude, halo, et un cran plus grande. Trois
+     signaux pour un seul etat, parce qu'une dalle de borne delave les
+     couleurs et qu'un enfant regarde la TAILLE avant la teinte. */
+  .tuile.sel {
+    border-color: #ffd479; transform: scale(1.04);
+    box-shadow: 0 0 0 .3vmin rgba(255, 212, 121, .5), 0 0 6vmin rgba(255, 212, 121, .25);
+  }
+  .tuile.absent { opacity: .35; }
+  .tuile.absent::after {
+    content: "INDISPONIBLE"; position: absolute; inset: auto 0 40% 0;
+    text-align: center; font-size: 2.6vmin; letter-spacing: .2em; color: #ff8080;
+  }
+  footer { text-align: center; }
+  footer p { margin: .8vmin 0; letter-spacing: .14em; }
+  #aide { font-size: 2.2vmin; color: #e8f1ea; }
+  #aide2 { font-size: 1.7vmin; color: #5d7a68; }
+  /* Le jeu occupe tout l'ecran : aucune bordure, aucun bandeau permanent.
+     Un cadre autour du jeu volerait de la hauteur a un pixel art calibre. */
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  /* La jauge de retour ne s'affiche QUE pendant le maintien, et ne prend
+     jamais les evenements : elle flotte au-dessus du jeu. */
+  #jauge {
+    position: absolute; left: 0; right: 0; top: 0; padding: 1.6vmin 2vmin;
+    background: rgba(5, 8, 12, .82); display: none; pointer-events: none;
+  }
+  #jauge.on { display: block; }
+  #jauge p { margin: 0 0 1vmin; font-size: 2.2vmin; letter-spacing: .2em; color: #ffd479; }
+  #piste { height: 1.4vmin; background: #1d3528; }
+  #barre { height: 100%; width: 0; background: #ffd479; transition: width .06s linear; }
+</style>
+</head>
+<body>
+  <div id="menu">
+    <header>
+      <h1 id="titre">MICROBIOLOGAMES</h1>
+      <p id="evenement"></p>
+    </header>
+    <div id="tuiles"></div>
+    <footer>
+      <p id="aide">JOYSTICK : CHOISIR — BOUTON OU START : JOUER</p>
+      <p id="aide2">EN JEU : MAINTENIR LES DEUX START 1,5 s POUR REVENIR ICI</p>
+    </footer>
+  </div>
+
+  <div id="jauge">
+    <p>RETOUR AU MENU…</p>
+    <div id="piste"><div id="barre"></div></div>
+  </div>
+
+  <script type="module" src="borne.js"></script>
+</body>
+</html>

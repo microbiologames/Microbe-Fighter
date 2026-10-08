@@ -1,0 +1,25 @@
+{
+  "titre": "MICROBIOLOGAMES",
+  "evenement": "",
+  "retourInactif": 180,
+  "jeux": [
+    {
+      "id": "microbe-fighter",
+      "titre": "MICROBE FIGHTER",
+      "sous": "Baston pixel, 1 ou 2 joueurs",
+      "commandes": "JOYSTICK + POING / PIED — DEUX JOUEURS",
+      "url": "/jeux/microbe-fighter/",
+      "vignette": "/jeux/microbe-fighter/assets/ui/poster.jpg",
+      "racines": ["..", "/home/pi/borne/microbe-fighter"]
+    },
+    {
+      "id": "cell-dungeon",
+      "titre": "CELL DUNGEON",
+      "sous": "Survie au microscope, 1 joueur",
+      "commandes": "JOYSTICK GAUCHE NAGER — JOYSTICK DROIT MISE AU POINT",
+      "url": "/jeux/cell-dungeon/",
+      "vignette": "vignettes/cell-dungeon.png",
+      "racines": ["../../Cell-dungeon", "../../cell-dungeon", "/home/pi/borne/cell-dungeon"]
+    }
+  ]
+}

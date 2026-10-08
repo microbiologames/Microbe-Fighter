@@ -674,6 +674,13 @@ microbe-fighter/
 
 ## Déploiement sur borne d'arcade Raspberry Pi
 
+> **Deux jeux sur la même borne ?** Pour l'événement, la borne enchaîne
+> *Microbe Fighter* et *Cell Dungeon* derrière un menu qui se pilote aux
+> mêmes boutons : tout est dans **[`borne/`](borne/README.md)** — menu,
+> serveur unique, geste de retour, page de relevé des boutons de l'encodeur
+> et banc de vérification. Ce qui suit reste valable pour une borne qui ne
+> fait tourner que *Microbe Fighter*.
+
 1. Copier le dossier sur le Raspberry Pi (clé USB, `scp` ou `git clone`).
 2. Installer Node et Chromium :
    ```bash

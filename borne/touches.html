@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%2305080c'/><circle cx='8' cy='8' r='4' fill='%237dff9b'/></svg>" />
+<title>Relevé des commandes — borne</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; min-height: 100%; background: #05080c; color: #e8f1ea;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    user-select: none;
+  }
+  body { padding: 2.5vmin 3vmin; }
+  h1 { font-size: 3.2vmin; letter-spacing: .2em; margin: 0 0 .6vmin; color: #7dff9b; }
+  .note { font-size: 1.7vmin; color: #5d7a68; margin: 0 0 2.4vmin; letter-spacing: .06em; }
+  /* L'assistant occupe le haut de l'écran : c'est lui qu'on regarde pendant
+     le relevé, à 1,5 m, un joystick dans chaque main. */
+  #assistant { border: .4vmin solid #1d3528; padding: 2.2vmin; margin-bottom: 2.4vmin; }
+  #consigne { font-size: 3.6vmin; letter-spacing: .14em; margin: 0; color: #ffd479; }
+  #avancement { font-size: 1.8vmin; color: #9fc3ab; margin: 1.2vmin 0 0; }
+  #capture { font-size: 2.2vmin; color: #7dff9b; margin: 1.2vmin 0 0; min-height: 3vmin; }
+  .colonnes { display: flex; gap: 3vmin; flex-wrap: wrap; }
+  .bloc { flex: 1 1 42%; min-width: 40vmin; }
+  h2 { font-size: 2.2vmin; letter-spacing: .16em; margin: 0 0 1.2vmin; color: #9fc3ab; }
+  .pad { border: .3vmin solid #1d3528; padding: 1.6vmin; margin-bottom: 1.8vmin; }
+  .pad .nom { font-size: 1.6vmin; color: #5d7a68; margin-bottom: 1.2vmin; word-break: break-all; }
+  .boutons { display: flex; flex-wrap: wrap; gap: .8vmin; }
+  .b {
+    width: 4.6vmin; height: 4.6vmin; display: flex; align-items: center; justify-content: center;
+    border: .25vmin solid #1d3528; font-size: 1.8vmin; color: #5d7a68;
+  }
+  /* Un bouton pressé MAINTENANT est jaune ; un bouton déjà vu au moins une
+     fois reste vert. Les deux états séparés, sinon on ne sait plus si on a
+     testé un bouton ou s'il est en train d'être tenu. */
+  .b.on { border-color: #ffd479; color: #ffd479; background: rgba(255, 212, 121, .18); }
+  .b.vu { border-color: #7dff9b; color: #7dff9b; }
+  .axes { font-size: 1.8vmin; line-height: 1.7; }
+  .axes .repos { color: #ff8080; }
+  pre {
+    background: #0a1210; border: .3vmin solid #1d3528; padding: 1.8vmin;
+    font-size: 1.7vmin; line-height: 1.5; white-space: pre-wrap; user-select: text;
+    color: #e8f1ea; margin: 0;
+  }
+  .clavier { font-size: 1.8vmin; color: #e8f1ea; min-height: 3vmin; }
+</style>
+</head>
+<body>
+  <h1>RELEVÉ DES COMMANDES DE LA BORNE</h1>
+  <p class="note">
+    Branche l'encodeur, appuie sur n'importe quel bouton pour que le navigateur
+    déclare la manette, puis suis l'assistant. Rien n'est deviné ici : ce que
+    cette page affiche est ce que le navigateur reçoit vraiment.
+  </p>
+
+  <div id="assistant">
+    <p id="consigne">APPUIE SUR UN BOUTON POUR COMMENCER</p>
+    <p id="avancement"></p>
+    <p id="capture"></p>
+  </div>
+
+  <div class="colonnes">
+    <div class="bloc">
+      <h2>MANETTES VUES</h2>
+      <div id="pads"><p class="note">Aucune manette déclarée pour l'instant.</p></div>
+      <h2>CLAVIER</h2>
+      <p class="clavier" id="clavier">—</p>
+    </div>
+    <div class="bloc">
+      <h2>RELEVÉ À RECOPIER</h2>
+      <pre id="releve">{}</pre>
+      <p class="note">
+        Ce bloc est le résultat : photographie-le ou recopie-le. Il tient dans
+        <code>borne/manette.js</code> et dans <code>src/core/input.js</code> de
+        Cell Dungeon. Il est aussi gardé dans ce navigateur, donc un
+        rafraîchissement ne le perd pas.
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="touches.js"></script>
+</body>
+</html>
