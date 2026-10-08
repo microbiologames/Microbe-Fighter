@@ -36,11 +36,17 @@ const GAMEPAD_AXIS_THRESHOLD = 0.4;
 const BORNE_DRAGONRISE = /dragonrise|0079/i;
 const miroirAxes = (pad) => (pad.index === 0 && BORNE_DRAGONRISE.test(pad.id || '') ? -1 : 1);
 
+/* Les actions dont endFrame() avance l'instantane manette. 'start' n'y est
+   pas : il n'existe pas sur l'encodeur de cette borne et ne vit plus que sur
+   le clavier, dont les fronts passent par pressedThisFrame. */
+const TRACKED_ACTIONS = ['left', 'right', 'up', 'down', 'punch', 'kick', 'dodge', 'taunt'];
+
 export class Input {
   constructor() {
     this.keysDown = new Set();
     this.pressedThisFrame = new Set();
-    this._prevGamepadButtons = { 1: {}, 2: {} };
+    // cle "joueur:action" -> l'action etait-elle active a l'image precedente
+    this._prevGamepadAction = {};
 
     window.addEventListener('keydown', (e) => {
       if (!this.keysDown.has(e.code)) this.pressedThisFrame.add(e.code);
@@ -54,11 +60,40 @@ export class Input {
   // à appeler une fois par frame, après avoir lu les actions "justPressed"
   endFrame() {
     this.pressedThisFrame.clear();
+
+    /* Avance l'instantane manette d'UNE image, ici et une seule fois -- pas
+       dans justPressed(). Une meme action est souvent lue plusieurs fois dans
+       la meme image : si chaque lecture avancait son propre instantane, la
+       deuxieme verrait "deja vu" et ne se declencherait jamais, meme sur un
+       appui neuf.
+       Defaut RELEVE SUR LA BORNE le 8/10/2026 : jauge de retour tenue, le
+       poing et le pied ne repondaient plus, et il fallait passer par
+       l'attaque speciale -- lue une seule fois -- pour les retrouver.
+       Correction reprise de Family Fight, qui portait deja le moteur
+       corrige ; Microbe Fighter en gardait une version anterieure. */
+    for (let p = 1; p <= 2; p++) {
+      const pad = this._gamepadFor(p);
+      if (!pad) continue;
+      for (const action of TRACKED_ACTIONS) {
+        this._prevGamepadAction[p + ':' + action] = !!this._gamepadActionDown(pad, action);
+      }
+    }
   }
 
   _gamepadFor(playerIndex) {
     const pads = navigator.getGamepads ? navigator.getGamepads() : [];
     return pads[playerIndex - 1] || null;
+  }
+
+  /** Une action sur UNE manette : bouton, ou direction par axe ou par hat. */
+  _gamepadActionDown(pad, action) {
+    const sign = miroirAxes(pad);
+    if (action === 'left') return pad.axes[0] * sign < -GAMEPAD_AXIS_THRESHOLD || pad.buttons[14]?.pressed;
+    if (action === 'right') return pad.axes[0] * sign > GAMEPAD_AXIS_THRESHOLD || pad.buttons[15]?.pressed;
+    if (action === 'up') return pad.axes[1] * sign < -GAMEPAD_AXIS_THRESHOLD || pad.buttons[12]?.pressed;
+    if (action === 'down') return pad.axes[1] * sign > GAMEPAD_AXIS_THRESHOLD || pad.buttons[13]?.pressed;
+    if (GAMEPAD_BUTTONS[action] !== undefined) return !!pad.buttons[GAMEPAD_BUTTONS[action]]?.pressed;
+    return false;
   }
 
   /** État courant (maintenu) d'une action pour un joueur donné */
@@ -68,14 +103,7 @@ export class Input {
 
     const pad = this._gamepadFor(playerIndex);
     if (!pad) return false;
-
-    const sign = miroirAxes(pad);
-    if (action === 'left') return pad.axes[0] * sign < -GAMEPAD_AXIS_THRESHOLD || pad.buttons[14]?.pressed;
-    if (action === 'right') return pad.axes[0] * sign > GAMEPAD_AXIS_THRESHOLD || pad.buttons[15]?.pressed;
-    if (action === 'up') return pad.axes[1] * sign < -GAMEPAD_AXIS_THRESHOLD || pad.buttons[12]?.pressed;
-    if (action === 'down') return pad.axes[1] * sign > GAMEPAD_AXIS_THRESHOLD || pad.buttons[13]?.pressed;
-    if (GAMEPAD_BUTTONS[action] !== undefined) return !!pad.buttons[GAMEPAD_BUTTONS[action]]?.pressed;
-    return false;
+    return !!this._gamepadActionDown(pad, action);
   }
 
   /** Touche brute non liée à un joueur (ex: Échap pour la pause) */
@@ -90,11 +118,16 @@ export class Input {
 
     const pad = this._gamepadFor(playerIndex);
     if (!pad) return false;
-    const btnIndex = GAMEPAD_BUTTONS[action];
-    if (btnIndex === undefined) return false;
-    const now = !!pad.buttons[btnIndex]?.pressed;
-    const prev = !!this._prevGamepadButtons[playerIndex][action];
-    this._prevGamepadButtons[playerIndex][action] = now;
+    /* Front sur N'IMPORTE QUELLE action manette, direction comprise. La
+       version precedente sortait d'emblee des que l'action n'etait pas un
+       bouton : 'left', 'right', 'up' et 'down' rendaient donc TOUJOURS faux a
+       la manette. Releve SUR LA BORNE le 8/10/2026 : les joysticks etaient
+       morts a l'ecran de choix des personnages, et le saut ne partait pas,
+       alors que le deplacement -- lu en maintien par isDown -- marchait.
+       Lecture PURE : c'est endFrame() qui avance l'instantane, une fois par
+       image. */
+    const now = !!this._gamepadActionDown(pad, action);
+    const prev = !!this._prevGamepadAction[playerIndex + ':' + action];
     return now && !prev;
   }
 }
