@@ -102,12 +102,23 @@ page.on('requestfailed', (r) => {
 await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(400);
 
-const etat = () => page.evaluate(() => ({
-  jeu: window.__borne.jeu, choix: window.__borne.choix, retour: window.__borne.retour,
-  iframes: window.__borne.iframes, presents: window.__borne.presents,
-  menuVisible: !document.getElementById('menu').classList.contains('parti'),
-  jaugeOn: document.getElementById('jauge').classList.contains('on'),
-}));
+const etat = () => page.evaluate(() => {
+  const jauge = document.getElementById('jauge');
+  const cadre = document.querySelector('iframe');
+  const rang = (el) => (el ? Number(getComputedStyle(el).zIndex) || 0 : 0);
+  return {
+    jeu: window.__borne.jeu, choix: window.__borne.choix, retour: window.__borne.retour,
+    iframes: window.__borne.iframes, presents: window.__borne.presents,
+    menuVisible: !document.getElementById('menu').classList.contains('parti'),
+    jaugeOn: jauge.classList.contains('on'),
+    /* Affichee ne suffit pas : l'iframe est posee APRES la jauge dans le
+       document, donc a empilement egal elle la recouvre — classe posee,
+       barre invisible. C'est ce qu'une capture a montre et que le verdict
+       d'alors laissait passer. Le banc ne peut pas lire les pixels composes
+       d'une iframe : il verifie la regle qui les produit. */
+    jaugeDevant: rang(jauge) > rang(cadre),
+  };
+});
 
 /** Amene la designation sur un jeu : le menu boucle, compter les appuis ne
     suffit pas. */
@@ -176,9 +187,10 @@ async function viser(id) {
   await page.waitForTimeout(200);
   const relache = await etat();
   dire(court.retour > 0.2 && court.retour < 1 && court.jeu === 'microbe-fighter'
-    && court.jaugeOn && relache.retour === 0,
-    'un maintien court remplit la jauge sans quitter',
-    `jauge ${(court.retour * 100).toFixed(0)} % puis ${(relache.retour * 100).toFixed(0)} %`);
+    && court.jaugeOn && court.jaugeDevant && relache.retour === 0,
+    'un maintien court remplit la jauge, devant le jeu, sans quitter',
+    `jauge ${(court.retour * 100).toFixed(0)} % puis ${(relache.retour * 100).toFixed(0)} %,`
+    + ` devant le jeu: ${court.jaugeDevant}`);
 
   /* Maintien COMPLET : retour au menu, et l'iframe est detruite. */
   await page.keyboard.down('Enter');

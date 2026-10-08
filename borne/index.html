@@ -63,12 +63,17 @@
   #aide2 { font-size: 1.7vmin; color: #5d7a68; }
   /* Le jeu occupe tout l'ecran : aucune bordure, aucun bandeau permanent.
      Un cadre autour du jeu volerait de la hauteur a un pixel art calibre. */
-  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; z-index: 1; }
   /* La jauge de retour ne s'affiche QUE pendant le maintien, et ne prend
      jamais les evenements : elle flotte au-dessus du jeu. */
+  /* La jauge passe AU-DESSUS du jeu. L'iframe est ajoutee au document apres
+     elle : a empilement egal, c'est la derniere qui gagne, et la jauge se
+     remplissait DERRIERE le jeu — classe posee, barre invisible. Defaut vu a
+     l'oeil sur une capture, pas par le banc, qui ne lisait que la classe. */
   #jauge {
     position: absolute; left: 0; right: 0; top: 0; padding: 1.6vmin 2vmin;
     background: rgba(5, 8, 12, .82); display: none; pointer-events: none;
+    z-index: 10;
   }
   #jauge.on { display: block; }
   #jauge p { margin: 0 0 1vmin; font-size: 2.2vmin; letter-spacing: .2em; color: #ffd479; }
