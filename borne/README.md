@@ -33,10 +33,25 @@ elles sont le cœur du montage :
 | Geste | Effet |
 |---|---|
 | Joystick gauche/droite | Choisir un jeu |
-| Poing, pied ou START | Lancer le jeu retenu |
-| **Les deux START tenus 1,5 s** | Revenir au menu, depuis n'importe quel jeu |
-| START + SELECT tenus 1,5 s | Idem, si l'encodeur n'expose qu'une seule manette |
+| Bouton vert ou jaune | Lancer le jeu retenu |
+| **Le bouton blanc tenu 1,5 s** | Revenir au menu, depuis n'importe quel jeu |
 | Plus rien pendant 3 min | Retour au menu tout seul |
+
+**Pourquoi le bouton blanc.** Les boutons de ce meuble ont été relevés le
+18/08/2026 sur ses deux cartes DragonRise : `0` = A vert, `1` = B rouge,
+`2` = Y jaune, `3` = X bleu, `4` = Z blanc, et `5` = le bouton central, câblé
+uniquement sur la manette du joueur 2. **Il n'y a ni START ni SELECT sur cette
+borne** : les index `8` et `9` n'existent pas, et un geste qui s'appuie dessus
+ne peut jamais se déclencher — c'est ce que faisait la version précédente. Le
+blanc, lui, est déjà le bouton de retour que les joueurs connaissent : dans
+Family Fight il ramène à l'accueil. On garde donc leur bouton, mais en
+**maintien**, parce qu'ici le retour doit fonctionner en pleine partie, là où
+un appui simple partirait au premier blanc touché par mégarde.
+
+Les deux joysticks du meuble sont par ailleurs montés **en miroir** : sur la
+carte d'index 0, pousser à gauche donne `axes[0] = +1`. La correction est dans
+le code, limitée aux cartes DragonRise pour ne pas inverser une manette
+ordinaire.
 
 Une jauge se remplit pendant le maintien : sans elle, 1,5 s se vivent comme
 une panne. Le délai d'inactivité se règle dans `jeux.json`

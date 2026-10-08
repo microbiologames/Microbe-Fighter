@@ -16,11 +16,17 @@ import { spawn } from 'node:child_process';
 import { existsSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { request } from 'node:http';
 
 const PORT = 8096;
 const PORT_MANQUE = 8095;
-const ICI = new URL('.', import.meta.url).pathname.replace(/\/$/, '');
+/* .pathname d'une URL file: rend "/C:/..." sous Windows, un chemin que
+   spawn() refuse : le banc mourait sur un ENOENT qui accusait node.exe alors
+   que c'etait le cwd. fileURLToPath rend le chemin natif sur les deux
+   systemes. Le banc doit tourner sur le poste de developpement, pas sur la
+   Raspberry, ou Playwright n'est pas installe. */
+const ICI = fileURLToPath(new URL('.', import.meta.url)).replace(/[\\/]$/, '');
 
 const verdicts = [];
 function dire(ok, nom, detail = '') {

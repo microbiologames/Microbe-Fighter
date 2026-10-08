@@ -11,11 +11,17 @@
    encodeur pouvant tres bien numeroter autrement.
 --------------------------------------------------------------------------- */
 
+/* Releve sur les deux cartes DragonRise de ce meuble le 18/08/2026 (mesure
+   CDP, reportee depuis Family Fight, le jeu qui tourne dessus) : 0 = A vert,
+   1 = B rouge, 2 = Y jaune, 3 = X bleu, 4 = Z blanc. Le bouton 5
+   (home/pause central) n'est cable QUE sur la carte du joueur 2.
+   Il n'y a NI START NI SELECT sur cette borne : les index 8 et 9 n'existent
+   pas. C'est la mesure qui a fait tomber le geste a deux START, lequel ne
+   pouvait jamais se declencher ici. Le vert valide tous les menus. */
 export const BOUTONS = {
-  valider: [0, 2, 9],   // poing, pied, START
-  retour: [1, 3],       // esquive, narguer
-  start: [9],
-  select: [8],
+  valider: [0, 2],   // vert, jaune
+  retour: [1, 3],    // rouge, bleu
+  blanc: [4],        // Z : le bouton de retour que les joueurs connaissent deja
 };
 export const DPAD = { haut: 12, bas: 13, gauche: 14, droite: 15 };
 
@@ -23,6 +29,11 @@ export const DPAD = { haut: 12, bas: 13, gauche: 14, droite: 15 };
    le debut : meme materiel, meme seuil. Un encodeur est tout-ou-rien, la
    valeur ne compte que pour une vraie manette analogique. */
 export const SEUIL = 0.4;
+
+/* Les cartes de l'encodeur de ce meuble, reconnues a leur identifiant de
+   manette (vendor 0079, product 0006). Sert a ne corriger le miroir des
+   joysticks que sur la borne, et pas sur une manette ordinaire. */
+const BORNE_DRAGONRISE = /dragonrise|0079/i;
 
 /* Maintien pour revenir au menu. 1,5 s est un CHOIX, pas une mesure : assez
    long pour qu'aucun appui de jeu ne le declenche par accident, assez court
@@ -128,9 +139,17 @@ export class Commandes {
       }
       this._prev.set(i, now);
 
-      const ax = (Math.abs(pad.axes[0] || 0) > SEUIL ? Math.sign(pad.axes[0]) : 0)
+      /* Les deux joysticks du meuble sont montes EN MIROIR : sur la carte
+         d'index 0, pousser a gauche donne axes[0] = +1 et vers le haut
+         axes[1] = +1, l'inverse de la convention. Mesure du 18/08/2026,
+         reprise de Family Fight. Sans ce signe la designation du menu part
+         du mauvais cote pour le joueur 1. */
+      const sign = pad.index === 0 && BORNE_DRAGONRISE.test(pad.id || '') ? -1 : 1;
+      const jx = (pad.axes[0] || 0) * sign;
+      const jy = (pad.axes[1] || 0) * sign;
+      const ax = (Math.abs(jx) > SEUIL ? Math.sign(jx) : 0)
         + (pad.buttons[DPAD.droite]?.pressed ? 1 : 0) - (pad.buttons[DPAD.gauche]?.pressed ? 1 : 0);
-      const ay = (Math.abs(pad.axes[1] || 0) > SEUIL ? Math.sign(pad.axes[1]) : 0)
+      const ay = (Math.abs(jy) > SEUIL ? Math.sign(jy) : 0)
         + (pad.buttons[DPAD.bas]?.pressed ? 1 : 0) - (pad.buttons[DPAD.haut]?.pressed ? 1 : 0);
       if (ax && !x) x = Math.sign(ax);
       if (ay && !y) y = Math.sign(ay);
@@ -171,21 +190,23 @@ export class Commandes {
   }
 
   /**
-   * Le geste de retour au menu. Trois formes, parce qu'on ne sait pas encore
-   * combien de peripheriques l'encodeur presente :
-   *   - les DEUX START, un par manette : le geste a deux mains de la borne ;
-   *   - START + SELECT sur la meme manette : le repli si l'encodeur n'expose
-   *     qu'un seul peripherique (et le geste classique des bornes MAME) ;
-   *   - les deux touches START au clavier, pour le poste de developpement.
-   * Aucune n'est atteignable par accident en jouant : toutes demandent deux
-   * boutons tenus ensemble, et aucun des deux ne sert en combat.
+   * Le geste de retour au menu : le bouton BLANC (Z, index 4) tenu COMBO_MS,
+   * sur l'une ou l'autre manette.
+   * Le blanc est DEJA le bouton de retour de cette borne : dans Family Fight
+   * il ramene a l'accueil, en appui simple, depuis les ecrans hors combat. On
+   * garde donc le bouton que les joueurs ont dans les doigts, mais en
+   * MAINTIEN, parce qu'ici le retour doit marcher EN PLEINE PARTIE : en appui
+   * simple il partirait au premier blanc touche par megarde.
+   * La mesure qui a tranche : ce meuble n'a ni START ni SELECT (les index 8
+   * et 9 n'existent pas), donc le geste a deux START ne pouvait jamais se
+   * declencher ici.
+   * Les deux touches START du clavier restent pour le poste de developpement
+   * et pour le banc, que Playwright ne sait conduire qu'au clavier.
    */
   _majCombo(pads) {
-    const deuxStarts = this._tenuPad(pads, 0, BOUTONS.start) && this._tenuPad(pads, 1, BOUTONS.start);
-    const startSelect = pads.some((p, i) => p
-      && this._tenuPad(pads, i, BOUTONS.start) && this._tenuPad(pads, i, BOUTONS.select));
+    const blanc = pads.some((p, i) => p && this._tenuPad(pads, i, BOUTONS.blanc));
     const clavier = this._touche('start1') && this._touche('start2');
-    const tenu = deuxStarts || startSelect || clavier;
+    const tenu = blanc || clavier;
     if (!tenu) { this._comboDepuis = 0; return; }
     if (!this._comboDepuis) this._comboDepuis = performance.now();
     this.activite = performance.now();

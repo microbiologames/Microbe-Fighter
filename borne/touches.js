@@ -15,8 +15,12 @@
 const $ = (id) => document.getElementById(id);
 
 /* Les gestes a relever, dans l'ordre. Deux joueurs, parce que le geste de
-   Cell Dungeon veut les DEUX joysticks, et que le retour au menu veut les
-   deux START. */
+   Cell Dungeon veut les DEUX joysticks.
+   Le BLANC est demande en premier des boutons : c'est lui qui porte le geste
+   de retour au menu depuis qu'on sait que ce meuble n'a ni START ni SELECT
+   (releve du 18/08/2026). START et SELECT restent dans la liste pour
+   CONFIRMER leur absence sur place ; un bouton qui n'existe pas ne bloque
+   pas, la liste avance apres PATIENCE_MS. */
 const ETAPES = [
   ['j1.droite', 'JOUEUR 1 : POUSSE LE JOYSTICK A DROITE', 'axe'],
   ['j1.bas', 'JOUEUR 1 : POUSSE LE JOYSTICK VERS LE BAS', 'axe'],
@@ -24,13 +28,16 @@ const ETAPES = [
   ['j1.pied', 'JOUEUR 1 : BOUTON PIED', 'bouton'],
   ['j1.esquive', 'JOUEUR 1 : BOUTON ESQUIVE (s\'il existe)', 'bouton'],
   ['j1.narguer', 'JOUEUR 1 : BOUTON NARGUER (s\'il existe)', 'bouton'],
-  ['j1.start', 'JOUEUR 1 : BOUTON START', 'bouton'],
+  ['j1.blanc', 'JOUEUR 1 : BOUTON BLANC (Z) \u2014 LE RETOUR AU MENU', 'bouton'],
+  ['j1.start', 'JOUEUR 1 : BOUTON START (s\'il existe)', 'bouton'],
   ['j1.select', 'JOUEUR 1 : BOUTON SELECT / COIN (s\'il existe)', 'bouton'],
   ['j2.droite', 'JOUEUR 2 : POUSSE LE JOYSTICK A DROITE', 'axe'],
   ['j2.bas', 'JOUEUR 2 : POUSSE LE JOYSTICK VERS LE BAS', 'axe'],
   ['j2.poing', 'JOUEUR 2 : BOUTON POING', 'bouton'],
   ['j2.pied', 'JOUEUR 2 : BOUTON PIED', 'bouton'],
-  ['j2.start', 'JOUEUR 2 : BOUTON START', 'bouton'],
+  ['j2.blanc', 'JOUEUR 2 : BOUTON BLANC (Z) \u2014 LE RETOUR AU MENU', 'bouton'],
+  ['j2.centre', 'JOUEUR 2 : BOUTON CENTRAL HOME / PAUSE (s\'il existe)', 'bouton'],
+  ['j2.start', 'JOUEUR 2 : BOUTON START (s\'il existe)', 'bouton'],
 ];
 
 /* Silence au bout duquel on passe au geste suivant : un bouton qui n'existe

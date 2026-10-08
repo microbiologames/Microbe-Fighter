@@ -471,7 +471,7 @@ function update(dt) {
   }
 
   if (gameState === GAME_STATE.TITLE) {
-    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterModeSelect();
+    if (validationDemandee()) enterModeSelect();
     return;
   }
 
@@ -490,13 +490,13 @@ function update(dt) {
   if (gameState === GAME_STATE.RESULT) {
     fighter1.tickAnimationOnly(dt);
     fighter2.tickAnimationOnly(dt);
-    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterModeSelect();
+    if (validationDemandee()) enterModeSelect();
     return;
   }
 
   if (gameState === GAME_STATE.ARENA_RESULT) {
     fighter1.tickAnimationOnly(dt);
-    if (input.justPressed(1, 'start') || input.justPressed(2, 'start')) enterModeSelect();
+    if (validationDemandee()) enterModeSelect();
     return;
   }
 
