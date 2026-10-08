@@ -94,10 +94,21 @@ n'est nécessaire si elle est respectée :
 
 ```bash
 mkdir -p ~/borne && cd ~/borne
-git clone https://github.com/microbiologames/Microbe-Fighter.git microbe-fighter
-git clone https://github.com/microbiologames/Cell-dungeon.git cell-dungeon
-cd cell-dungeon && git checkout claude/epic-carson-ryenav && cd ..
+git clone -b claude/borne-deux-jeux https://github.com/microbiologames/Microbe-Fighter.git microbe-fighter
+git clone -b claude/borne-deux-jeux https://github.com/microbiologames/Cell-dungeon.git cell-dungeon
 ```
+
+> **La branche compte.** Tout le montage vit sur `claude/borne-deux-jeux`
+> dans les deux dépôts, tant qu'elle n'est pas fusionnée : c'est elle qui
+> porte le lanceur, et c'est elle qui porte les manettes de Cell Dungeon.
+> Une fois fusionnée, ce sera `main` pour Microbe Fighter et
+> `claude/epic-carson-ryenav` pour Cell Dungeon — celle que sert déjà
+> GitHub Pages.
+
+Mettre à jour sur place, le jour même : `git -C ~/borne/microbe-fighter pull`
+et `git -C ~/borne/cell-dungeon pull`, puis `sudo systemctl restart borne`
+(le navigateur, lui, se recharge avec `F5` ou en redémarrant la borne — les
+pages sont servies en `no-cache`, rien ne reste en mémoire).
 
 Le lanceur vit dans `microbe-fighter/borne/`. Il cherche les jeux dans cet
 ordre : à côté de lui d'abord (poste de développement), puis
